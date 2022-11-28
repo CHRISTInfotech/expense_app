@@ -34,16 +34,16 @@ class About extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
 
-          Container( 
-            height: 200.0,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(kAppLogo),
-                fit: BoxFit.fitHeight,
-              ),
-              shape: BoxShape.rectangle,
-            ),
-          ),
+          // Container( 
+          //   height: 200.0,
+          //   decoration: BoxDecoration(
+          //     image: DecorationImage(
+          //       image: AssetImage(kAppLogo),
+          //       fit: BoxFit.fitHeight,
+          //     ),
+          //     shape: BoxShape.rectangle,
+          //   ),
+          // ),
 
           Text("Created by $kDev",
             style: TextStyle( fontSize: 18, fontWeight: FontWeight.w300),

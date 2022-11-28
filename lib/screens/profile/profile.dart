@@ -86,13 +86,18 @@ class Profile extends StatelessWidget with NavigationStates {
               //     text: 'Help & Support',
               //   ),
               // ),
-              // GestureDetector(
-              //   onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => About(scaffoldKey))); },
-              //   child: ProfileListItem(
-              //     icon: LineAwesomeIcons.info_circle,
-              //     text: 'About DollarSense',
-              //   ),
-              // ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => About(scaffoldKey)));
+                },
+                child: ProfileListItem(
+                  icon: LineAwesomeIcons.info_circle,
+                  text: 'About ',
+                ),
+              ),
               GestureDetector(
                 onTap: () async {
                   await _auth.signOut();

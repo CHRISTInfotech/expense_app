@@ -13,16 +13,15 @@ const kDevEmail = "infotech.lavasa@christuniversity.in";
 void launchMailClient() async {
   const mailUrl = 'mailto:$kDevEmail';
   try {
-    await launchUrl(mailUrl);
+    await launchUrl(Uri.parse(kDevEmail));
   } catch (e) {
     copyMailClient(globals.scaffoldKey);
   }
 }
 
-void copyMailClient(GlobalKey<ScaffoldMessengerState> key ) async {
-    await Clipboard.setData(new ClipboardData(text: kDevEmail));
-    key.currentState!.showSnackBar(new SnackBar(
+void copyMailClient(GlobalKey<ScaffoldMessengerState> key) async {
+  await Clipboard.setData(new ClipboardData(text: kDevEmail));
+  key.currentState!.showSnackBar(new SnackBar(
       backgroundColor: kDarkSecondary,
-      content: new Text("Copied to Clipboard")
-    ));
+      content: new Text("Copied to Clipboard")));
 }

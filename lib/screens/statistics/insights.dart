@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:date_util/date_util.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import 'radial_chart.dart';
@@ -197,10 +196,9 @@ class MonthStats extends StatelessWidget {
                 t.type == "income" && DateFormat.MMMM().format(t.date) == month)
             .toList())
         .fold(0, (i, j) => i + int.parse(j.amount.floor().toString()));
-    double monthTotal =
-        double.parse(monthExpense.floor().toString()) + monthIncome;
+    double monthTotal = double.parse(monthExpense.toString()) + monthIncome;
 
-    var daysInMonth = DateUtil().daysInMonth(date.month, date.year);
+    var daysInMonth = DateUtils.getDaysInMonth( date.year,date.month);
     print("There are $daysInMonth days in $month");
 
     print("AVG $monthExpense / $daysInMonth == ${monthExpense / daysInMonth}");

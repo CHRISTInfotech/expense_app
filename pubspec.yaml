@@ -50,8 +50,7 @@ dependencies:
   flutter_bloc: ^8.1.1
 
   # Date
-  date_util: ^0.1.4
-
+  in_date_utils: ^1.1.0
   # URL hyperlinks
   url_launcher: ^6.1.7
 

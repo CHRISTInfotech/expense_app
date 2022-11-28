@@ -80,13 +80,13 @@ class BudgetProgress extends StatelessWidget {
                 
                 Row(
                   children: <Widget>[
-                    Text("\$${globals.monthExpense.toStringAsFixed(2)}",
+                    Text("\u{20B9}${globals.monthExpense.toStringAsFixed(2)}",
                       style: TextStyle(
                         color: Colors.white,
                         
                       ),
                     ),
-                    Text(" / \$${globals.budget.limit.toStringAsFixed(2)}",
+                    Text(" / \u{20B9}${globals.budget.limit.toStringAsFixed(2)}",
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold

@@ -5,15 +5,15 @@ import 'package:url_launcher/url_launcher.dart';
 import './theme.dart';
 import '../data/globals.dart' as globals;
 
-const kAppName = "DollarSense";
+const kAppName = "Expense App";
 const kAppLogo = 'assets/images/dollarsense_logo.png';
-const kDev = "Crystal Cheong";
-const kDevEmail = "crystalcheongyq@gmail.com";
+const kDev = "CHRIST InfoTech";
+const kDevEmail = "infotech.lavasa@christuniversity.in";
 
 void launchMailClient() async {
   const mailUrl = 'mailto:$kDevEmail';
   try {
-    await launch(mailUrl);
+    await launchUrl(mailUrl);
   } catch (e) {
     copyMailClient(globals.scaffoldKey);
   }

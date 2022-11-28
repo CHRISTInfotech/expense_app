@@ -59,7 +59,7 @@ class AuthService {
           email: email.trim(), password: password);
       User? user = result.user;
       // print(user);
-      print(_userFromFirebaseUser(user));
+      // print(_userFromFirebaseUser(user));
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());

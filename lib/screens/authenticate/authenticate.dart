@@ -14,6 +14,7 @@ class _AuthenticateState extends State<Authenticate> {
   void toggleView() {
     //Toggles boolean value regardless of T/F
     setState(() => showSignIn = !showSignIn);
+    print(showSignIn);
     // print(showSignIn);
   }
 

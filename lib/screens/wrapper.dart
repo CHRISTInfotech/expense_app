@@ -21,17 +21,18 @@ class Wrapper extends StatelessWidget {
     final user = Provider.of<CurrentUser?>(context);
     print("user$user");
 
-    if (initialLoad!) {
-      return Onboard(sharedPrefs);
-    } else {
-      //Not logged inR
+    // if (initialLoad!) {
+    //   return Onboard(sharedPrefs);
+    // } else {
+    //Not logged inR
 
-      if (user == null) {
-        return Authenticate();
-      } else {
-        print("R");
-        return NavBarLayout(user: user);
-      }
+    if (user == null) {
+      print(Authenticate());
+      return Authenticate();
+    } else {
+      print("R");
+      return NavBarLayout(user: user);
     }
   }
+  // }
 }

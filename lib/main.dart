@@ -12,7 +12,7 @@ import './models/user.dart';
 Future<void> main() async {
   // Ensure all plugins are initialized
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp();
+  await Firebase.initializeApp();
   // Apply application UI overlay (FULL SCREEN)
 
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,

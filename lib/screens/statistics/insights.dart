@@ -94,12 +94,12 @@ class Cashflow extends StatelessWidget {
                 t.type == "expense" &&
                 DateFormat.MMMM().format(t.date) == month)
             .toList())
-        .fold(0, (i, j) => i + int.parse(j.amount.toString()));
+        .fold(0, (i, j) => i + int.parse(j.amount.floor().toString()));
     var monthIncome = (transactions
             .where((t) =>
                 t.type == "income" && DateFormat.MMMM().format(t.date) == month)
             .toList())
-        .fold(0, (i, j) => i + int.parse(j.amount.toString()));
+        .fold(0, (i, j) => i + int.parse(j.amount.floor().toString()));
     double monthTotal = double.parse(monthExpense.toString()) + monthIncome;
 
     return Container(
@@ -191,13 +191,14 @@ class MonthStats extends StatelessWidget {
                 t.type == "expense" &&
                 DateFormat.MMMM().format(t.date) == month)
             .toList())
-        .fold(0, (i, j) => i + int.parse(j.amount.toString()));
+        .fold(0, (i, j) => i + int.parse(j.amount.floor().toString()));
     var monthIncome = (transactions
             .where((t) =>
                 t.type == "income" && DateFormat.MMMM().format(t.date) == month)
             .toList())
-        .fold(0, (i, j) => i + int.parse(j.amount.toString()));
-    double monthTotal = double.parse(monthExpense.toString()) + monthIncome;
+        .fold(0, (i, j) => i + int.parse(j.amount.floor().toString()));
+    double monthTotal =
+        double.parse(monthExpense.floor().toString()) + monthIncome;
 
     var daysInMonth = DateUtil().daysInMonth(date.month, date.year);
     print("There are $daysInMonth days in $month");
@@ -227,7 +228,7 @@ class MonthStats extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  "\$${monthExpense.toStringAsFixed(2)}",
+                  "\u{20B9}${monthExpense.toStringAsFixed(2)}",
                   style: TextStyle(
                       color: kSecondary,
                       fontWeight: FontWeight.w600,
@@ -254,7 +255,7 @@ class MonthStats extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  "\$${monthIncome.toStringAsFixed(2)}",
+                  "\u{20B9}${monthIncome.toStringAsFixed(2)}",
                   style: TextStyle(
                       color: kPrimary,
                       fontWeight: FontWeight.w600,
@@ -280,7 +281,7 @@ class MonthStats extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    "\$${(monthExpense / daysInMonth).toStringAsFixed(2)}",
+                    "\u{20B9}${(monthExpense / daysInMonth).toStringAsFixed(2)}",
                     style: TextStyle(
                         color: kSecondary,
                         fontWeight: FontWeight.w900,

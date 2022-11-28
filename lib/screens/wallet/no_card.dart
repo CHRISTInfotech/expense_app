@@ -29,7 +29,7 @@ class NoCard extends StatelessWidget {
             children: <TextSpan>[
               TextSpan(text: 'At least '),
               TextSpan(text: 'one'.toUpperCase(), style: new TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF768cfc))),
-              TextSpan(text: ' card in your wallet is need to add new transactions'),
+              const TextSpan(text: ' card in your wallet is need to add new transactions'),
             ],
           ),
         ),

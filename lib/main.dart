@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:xpense/shared/controller/theme_cubit.dart';
 
 import './screens/wrapper.dart';
 import './services/auth.dart';
@@ -13,8 +16,28 @@ Future<void> main() async {
   // Ensure all plugins are initialized
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // Apply application UI overlay (FULL SCREEN)
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
 
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+
+  print('User granted permission: ${settings.authorizationStatus}');
+  // Apply application UI overlay (FULL SCREEN)
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('Got a message whilst in the foreground!');
+    print('Message data: ${message.data}');
+
+    if (message.notification != null) {
+      print('Message also contained a notification: ${message.notification}');
+    }
+  });
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
       overlays: [SystemUiOverlay.top]).then((_) {
     // Retrieve stored preferences before starting application
@@ -27,7 +50,9 @@ Future<void> main() async {
       if (initialLoad) {
         prefs.setBool('initialLoad', initialLoad);
       }
-      runApp(MyApp(sharedPrefs: prefs));
+      runApp(MultiBlocProvider(
+          providers: [BlocProvider(create: ((context) => ThemeCubit()))],
+          child: MyApp(sharedPrefs: prefs)));
     });
   });
 }
@@ -39,6 +64,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    ThemeCubit theme = BlocProvider.of<ThemeCubit>(context, listen: true);
     //Restrict portrait mode only
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -55,6 +81,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Wrapper(sharedPrefs),
+        theme: theme.isDark ? ThemeData.dark() : ThemeData.light(),
       ),
     );
   }

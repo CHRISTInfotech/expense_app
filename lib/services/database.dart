@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:async/async.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../models/bank_card.dart';
 import '../models/budget.dart';
@@ -15,6 +16,18 @@ class DatabaseService {
   //Firestore collection reference
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users');
+  final CollectionReference categeryCollection =
+      FirebaseFirestore.instance.collection('categery');
+      
+// add category to database
+        Future addCategoryData(
+      String category, IconData iconData, String type) async {
+    return await categeryCollection.doc(uid).set({
+      'icon': iconData,
+      'category': category,
+      'type': type,
+    });
+  }
 
   //Create new / Update document with User object
   Future updateUserData(String fullName, String email,
@@ -27,6 +40,8 @@ class DatabaseService {
     //     .document(uid)
     //     .setData({'fullName': fullName, 'email': email, 'avatar': avatar});
   }
+
+
 
   Future deleteUserData() async {
     return await userCollection.doc(uid).delete();
@@ -198,7 +213,7 @@ class DatabaseService {
   //   return wallet;
   // }
 
-    List<dynamic>  _walletFromSnapshot(DocumentSnapshot snapshot) {
+  List<dynamic> _walletFromSnapshot(DocumentSnapshot snapshot) {
     Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
     List<dynamic> wallet = data!['wallet'];
     return wallet;
@@ -207,13 +222,13 @@ class DatabaseService {
     // return transactions;
   }
 
-
-
   Future<Stream> createStreams() async {
     Stream userData = DatabaseService(uid: uid).userData;
     Stream budget = DatabaseService(uid: uid).budget;
     Stream wallet = DatabaseService(uid: uid).wallet;
     Stream transactionRecord = DatabaseService(uid: uid).transactionRecord;
+    // Stream categoryData  = DatabaseService(uid: uid).transactionRecord;
+    
 
     return StreamZip([userData, budget, wallet, transactionRecord])
         .asBroadcastStream();

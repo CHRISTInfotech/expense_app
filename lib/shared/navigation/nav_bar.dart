@@ -193,6 +193,13 @@ class _NavBarState extends State<NavBar>
               textAlign: TextAlign.center,
             ),
             activeColor: kDarkSecondary),
+        // BottomNavyBarItem(
+        //     icon: Icon(Icons.category),
+        //     title: Text(
+        //       'Category',
+        //       textAlign: TextAlign.center,
+        //     ),
+        //     activeColor: kDarkSecondary),
       ],
     );
   }

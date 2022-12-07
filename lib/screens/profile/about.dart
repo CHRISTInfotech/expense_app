@@ -55,6 +55,17 @@ class About extends StatelessWidget {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
               ),
 
+              Container(
+                height: 150.0,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(kDevLogo),
+                    fit: BoxFit.fitHeight,
+                  ),
+                  shape: BoxShape.rectangle,
+                ),
+              ),
+
               Column(
                 children: <Widget>[
                   Text(

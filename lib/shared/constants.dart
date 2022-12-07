@@ -7,6 +7,7 @@ import '../data/globals.dart' as globals;
 
 const kAppName = "Expense App";
 const kAppLogo = 'assets/images/dollarsense_logo.png';
+const kDevLogo = 'assets/images/infotechlogo.png';
 const kDev = "CHRIST InfoTech";
 const kDevEmail = "infotech.lavasa@christuniversity.in";
 

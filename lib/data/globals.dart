@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/bank_card.dart';
 import '../models/budget.dart';
+import '../models/category.dart';
 import '../models/transaction_record.dart';
 import '../models/user.dart';
 
@@ -14,6 +15,8 @@ GlobalKey<ScaffoldMessengerState> scaffoldKey = GlobalKey();
 UserData userData =  UserData();
 List<TransactionRecord> transactions = <TransactionRecord>[];
 List<BankCard> wallet = <BankCard>[];
+List<Category>incomecat  = <Category>[];
+List<Category> expensecat = <Category>[];
 Budget budget =  Budget(month: 0, limit: 0.0);
 
 double income = 0;

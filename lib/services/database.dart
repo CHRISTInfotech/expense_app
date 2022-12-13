@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:async/async.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:wallet_view/data/categories.dart';
 import 'package:wallet_view/models/category.dart';
 
 import '../models/bank_card.dart';
@@ -37,7 +40,6 @@ class DatabaseService {
       "income": FieldValue.arrayRemove([
         {
           'name': categoryRecord.name,
-         
         }
       ])
     });
@@ -68,23 +70,19 @@ class DatabaseService {
   //Initialize new TransactionRecord from snapshot
   List<dynamic> _categoryRecordFromSnapshot(DocumentSnapshot snapshot) {
     Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
-    List<dynamic>categories = data!['income'];
+    List<dynamic> categories = data!['income'];
     return categories;
 
     // List<dynamic> transactions = snapshot.data['history'];
     // return transactions;
   }
 
-
-
-  
   //Create new / Update document with TransactionRecord object
   Future updatexpCat(Category cat) async {
     return await categeryCollection.doc(uid).update({
       "expense": FieldValue.arrayUnion([
         {
           'name': cat.name,
-          
         }
       ])
     });
@@ -94,7 +92,7 @@ class DatabaseService {
     return await categeryCollection.doc(uid).update({
       "expense": FieldValue.arrayRemove([
         {
-           'name': cat.name,
+          'name': cat.name,
         }
       ])
     });
@@ -117,6 +115,7 @@ class DatabaseService {
   List<dynamic> _expcatSnapshot(DocumentSnapshot snapshot) {
     Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
     List<dynamic> expense = data!['expense'];
+    
     return expense;
 
     // List<dynamic> transactions = snapshot.data['history'];
@@ -332,11 +331,18 @@ class DatabaseService {
     Stream budget = DatabaseService(uid: uid).budget;
     Stream wallet = DatabaseService(uid: uid).wallet;
     Stream transactionRecord = DatabaseService(uid: uid).transactionRecord;
+    Stream incomecat = DatabaseService(uid: uid).CategoryRecord;
+    Stream expensecategory = DatabaseService(uid: uid).expensecate;
+
     // Stream categoryData  = DatabaseService(uid: uid).transactionRecord;
 
-    return StreamZip([userData, budget, wallet, transactionRecord])
-        .asBroadcastStream();
+    return StreamZip([
+      userData,
+      budget,
+      wallet,
+      transactionRecord,
+      incomecat,
+      expensecategory
+    ]).asBroadcastStream();
   }
 }
-
-

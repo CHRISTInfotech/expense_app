@@ -229,11 +229,11 @@ class _AddCategoryState extends State<AddCategory> {
                           }
 
                           //Clear Navigation stack and return to Home
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              "/", (Route<dynamic> route) => false);
+                          // Navigator.of(context).pushNamedAndRemoveUntil(
+                          //     "/", (Route<dynamic> route) => false);
 
-                          // Navigator.of(globals.scaffoldKey.currentContext!)
-                          //     .pop();
+                          Navigator.of(globals.scaffoldKey.currentContext!)
+                              .pop();
 
                           entry = alertOverlay(
                               AlertNotification(

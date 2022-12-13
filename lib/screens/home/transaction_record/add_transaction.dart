@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:clay_containers/clay_containers.dart';
-import 'package:xpense/screens/home/transaction_record/add_categories.dart';
+import 'package:wallet_view/screens/home/transaction_record/add_categories.dart';
 
 import '../../../models/bank_card.dart';
 import '../../../models/transaction_record.dart';
@@ -180,24 +180,24 @@ class _AddTransactionState extends State<AddTransaction> {
                           ],
                         )),
                   ),
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     return showAddCategory(context);
-                  //   },
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.only(bottom: 20),
-                  //     child: Column(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //       children: <Widget>[
-                  //         categoryIcon(Icons.add),
-                  //         Padding(
-                  //           padding: const EdgeInsets.all(20),
-                  //           child: Text("Add"),
-                  //         )
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
+                  GestureDetector(
+                    onTap: () {
+                      return showAddCategory(context);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          categoryIcon(Icons.add),
+                          Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Text("Add"),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               )
             : Column(

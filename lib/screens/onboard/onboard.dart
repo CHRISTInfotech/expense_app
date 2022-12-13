@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:sk_onboarding_screen/flutter_onboarding.dart';
-// import 'package:sk_onboarding_screen/sk_onboarding_screen.dart';
-import 'package:onboarding_screen/onboarding_screen.dart';
-import 'package:xpense/screens/authenticate/authenticate.dart';
 
+import 'package:onboarding_screen/onboarding_screen.dart';
+
+
+import '../authenticate/authenticate.dart';
 import '../wrapper.dart';
 import '../../shared/theme.dart';
 

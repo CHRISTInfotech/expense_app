@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:xpense/models/user.dart' as UserModel;
+import 'package:firebase_core/firebase_core.dart';
+import 'package:wallet_view/models/user.dart' as UserModel;
 
 import 'database.dart';
 import '../models/budget.dart';
@@ -66,6 +67,18 @@ class AuthService {
       return null;
     }
   }
+
+//   final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+// Future<UserModel.CurrentUser?> _handleSignIn() async {
+//   try {
+//   GoogleSignInAccount? result = await _googleSignIn.signIn();
+//    User? user = result.;
+//    return _userFromFirebaseUser(user);
+//   } catch (error) {
+//     print(error);
+//   }
+// }
 
   ///register with email and password
   Future registerWithEmailAndPassword(

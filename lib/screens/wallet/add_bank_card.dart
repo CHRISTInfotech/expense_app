@@ -89,7 +89,7 @@ class _AddBankCardState extends State<AddBankCard> {
                           color: kDarkPrimary,
                           initialVal: _bankName,
                           valHandler: (val) =>
-                              val!.isEmpty ? 'Enter a bank name' : null,
+                              val!.isEmpty ? 'Enter a Account name' : null,
                           changeHandler: (val) =>
                               setState(() => _bankName = val!),
                         ),
@@ -99,8 +99,28 @@ class _AddBankCardState extends State<AddBankCard> {
                           hintText: 'Card Number or Account Number',
                           color: kDarkPrimary,
                           initialVal: _cardNumber,
-                          valHandler: (val) =>
-                              val!.isEmpty ? 'Enter a card number or Account Number' : null,
+                          // valHandler: (val) => val!.isEmpty
+                          //     ? 'Enter a card number or Account Number'
+                          //     : null,
+                          changeHandler: (val) =>
+                              setState(() => _cardNumber = val!),
+                          inputType: TextInputType.number,
+                          inputFormatter: [
+                            FilteringTextInputFormatter(RegExp(r'\s*\d*'),
+                                allow: true),
+                            MaskedTextInputFormatter(
+                              mask: 'xxxx xxxx xxxx xxxx',
+                              separator: ' ',
+                            ),
+                          ],
+                        ),
+                        FormInput(
+                          hintText: 'Card Number or Account Number',
+                          color: kDarkPrimary,
+                          initialVal: _cardNumber,
+                          // valHandler: (val) => val!.isEmpty
+                          //     ? 'Enter a card number or Account Number'
+                          //     : null,
                           changeHandler: (val) =>
                               setState(() => _cardNumber = val!),
                           inputType: TextInputType.number,
@@ -119,11 +139,10 @@ class _AddBankCardState extends State<AddBankCard> {
                           hintText: 'Holder Name',
                           color: kDarkPrimary,
                           initialVal: _holderName,
-                          valHandler: (val) => (val!.isEmpty ||
-                                  val.length < 2 ||
-                                  val.length > 26)
-                              ? 'Enter valid holder name'
-                              : null,
+                          valHandler: (val) =>
+                              (val!.length < 2 || val.length > 26)
+                                  ? 'Enter valid holder name'
+                                  : null,
                           changeHandler: (val) =>
                               setState(() => _holderName = val!),
                           inputFormatter: [
@@ -142,9 +161,7 @@ class _AddBankCardState extends State<AddBankCard> {
                             children: <Widget>[
                               Expanded(
                                 child: Text(
-                                  _expiry == null
-                                      ? 'No Date Chosen!'
-                                      : '${(DateFormat.M().format(_expiry)).padLeft(2, '0')} / ${(DateFormat.y().format(_expiry)).replaceAll(yearExpr, "")}',
+                                   '${(DateFormat.M().format(_expiry)).padLeft(2, '0')} / ${(DateFormat.y().format(_expiry)).replaceAll(yearExpr, "")}',
                                   style: TextStyle(fontSize: 16),
                                 ),
                               ),

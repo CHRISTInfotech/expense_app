@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:xpense/shared/controller/theme_cubit.dart';
+import 'package:wallet_view/shared/controller/theme_cubit.dart';
 
 import './screens/wrapper.dart';
 import './services/auth.dart';

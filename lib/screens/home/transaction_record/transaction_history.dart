@@ -18,8 +18,8 @@ class TransactionHistory extends StatelessWidget {
 
         ///ADD TRANSACTION BUTTON
         Container(
-          padding: EdgeInsets.only(top: 4, bottom: 5),
-          margin: EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.only(top: 4, bottom: 5),
+          margin: const EdgeInsets.symmetric(horizontal: 10),
           child: FullButton(
             icon: Icons.add,
             text: "Add Transaction",

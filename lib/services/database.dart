@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:async/async.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:wallet_view/models/category.dart';
 
 import '../models/bank_card.dart';
 import '../models/budget.dart';
@@ -18,16 +19,122 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('users');
   final CollectionReference categeryCollection =
       FirebaseFirestore.instance.collection('categery');
-      
+
 // add category to database
-        Future addCategoryData(
-      String category, IconData iconData, String type) async {
+  Future createCategoryList() async {
     return await categeryCollection.doc(uid).set({
-      'icon': iconData,
-      'category': category,
-      'type': type,
+      "income": FieldValue.arrayUnion([]),
+      "expense": FieldValue.arrayUnion([])
     });
   }
+
+  Future deleteUserCategory() async {
+    return await categeryCollection.doc(uid).delete();
+  }
+
+  Future deleteCategoryRecord(Category categoryRecord) async {
+    return await categeryCollection.doc(uid).update({
+      "income": FieldValue.arrayRemove([
+        {
+          'name': categoryRecord.name,
+         
+        }
+      ])
+    });
+  }
+
+  //Create new / Update document with TransactionRecord object
+  Future updatecategoryList(Category categoryRecord) async {
+    return await categeryCollection.doc(uid).update({
+      "income": FieldValue.arrayUnion([
+        {
+          'name': categoryRecord.name,
+        }
+      ])
+    });
+  }
+
+  //Get TransactionRecord document from TRANSACTIONS collection
+  Stream<List<dynamic>> get CategoryRecord {
+    // return transactionCollection.document(uid).snapshots()
+    // .map(_transactionRecordFromSnapshot);
+
+    return categeryCollection
+        .doc(uid)
+        .snapshots()
+        .map(_categoryRecordFromSnapshot);
+  }
+
+  //Initialize new TransactionRecord from snapshot
+  List<dynamic> _categoryRecordFromSnapshot(DocumentSnapshot snapshot) {
+    Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
+    List<dynamic>categories = data!['income'];
+    return categories;
+
+    // List<dynamic> transactions = snapshot.data['history'];
+    // return transactions;
+  }
+
+
+
+  
+  //Create new / Update document with TransactionRecord object
+  Future updatexpCat(Category cat) async {
+    return await categeryCollection.doc(uid).update({
+      "expense": FieldValue.arrayUnion([
+        {
+          'name': cat.name,
+          
+        }
+      ])
+    });
+  }
+
+  Future deleteexpCate(Category cat) async {
+    return await categeryCollection.doc(uid).update({
+      "expense": FieldValue.arrayRemove([
+        {
+           'name': cat.name,
+        }
+      ])
+    });
+  }
+
+  //Get TransactionRecord document from TRANSACTIONS collection
+  Stream<List<dynamic>> get expensecate {
+    // return categeryCollection.document(uid).snapshots()
+    // .map(_transactionRecordFromSnapshot);
+
+    return categeryCollection.doc(uid).snapshots().map(_expcatSnapshot);
+  }
+
+  //Initialize new TransactionRecord from snapshot
+  // List<dynamic> _walletFromSnapshot(DocumentSnapshot snapshot) {
+  //   List<dynamic> wallet = snapshot.data()!['wallet'];
+  //   return wallet;
+  // }
+
+  List<dynamic> _expcatSnapshot(DocumentSnapshot snapshot) {
+    Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
+    List<dynamic> expense = data!['expense'];
+    return expense;
+
+    // List<dynamic> transactions = snapshot.data['history'];
+    // return transactions;
+  }
+
+  // Stream<Category> get categ {
+  //   return categeryCollection.doc(uid).snapshots().map(_catFromSnapshot);
+  // }
+
+  // //Initialize new UserData from snapshot
+  // Category _catFromSnapshot(DocumentSnapshot snapshot) {
+  //   Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
+  //   return Category(
+  //     name: data!['name'],
+  //     type: data['type'],
+  //   );
+  // }
 
   //Create new / Update document with User object
   Future updateUserData(String fullName, String email,
@@ -40,8 +147,6 @@ class DatabaseService {
     //     .document(uid)
     //     .setData({'fullName': fullName, 'email': email, 'avatar': avatar});
   }
-
-
 
   Future deleteUserData() async {
     return await userCollection.doc(uid).delete();
@@ -228,9 +333,10 @@ class DatabaseService {
     Stream wallet = DatabaseService(uid: uid).wallet;
     Stream transactionRecord = DatabaseService(uid: uid).transactionRecord;
     // Stream categoryData  = DatabaseService(uid: uid).transactionRecord;
-    
 
     return StreamZip([userData, budget, wallet, transactionRecord])
         .asBroadcastStream();
   }
 }
+
+

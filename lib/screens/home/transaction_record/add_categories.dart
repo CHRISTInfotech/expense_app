@@ -2,12 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:intl/intl.dart';
-import 'package:material_design_icons_flutter/icon_map.dart';
-import 'package:material_design_icons_flutter/icon_map.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import 'package:wallet_view/models/category.dart';
 
 import '../../../services/database.dart';
 import '../../../shared/notification/alert_notification.dart';
@@ -61,19 +59,6 @@ class _AddCategoryState extends State<AddCategory> {
     //     .toList();
     Icon _icon;
 
-    _pickIcon() async {
-      IconData? icon = await FlutterIconPicker.showIconPicker(context,
-          iconPackModes: [IconPack.material]);
-
-      _icon = Icon(icon);
-      setState(() {
-        _icon = Icon(icon);
-      });
-
-      debugPrint('Picked Icon:  $icon');
-      debugPrint(_icon.toString());
-    }
-
     return SingleChildScrollView(
       child: Form(
           key: _formKey,
@@ -108,39 +93,39 @@ class _AddCategoryState extends State<AddCategory> {
                       for (var type in categories.categories.keys)
                         Tab(text: toBeginningOfSentenceCase(type))
                     ]),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: GestureDetector(
-                    onTap: (() async {
-                      IconData? icon_ = await FlutterIconPicker.showIconPicker(
-                          context,
-                          iconPackModes: [IconPack.material]);
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 10.0),
+                //   child: GestureDetector(
+                //     onTap: (() async {
+                //       IconData? icon_ = await FlutterIconPicker.showIconPicker(
+                //           context,
+                //           iconPackModes: [IconPack.material]);
 
-                      _icon = Icon(icon_);
-                      setState(() {
-                        _icon = Icon(icon);
-                        icon = icon_!;
-                      });
+                //       _icon = Icon(icon_);
+                //       setState(() {
+                //         _icon = Icon(icon);
+                //         icon = icon_!;
+                //       });
 
-                      debugPrint('Picked Icon:  $icon');
-                      debugPrint(_icon.toString());
-                    }),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Row(
-                        children: [
-                          const Text(
-                            "Icon :",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          Padding(
-                              padding: const EdgeInsets.only(left: 50.0),
-                              child: Icon(Icons.add)),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                //       debugPrint('Picked Icon:  $icon');
+                //       debugPrint(_icon.toString());
+                //     }),
+                //     child: Padding(
+                //       padding: const EdgeInsets.all(10),
+                //       child: Row(
+                //         children: [
+                //           const Text(
+                //             "Icon :",
+                //             style: TextStyle(fontSize: 20),
+                //           ),
+                //           Padding(
+                //               padding: const EdgeInsets.only(left: 50.0),
+                //               child: Icon(Icons.add)),
+                //         ],
+                //       ),
+                //     ),
+                //   ),
+                // ),
 
                 // const SizedBox(height: 10),
                 // AnimatedSwitcher(
@@ -164,30 +149,30 @@ class _AddCategoryState extends State<AddCategory> {
                   ],
                 ),
 
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: FlutterToggleTab(
-                    width: 50,
-                    borderRadius: 15,
-                    selectedTextStyle: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600),
-                    unSelectedTextStyle: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400),
-                    labels: _listGenderText,
-                    icons: _listIconTabToggle,
-                    selectedIndex: _tabTextIconIndexSelected,
-                    selectedLabelIndex: (index) {
-                      setState(() {
-                        _tabTextIconIndexSelected = index;
-                        print(_tabTextIconIndexSelected);
-                      });
-                    },
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: FlutterToggleTab(
+                //     width: 50,
+                //     borderRadius: 15,
+                //     selectedTextStyle: TextStyle(
+                //         color: Colors.white,
+                //         fontSize: 18,
+                //         fontWeight: FontWeight.w600),
+                //     unSelectedTextStyle: TextStyle(
+                //         color: Colors.blue,
+                //         fontSize: 14,
+                //         fontWeight: FontWeight.w400),
+                //     labels: _listGenderText,
+                //     icons: _listIconTabToggle,
+                //     selectedIndex: _tabTextIconIndexSelected,
+                //     selectedLabelIndex: (index) {
+                //       setState(() {
+                //         _tabTextIconIndexSelected = index;
+                //         print(_tabTextIconIndexSelected);
+                //       });
+                //     },
+                //   ),
+                // ),
 
                 ///DATE SELECTION
                 // Container(
@@ -233,19 +218,26 @@ class _AddCategoryState extends State<AddCategory> {
 
                         if (_formKey.currentState!.validate()) {
                           //Update DB record
-                          await DatabaseService(uid: globals.userData.uid!)
-                              .addCategoryData(_name, icon, _type);
+                          if (_type == 'expense') {
+                            await DatabaseService(uid: globals.userData.uid!)
+                                .updatexpCat(new Category(name: _name));
+                            print("DB INSERTION SUCCESSFUL");
+                          } else {
+                            await DatabaseService(uid: globals.userData.uid!)
+                                .updatecategoryList(new Category(name: _name));
+                            print("DB INSERTION SUCCESSFUL");
+                          }
 
                           //Clear Navigation stack and return to Home
                           Navigator.of(context).pushNamedAndRemoveUntil(
                               "/", (Route<dynamic> route) => false);
 
-                          Navigator.of(globals.scaffoldKey.currentContext!)
-                              .pop();
+                          // Navigator.of(globals.scaffoldKey.currentContext!)
+                          //     .pop();
 
                           entry = alertOverlay(
                               AlertNotification(
-                                  text: 'Transaction added',
+                                  text: 'Category added',
                                   color: Colors.deepPurple),
                               tapHandler: () {});
                           Navigator.of(globals.scaffoldKey.currentContext!)
@@ -263,7 +255,7 @@ class _AddCategoryState extends State<AddCategory> {
                           entry = alertOverlay(
                               AlertNotification(
                                   text:
-                                      'Cannot add transaction with incomplete fields!',
+                                      'Cannot add Category with incomplete fields!',
                                   color: Colors.red.shade400), tapHandler: () {
                             entry?.remove();
                             entry = null;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:xpense/shared/controller/theme_cubit.dart';
-import 'package:xpense/shared/theme_constants.dart';
+import 'package:wallet_view/shared/controller/theme_cubit.dart';
+import 'package:wallet_view/shared/theme_constants.dart';
 
 import '../../shared/thememode.dart';
 import 'profile_list_item.dart';
@@ -54,24 +54,24 @@ class _SettingsState extends State<Settings> {
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          theme.isDark
-                              ? "Light".toUpperCase()
-                              : "Dark".toUpperCase(),
-                          style: TextStyle(
-                              color: theme.isDark ? Colors.white : Colors.blue),
-                        ),
-                        ElevatedButton(
-                            onPressed: () {},
-                            child: Text(theme.isDark ? "Light" : "Dark"))
-                      ]),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 50),
+                //   child: Row(
+                //       crossAxisAlignment: CrossAxisAlignment.center,
+                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       children: <Widget>[
+                //         Text(
+                //           theme.isDark
+                //               ? "Light".toUpperCase()
+                //               : "Dark".toUpperCase(),
+                //           style: TextStyle(
+                //               color: theme.isDark ? Colors.white : Colors.blue),
+                //         ),
+                //         ElevatedButton(
+                //             onPressed: () {},
+                //             child: Text(theme.isDark ? "Light" : "Dark"))
+                //       ]), 
+                // ),
                 GestureDetector(
                   onTap: () async {
                     //PASSWORD AUTH + DELETION

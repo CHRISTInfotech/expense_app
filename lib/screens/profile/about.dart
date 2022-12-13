@@ -39,48 +39,61 @@ class About extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              // Container(
-              //   height: 200.0,
-              //   decoration: BoxDecoration(
-              //     image: DecorationImage(
-              //       image: AssetImage(kAppLogo),
-              //       fit: BoxFit.fitHeight,
-              //     ),
-              //     shape: BoxShape.rectangle,
-              //   ),
-              // ),
-
-              Text(
-                "Created by $kDev",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
-              ),
-
               Container(
-                height: 150.0,
+                height: 200.0,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(kDevLogo),
+                    image: AssetImage(kAppLogo),
                     fit: BoxFit.fitHeight,
                   ),
                   shape: BoxShape.rectangle,
                 ),
               ),
-
+              Text(
+                kAppName,
+                style: TextStyle(
+                    color: kDarkSecondary,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    
+                    ),
+              ),
               Column(
                 children: <Widget>[
                   Text(
-                    "For business enquires, contact us at:",
-                    style: TextStyle(color: kDarkSecondary),
+                    "Created by $kDev",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
                   ),
-                  InkWell(
-                    onTap: () async => launchMailClient(),
-                    onLongPress: () async => copyMailClient(scaffoldKey),
-                    child: Text(
-                      kDevEmail,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w300,
-                          decoration: TextDecoration.underline),
+                  Container(
+                    height: 200.0,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(kDevLogo),
+                        fit: BoxFit.fitHeight,
+                      ),
+                      shape: BoxShape.rectangle,
                     ),
+                  ),
+                  Column(
+                    children: <Widget>[
+                      Text(
+                        "For business enquires, contact us at:",
+                        style: TextStyle(color: kDarkSecondary),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 50.0),
+                        child: InkWell(
+                          onTap: () async => launchMailClient(),
+                          onLongPress: () async => copyMailClient(scaffoldKey),
+                          child: Text(
+                            kDevEmail,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                decoration: TextDecoration.underline),
+                          ),
+                        ),
+                      )
+                    ],
                   )
                 ],
               )

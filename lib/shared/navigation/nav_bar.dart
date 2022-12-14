@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:firebase_auth/firebase_auth.dart';
+
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bloc/bloc.dart';
-import 'dart:async';
+
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:wallet_view/data/categories.dart';
 
 import '../loading.dart';
 import '../theme.dart';
@@ -37,22 +39,22 @@ class NavigationBloc extends Bloc<NavigationEvents, NavigationStates> {
     // on<NavigationEvents>(_profileevent);
   }
   void _homeevent(event, Emitter<NavigationStates> emit) {
-    print("Hello");
+    // print("Hello");
     switch (event) {
       case NavigationEvents.HomePageClickedEvent:
-        print("Hello Home");
+        // print("Hello Home");
         emit(Home());
         break;
       case NavigationEvents.WalletPageClickedEvent:
-        print("Hello wallet");
+        // print("Hello wallet");
         emit(Wallet());
         break;
       case NavigationEvents.StatisticsPageClickedEvent:
-        print("Hello Stati");
+        // print("Hello Stati");
         emit(Statistics());
         break;
       case NavigationEvents.ProfilePageClickedEvent:
-        print("Hello profile");
+        // print("Hello profile");
         emit(Profile());
         break;
     }
@@ -230,6 +232,7 @@ class _NavBarLayoutState extends State<NavBarLayout> {
   @override
   void initState() {
     super.initState();
+    getCate();
 
     final userStream = DatabaseService(uid: widget.user.uid).userData;
     print("Created the <USERDATA> stream");
@@ -318,11 +321,13 @@ class _NavBarLayoutState extends State<NavBarLayout> {
       List<BankCard> cards = <BankCard>[];
 
       for (var card in wallet) {
+        // ignore: unnecessary_new
         BankCard bc = new BankCard(
           bankName: card['bankName'],
           cardNumber: card['cardNumber'],
           holderName: card['holderName'],
           expiry: DateTime.parse(card['expiry'].toDate().toString()),
+          // balance: double.parse(card['balance'].toString()),
         );
 
         print("BANK CARD DETECTED: $bc");

@@ -40,17 +40,17 @@ class Statistics extends StatelessWidget with NavigationStates {
 
       return Insights(true, data: data, months: months);
     } else {
-      return Insights(false);
+      return Insights(false, data: [],);
     }
   }
 }
 
 class Insights extends StatelessWidget {
   final bool hasData;
-  final List<double>? data;
+  final List<double>data;
   final List<String>? months;
 
-  Insights(this.hasData, {this.data, this.months});
+  Insights(this.hasData, {required this.data, this.months});
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +80,7 @@ class Insights extends StatelessWidget {
                   length: 2,
                   child: TabBarView(
                     children: <Widget>[
-                      summaryGraph(screenWidth, data!, months!, false),
+                      summaryGraph(screenWidth, data, months!, false),
                       // summaryRadial(months)
                       Summary(months!)
                     ],
@@ -88,7 +88,7 @@ class Insights extends StatelessWidget {
                 ),
               )
             : Expanded(
-                child: summaryChart(screenWidth, data!),
+                child: summaryChart(screenWidth, data),
               )
       ],
     );

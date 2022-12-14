@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:wallet_view/models/user.dart' as UserModel;
 
 import 'database.dart';
@@ -94,12 +95,100 @@ class AuthService {
       await DatabaseService(uid: user.uid).createTransactionList();
       await DatabaseService(uid: user.uid)
           .updateBudget(new Budget(month: 0, limit: 0.0));
+      await DatabaseService(uid: user.uid).createCategoryList();
 
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
       return null;
     }
+  }
+
+  // sign in with google
+
+  Future signInWithGoogle() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
+
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+
+    final GoogleSignInAccount? googleSignInAccount =
+        await googleSignIn.signIn();
+
+    if (googleSignInAccount != null) {
+      final GoogleSignInAuthentication googleSignInAuthentication =
+          await googleSignInAccount.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+
+      try {
+        final UserCredential userCredential =
+            await auth.signInWithCredential(credential);
+
+        user = userCredential.user;
+        await DatabaseService(uid: user!.uid)
+            .updateUserData(user.displayName!, user.email!);
+        await DatabaseService(uid: user.uid).createTransactionList();
+        await DatabaseService(uid: user.uid)
+            .updateBudget(new Budget(month: 0, limit: 0.0));
+        await DatabaseService(uid: user.uid).createCategoryList();
+
+        return _userFromFirebaseUser(user);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'account-exists-with-different-credential') {
+          // handle the error here
+        } else if (e.code == 'invalid-credential') {
+          // handle the error here
+        }
+      } catch (e) {
+        // handle the error here
+      }
+    }
+  }
+
+  Future signUpWithGoogle() async {
+    // FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
+    try {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+
+      final GoogleSignInAccount? googleSignInAccount =
+          await googleSignIn.signIn();
+
+      final GoogleSignInAuthentication googleSignInAuthentication =
+          await googleSignInAccount!.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
+
+      user = userCredential.user;
+
+      await DatabaseService(uid: user!.uid)
+          .updateUserData(user.displayName!, user.email!);
+      await DatabaseService(uid: user.uid).createTransactionList();
+      await DatabaseService(uid: user.uid)
+          .updateBudget(new Budget(month: 0, limit: 0.0));
+      await DatabaseService(uid: user.uid).createCategoryList();
+
+      return _userFromFirebaseUser(user);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'account-exists-with-different-credential') {
+        // handle the error here
+      } else if (e.code == 'invalid-credential') {
+        // handle the error here
+      }
+    } catch (e) {
+      // handle the error here
+    }
+    return _userFromFirebaseUser(user);
   }
 
   ///sign out <ASYNC>

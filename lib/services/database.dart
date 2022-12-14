@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:async/async.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:wallet_view/data/categories.dart';
 import 'package:wallet_view/models/category.dart';
 
@@ -71,6 +68,7 @@ class DatabaseService {
   List<dynamic> _categoryRecordFromSnapshot(DocumentSnapshot snapshot) {
     Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
     List<dynamic> categories = data!['income'];
+    incomeCategories[data['income']['name']] = inicon;
     return categories;
 
     // List<dynamic> transactions = snapshot.data['history'];
@@ -115,7 +113,7 @@ class DatabaseService {
   List<dynamic> _expcatSnapshot(DocumentSnapshot snapshot) {
     Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
     List<dynamic> expense = data!['expense'];
-    
+    expenseCategories[data['expense']['name']] = deficon;
     return expense;
 
     // List<dynamic> transactions = snapshot.data['history'];
@@ -284,7 +282,8 @@ class DatabaseService {
           'bankName': card.bankName,
           'cardNumber': card.cardNumber,
           'holderName': card.holderName,
-          'expiry': card.expiry
+          'expiry': card.expiry,
+          // 'balance': card.balance,
         }
       ])
     });
@@ -297,7 +296,8 @@ class DatabaseService {
           'bankName': card.bankName,
           'cardNumber': card.cardNumber,
           'holderName': card.holderName,
-          'expiry': card.expiry
+          'expiry': card.expiry,
+          // 'balance': card.balance,
         }
       ])
     });
@@ -342,7 +342,7 @@ class DatabaseService {
       wallet,
       transactionRecord,
       incomecat,
-      expensecategory
+      expensecategory,
     ]).asBroadcastStream();
   }
 }

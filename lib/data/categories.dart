@@ -4,15 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wallet_view/models/category.dart';
+import 'package:wallet_view/services/database.dart';
 
 var deficon = Icons.shopping_bag;
 var inicon = Icons.wallet_giftcard;
 final incomecat = [];
 final expensecat = [];
-  final CollectionReference categeryCollection =
-      FirebaseFirestore.instance.collection('categery');
+final CollectionReference categeryCollection =
+    FirebaseFirestore.instance.collection('categery');
 
-var uid = FirebaseAuth.instance.currentUser.toString();
+var uid = FirebaseAuth.instance.currentUser!.uid;
 var expenseCategories = {
   "Food": Icons.fastfood,
   "Transport": Icons.directions_bus,
@@ -24,59 +25,73 @@ var incomeCategories = {
   "Salaries": Icons.monetization_on,
   "Deposit": Icons.local_atm,
   "Vocher": Icons.money,
-  // "useradded": Icons.local_grocery_store
 };
 
-// Future<void> getCate() {
-//   FirebaseFirestore.instance
-//       .doc('categery')
-//       .collection(uid)
-//       .doc()
-//       .get()
-//       .then((value) {
-//     final doc = value.data()!;
-//     // should print Gethsemane
-//     print(doc['income'] as List); // should print notes array
-//     print(doc['expense'] as List); // should print notes array
-//     final incomecat = doc['income'] as List;
-//     final expensecat = doc['expense'] as List;
-//     for (final note in incomecat) {
-//       log(note['name']);
-//       incomecat.add(note['name']);
-//       incomeCategories[note['name']] = inicon;
-//     }
-//     for (final expene in expensecat) {
-//       print(expene['name']);
-//       expensecat.add(expene['name']);
-//       expenseCategories[expene['name']] = deficon;
-//       log(expenseCategories.toString());
-//     }
-//     // or
-//   });
-//   return getCate();
-// }
+var cat = {"expense": expenseCategories, "income": incomeCategories};
 
-  //Get TransactionRecord document from TRANSACTIONS collection
-  // Stream<List<dynamic>> get transactionRecord {
-  //   // return transactionCollection.document(uid).snapshots()
-  //   // .map(_transactionRecordFromSnapshot);
+Map<String, Map<String, IconData>> getCate() {
+  FirebaseFirestore.instance
+      .collection('categery')
+      .doc(uid)
+      .get()
+      .then((value) {
+    // final doc = value.data();
+    // should print Gethsemane
+    // should print notes array
+    List<dynamic> incomecat = value.data()!["income"];
+    List<dynamic> expensecat = value.data()!["expense"];
+    for (final note in incomecat) {
+      // incomecat.add(note['name']);
+      incomeCategories[note['name']] = inicon;
+    }
+    for (final expene in expensecat) {
+      // expensecat.add(expene['name']);
+      expenseCategories[expene['name']] = deficon;
+    }
+  });
 
-  //   return categeryCollection
-  //       .doc(uid)
-  //       .snapshots()
-  //       .map(_transactionRecordFromSnapshot);
-  // }
+  cat = {"expense": expenseCategories, "income": incomeCategories};
+  return cat;
+}
 
-  // //Initialize new TransactionRecord from snapshot
-  // List<dynamic> _transactionRecordFromSnapshot(DocumentSnapshot snapshot) {
-  //   Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
-  //   List<dynamic> incomecat = data!['income'];
-  //   return incomecat;
+//Get TransactionRecord document from TRANSACTIONS collection
+Stream<List<dynamic>> get incomeCatRecord {
+  // return transactionCollection.document(uid).snapshots()
+  // .map(_transactionRecordFromSnapshot);
 
-  //   // List<dynamic> transactions = snapshot.data['history'];
-  //   // return transactions;
-  // }
+  return categeryCollection
+      .doc(uid)
+      .snapshots()
+      .map(_transactionRecordFromSnapshot);
+}
 
-  
+//Initialize new TransactionRecord from snapshot
+List<dynamic> _transactionRecordFromSnapshot(DocumentSnapshot snapshot) {
+  Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
+  List<dynamic> incomecat = data!['income'];
+  incomeCategories[data['income']['name']] = inicon;
+  return incomecat;
 
-var categories = {"expense": expenseCategories, "income": incomeCategories};
+  // List<dynamic> transactions = snapshot.data['history'];
+  // return transactions;
+}
+
+Stream<List<dynamic>> get expenseCatRecord {
+  // return transactionCollection.document(uid).snapshots()
+  // .map(_transactionRecordFromSnapshot);
+
+  return categeryCollection.doc(uid).snapshots().map(_expenseCatFromSnapshot);
+}
+
+//Initialize new TransactionRecord from snapshot
+List<dynamic> _expenseCatFromSnapshot(DocumentSnapshot snapshot) {
+  Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
+  List<dynamic> expensecat = data!['expense'];
+  expenseCategories[data['expense']['name']] = deficon;
+  return expensecat;
+
+  // List<dynamic> transactions = snapshot.data['history'];
+  // return transactions;
+}
+
+Map<String, Map<String, IconData>> categories = getCate();

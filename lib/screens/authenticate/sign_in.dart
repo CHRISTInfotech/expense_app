@@ -1,4 +1,8 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:wallet_view/shared/constants.dart';
 
 import '../../services/auth.dart';
 import '../../shared/theme.dart';
@@ -169,6 +173,70 @@ class _SignInState extends State<SignIn> {
                               ],
                             ),
                           ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          InkWell(
+                            onTap: () async {
+                              print(
+                                  'Email entered : ${email}\nPassword entered: ${password}');
+
+                              setState(() => loading = true);
+
+                              dynamic result = await _auth.signInWithGoogle();
+
+                              if (result == null) {
+                                setState(() {
+                                  error = 'Failed to sign in';
+                                  loading = false;
+                                });
+                                // } else {
+                                //   Navigator.of(context)
+                                //       .pop(); // here the change.
+                                //   loading = false; //here the change.
+                              }
+                            },
+                            child: Container(
+                              height: 60,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(35),
+                                gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [kDarkSecondary, kLightSecondary]),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.grey.shade500,
+                                      blurRadius: 5,
+                                      offset: Offset(2, 2))
+                                ],
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(15),
+                                child: Stack(
+                                  children: <Widget>[
+                                    Positioned(
+                                      top: 0,
+                                      bottom: 0,
+                                      left: 0,
+                                      child: SvgPicture.asset(
+                                        "assets/images/google.svg",
+                                      ),
+                                    ),
+                                    Center(
+                                      child: Text(
+                                        "Sign in with Google",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
 
                           SizedBox(height: 20),
                         ],
@@ -220,7 +288,19 @@ Widget signInGreeting() {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(height: 20),
+        Container(
+          alignment: Alignment.bottomLeft,
+          height: 200.0,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              alignment: Alignment.bottomLeft,
+              image: AssetImage(kWalletLogo),
+              fit: BoxFit.fitHeight,
+            ),
+            shape: BoxShape.rectangle,
+          ),
+        ),
+        SizedBox(height: 10),
         Text(
           'Welcome,',
           style: TextStyle(

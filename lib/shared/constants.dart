@@ -7,6 +7,7 @@ import '../data/globals.dart' as globals;
 
 const kAppName = "Wallet View - Track,Split and Budget";
 const kAppLogo = 'assets/images/app_logo.png';
+const kWalletLogo = 'assets/images/wallet_logo.png';
 const kDevLogo = 'assets/images/infotechlogo.png';
 const kDev = "CHRIST InfoTech";
 const kDevEmail = "infotech.lavasa@christuniversity.in";

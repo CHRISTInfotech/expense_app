@@ -44,44 +44,40 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAbyLHyY52qHRdiwu_TMTo-P5VnjSoxzDo',
-    appId: '1:995398933121:web:d3330a9f3bd6e7fdd50b80',
-    messagingSenderId: '995398933121',
-    projectId: 'expense-app-c4499',
-    authDomain: 'expense-app-c4499.firebaseapp.com',
-    databaseURL: 'https://expense-app-c4499-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'expense-app-c4499.appspot.com',
-    measurementId: 'G-C9L05GTX9R',
+    apiKey: 'AIzaSyAAtakV0--FA7OGwJrfe8iuV1ohSOsPAeI',
+    appId: '1:869698743095:web:ca468a1bd64a69776148b2',
+    messagingSenderId: '869698743095',
+    projectId: 'wallet-view',
+    authDomain: 'wallet-view.firebaseapp.com',
+    storageBucket: 'wallet-view.appspot.com',
+    measurementId: 'G-PTLJ9XJMPD',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDMkl06vNbTF1oKLTxT4jTTaSzoHIkJpvQ',
-    appId: '1:995398933121:android:e0e8acfd33165577d50b80',
-    messagingSenderId: '995398933121',
-    projectId: 'expense-app-c4499',
-    databaseURL: 'https://expense-app-c4499-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'expense-app-c4499.appspot.com',
+    apiKey: 'AIzaSyD723lkty80E_pH7XIrYSZx6Lv_9TzgcQw',
+    appId: '1:869698743095:android:e5508da0f5a319be6148b2',
+    messagingSenderId: '869698743095',
+    projectId: 'wallet-view',
+    storageBucket: 'wallet-view.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDLFv3JbWMrWilQVALgViaV70bCN9btj3k',
-    appId: '1:995398933121:ios:ba0cc164bd604c5cd50b80',
-    messagingSenderId: '995398933121',
-    projectId: 'expense-app-c4499',
-    databaseURL: 'https://expense-app-c4499-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'expense-app-c4499.appspot.com',
-    iosClientId: '995398933121-ev7kb41t75hjq79uji69nhvesikfrf4p.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDh-JihufM3ol4uabqEkW4dQZzemMlWTVQ',
+    appId: '1:869698743095:ios:072d5cf32eedee2e6148b2',
+    messagingSenderId: '869698743095',
+    projectId: 'wallet-view',
+    storageBucket: 'wallet-view.appspot.com',
+    iosClientId: '869698743095-r1dp0tue91oo2hoqh6nnvck48u2ton98.apps.googleusercontent.com',
     iosBundleId: 'com.example.xpense',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDLFv3JbWMrWilQVALgViaV70bCN9btj3k',
-    appId: '1:995398933121:ios:ba0cc164bd604c5cd50b80',
-    messagingSenderId: '995398933121',
-    projectId: 'expense-app-c4499',
-    databaseURL: 'https://expense-app-c4499-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'expense-app-c4499.appspot.com',
-    iosClientId: '995398933121-ev7kb41t75hjq79uji69nhvesikfrf4p.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDh-JihufM3ol4uabqEkW4dQZzemMlWTVQ',
+    appId: '1:869698743095:ios:072d5cf32eedee2e6148b2',
+    messagingSenderId: '869698743095',
+    projectId: 'wallet-view',
+    storageBucket: 'wallet-view.appspot.com',
+    iosClientId: '869698743095-r1dp0tue91oo2hoqh6nnvck48u2ton98.apps.googleusercontent.com',
     iosBundleId: 'com.example.xpense',
   );
 }

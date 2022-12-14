@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:intl/intl.dart';
+import 'package:wallet_view/data/categories.dart';
 
 import 'package:wallet_view/models/category.dart';
 
@@ -231,9 +232,11 @@ class _AddCategoryState extends State<AddCategory> {
                           //Clear Navigation stack and return to Home
                           // Navigator.of(context).pushNamedAndRemoveUntil(
                           //     "/", (Route<dynamic> route) => false);
-
+                          
                           Navigator.of(globals.scaffoldKey.currentContext!)
                               .pop();
+
+                              
 
                           entry = alertOverlay(
                               AlertNotification(

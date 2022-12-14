@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_new
+
 import 'package:flutter/material.dart';
 
 import '../../screens/wallet/add_bank_card.dart';

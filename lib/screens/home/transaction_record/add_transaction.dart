@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:clay_containers/clay_containers.dart';
+import 'package:wallet_view/data/categories.dart';
 import 'package:wallet_view/screens/home/transaction_record/add_categories.dart';
 
 import '../../../models/bank_card.dart';
@@ -79,10 +80,11 @@ class _AddTransactionState extends State<AddTransaction> {
   @override
   void initState() {
     super.initState();
+    getCate();
 
     //Extract all card numbers for dropdown
     wallet.forEach((card) {
-      cards.add(card.cardNumber);
+      cards.add(card.bankName);
     });
 
     //Set default card number choice for dropdown

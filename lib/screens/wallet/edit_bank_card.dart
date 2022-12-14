@@ -44,6 +44,7 @@ class _EditBankCardState extends State<EditBankCard> {
   String _bankName = '';
   String _cardNumber = '';
   String _holderName = '';
+  String _balance = '0';
   DateTime _expiry = DateTime.now();
   bool loading = false;
 
@@ -72,6 +73,7 @@ class _EditBankCardState extends State<EditBankCard> {
     _cardNumber = widget.bankCard!.cardNumber;
     _holderName = widget.bankCard!.holderName;
     _expiry = widget.bankCard!.expiry;
+    // _balance = widget.bankCard!.balance as String;
   }
 
   @override
@@ -115,6 +117,24 @@ class _EditBankCardState extends State<EditBankCard> {
                           changeHandler: (val) =>
                               setState(() => _bankName = val!),
                         ),
+                        // FormInput(
+                        //   hintText: 'Balance amount',
+                        //   color: kDarkPrimary,
+                        //   initialVal: _balance,
+                        //   valHandler: (val) =>
+                        //       val!.isEmpty ? 'Enter a balance amount' : null,
+                        //   changeHandler: (val) =>
+                        //       setState(() => _balance = val!),
+                        //   inputType: TextInputType.number,
+                        //   inputFormatter: [
+                        //     FilteringTextInputFormatter(RegExp(r'\s*\d*'),
+                        //         allow: true),
+                        //     // MaskedTextInputFormatter(
+                        //     //   mask: 'xxxx xxxx xxxx xxxx',
+                        //     //   separator: ' ',
+                        //     // ),
+                        //   ],
+                        // ),
 
                         ///CARD NUMBER INPUT
                         Container(
@@ -207,19 +227,23 @@ class _EditBankCardState extends State<EditBankCard> {
 
                               if (_formKey.currentState!.validate()) {
                                 //REMOVAL
-                                await DatabaseService(uid: globals.userData.uid!)
+                                await DatabaseService(
+                                        uid: globals.userData.uid!)
                                     .deleteBankCard(widget.bankCard!);
 
                                 globals.wallet.removeWhere(
                                     (t) => identical(t, widget.bankCard));
 
                                 //INSERTION
-                                await DatabaseService(uid: globals.userData.uid!)
+                                await DatabaseService(
+                                        uid: globals.userData.uid!)
                                     .updateWallet(new BankCard(
-                                        bankName: _bankName,
-                                        cardNumber: _cardNumber,
-                                        holderName: _holderName,
-                                        expiry: _expiry));
+                                  bankName: _bankName,
+                                  cardNumber: _cardNumber,
+                                  holderName: _holderName,
+                                  expiry: _expiry,
+                                  // balance: double.parse(_balance),
+                                ));
 
                                 setState(() {
                                   loading = false;
@@ -229,9 +253,11 @@ class _EditBankCardState extends State<EditBankCard> {
                                 });
 
                                 //Display success alert notification
-                                entry = alertOverlay(AlertNotification(
-                                    text: 'Card updated',
-                                    color: Colors.deepPurple), tapHandler: () {  });
+                                entry = alertOverlay(
+                                    AlertNotification(
+                                        text: 'Card updated',
+                                        color: Colors.deepPurple),
+                                    tapHandler: () {});
                                 Navigator.of(
                                         globals.scaffoldKey.currentContext!)
                                     .overlay!
@@ -252,7 +278,8 @@ class _EditBankCardState extends State<EditBankCard> {
                                   entry?.remove();
                                   entry = null;
                                 });
-                                Navigator.of(globals.scaffoldKey.currentContext!)
+                                Navigator.of(
+                                        globals.scaffoldKey.currentContext!)
                                     .overlay!
                                     .insert(entry!);
                               }
@@ -267,7 +294,8 @@ class _EditBankCardState extends State<EditBankCard> {
                                 style: TextStyle(color: Colors.red),
                               ),
                               onPressed: () async {
-                                Navigator.of(globals.scaffoldKey.currentContext!)
+                                Navigator.of(
+                                        globals.scaffoldKey.currentContext!)
                                     .pop();
 
                                 setState(() => loading = true);
@@ -290,7 +318,8 @@ class _EditBankCardState extends State<EditBankCard> {
                                 });
 
                                 //CARD DELETION
-                                await DatabaseService(uid: globals.userData.uid!)
+                                await DatabaseService(
+                                        uid: globals.userData.uid!)
                                     .deleteBankCard(widget.bankCard!);
                                 globals.wallet.removeWhere(
                                     (t) => identical(t, widget.bankCard));
@@ -299,10 +328,13 @@ class _EditBankCardState extends State<EditBankCard> {
                                 Navigator.pop(context, () => setState(() {}));
 
                                 //Display success alert notification (TIMED)
-                                entry = alertOverlay(AlertNotification(
-                                    text: 'Card deleted',
-                                    color: Colors.red.shade400), tapHandler: () {  });
-                                Navigator.of(globals.scaffoldKey.currentContext!)
+                                entry = alertOverlay(
+                                    AlertNotification(
+                                        text: 'Card deleted',
+                                        color: Colors.red.shade400),
+                                    tapHandler: () {});
+                                Navigator.of(
+                                        globals.scaffoldKey.currentContext!)
                                     .overlay!
                                     .insert(entry!);
                                 overlayDuration(entry!);

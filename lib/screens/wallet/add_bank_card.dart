@@ -35,6 +35,7 @@ class _AddBankCardState extends State<AddBankCard> {
   //Track form value
   String _bankName = '';
   String _cardNumber = '';
+  String _balance = '0';
   String _holderName = '';
   DateTime _expiry = DateTime.now();
   bool loading = false;
@@ -69,7 +70,7 @@ class _AddBankCardState extends State<AddBankCard> {
             children: <Widget>[
               //Header title
               Text(
-                'Add Card',
+                'Add Account',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
@@ -85,7 +86,7 @@ class _AddBankCardState extends State<AddBankCard> {
                       children: <Widget>[
                         ///BANK NAME INPUT
                         FormInput(
-                          hintText: 'Bank Name',
+                          hintText: 'Account Name',
                           color: kDarkPrimary,
                           initialVal: _bankName,
                           valHandler: (val) =>
@@ -114,25 +115,24 @@ class _AddBankCardState extends State<AddBankCard> {
                             ),
                           ],
                         ),
-                        FormInput(
-                          hintText: 'Card Number or Account Number',
-                          color: kDarkPrimary,
-                          initialVal: _cardNumber,
-                          // valHandler: (val) => val!.isEmpty
-                          //     ? 'Enter a card number or Account Number'
-                          //     : null,
-                          changeHandler: (val) =>
-                              setState(() => _cardNumber = val!),
-                          inputType: TextInputType.number,
-                          inputFormatter: [
-                            FilteringTextInputFormatter(RegExp(r'\s*\d*'),
-                                allow: true),
-                            MaskedTextInputFormatter(
-                              mask: 'xxxx xxxx xxxx xxxx',
-                              separator: ' ',
-                            ),
-                          ],
-                        ),
+                        // FormInput(
+                        //   hintText: 'Balance amount',
+                        //   color: kDarkPrimary,
+                        //   initialVal: _balance,
+                        //   valHandler: (val) =>
+                        //       val!.isEmpty ? 'Enter a balance amount' : null,
+                        //   changeHandler: (val) =>
+                        //       setState(() => _balance = val!),
+                        //   inputType: TextInputType.number,
+                        //   inputFormatter: [
+                        //     FilteringTextInputFormatter(RegExp(r'\s*\d*'),
+                        //         allow: true),
+                        //     // MaskedTextInputFormatter(
+                        //     //   mask: 'xxxx xxxx xxxx xxxx',
+                        //     //   separator: ' ',
+                        //     // ),
+                        //   ],
+                        // ),
 
                         ///HOLDER NAME INPUT
                         FormInput(
@@ -161,7 +161,7 @@ class _AddBankCardState extends State<AddBankCard> {
                             children: <Widget>[
                               Expanded(
                                 child: Text(
-                                   '${(DateFormat.M().format(_expiry)).padLeft(2, '0')} / ${(DateFormat.y().format(_expiry)).replaceAll(yearExpr, "")}',
+                                  '${(DateFormat.M().format(_expiry)).padLeft(2, '0')} / ${(DateFormat.y().format(_expiry)).replaceAll(yearExpr, "")}',
                                   style: TextStyle(fontSize: 16),
                                 ),
                               ),
@@ -231,10 +231,12 @@ class _AddBankCardState extends State<AddBankCard> {
                                     await DatabaseService(
                                             uid: globals.userData.uid!)
                                         .updateWallet(new BankCard(
-                                            bankName: _bankName,
-                                            cardNumber: _cardNumber,
-                                            holderName: _holderName,
-                                            expiry: _expiry));
+                                      bankName: _bankName,
+                                      cardNumber: _cardNumber,
+                                      holderName: _holderName,
+                                      expiry: _expiry,
+                                      // balance:double.parse(_balance),
+                                    ));
                                     print("DB INSERTION SUCCESSFUL");
 
                                     setState(() {

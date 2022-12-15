@@ -30,7 +30,7 @@ List<String> months = <String>[];
 double monthIncome = 0.0;
 double monthExpense = 0.0;
 
-
+double balance = 0.0;
 
 
 double monthTotal = monthIncome + monthExpense;

@@ -1,8 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -122,11 +119,11 @@ class _NavBarState extends State<NavBar>
   @override
   Widget build(BuildContext context) {
     void navRouting(selected) {
-      print('The current index is : $selected');
+      // print('The current index is : $selected');
       switch (selected) {
         case 0:
           {
-            print(selected);
+            // print(selected);
 
             BlocProvider.of<NavigationBloc>(context)
                 .add(NavigationEvents.HomePageClickedEvent);
@@ -135,7 +132,7 @@ class _NavBarState extends State<NavBar>
           break;
         case 1:
           {
-            print(selected);
+            // print(selected);
             BlocProvider.of<NavigationBloc>(context)
                 .add(NavigationEvents.WalletPageClickedEvent);
             // Wallet();
@@ -143,14 +140,14 @@ class _NavBarState extends State<NavBar>
           break;
         case 2:
           {
-            print(selected);
+            // print(selected);
             BlocProvider.of<NavigationBloc>(context)
                 .add(NavigationEvents.StatisticsPageClickedEvent);
           }
           break;
         case 3:
           {
-            print(selected);
+            // print(selected);
             BlocProvider.of<NavigationBloc>(context)
                 .add(NavigationEvents.ProfilePageClickedEvent);
           }
@@ -272,8 +269,10 @@ class _NavBarLayoutState extends State<NavBarLayout> {
       print('TList: $transactionList');
 
       List<TransactionRecord> transactions = <TransactionRecord>[];
-
-      transactionList!.forEach((transaction) {
+      var income = 0.0;
+      var expense = 0.0;
+      var balance = 0.0;
+      for (var transaction in transactionList!) {
         TransactionRecord tr = new TransactionRecord(
             type: transaction['type'],
             title: transaction['title'],
@@ -281,9 +280,21 @@ class _NavBarLayoutState extends State<NavBarLayout> {
             date: DateTime.parse(transaction['date'].toDate().toString()),
             cardNumber: transaction['cardNumber']);
 
-        print("TRANSACTION RECORD DETECTED: $tr");
+        // print("TRANSACTION RECORD DETECTED: $tr");
+        print("each amount:${tr.amount}");
+
+        if (tr.type == "income") {
+          var amt = tr.amount;
+          income += amt;
+        } else {
+          var amt = tr.amount;
+          expense += amt;
+        }
+        balance = income + expense;
+        globals.balance = balance;
+        print(balance);
         transactions.add(tr);
-      });
+      }
 
       //Only append the values not found in the existing global variable
       globals.transactions = transactions

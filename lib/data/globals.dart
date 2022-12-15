@@ -1,8 +1,7 @@
 library summary.globals;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 import '../models/bank_card.dart';
 import '../models/budget.dart';

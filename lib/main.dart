@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,6 @@ import 'package:wallet_view/shared/controller/theme_cubit.dart';
 
 import './screens/wrapper.dart';
 import './services/auth.dart';
-import './models/user.dart';
 
 Future<void> main() async {
   // Ensure all plugins are initialized
@@ -28,14 +27,14 @@ Future<void> main() async {
     sound: true,
   );
 
-  print('User granted permission: ${settings.authorizationStatus}');
+  // print('User granted permission: ${settings.authorizationStatus}');
   // Apply application UI overlay (FULL SCREEN)
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    print('Got a message whilst in the foreground!');
-    print('Message data: ${message.data}');
+    // print('Got a message whilst in the foreground!');
+    // print('Message data: ${message.data}');
 
     if (message.notification != null) {
-      print('Message also contained a notification: ${message.notification}');
+      // print('Message also contained a notification: ${message.notification}');
     }
   });
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
@@ -59,7 +58,7 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   final SharedPreferences sharedPrefs;
-  MyApp({required this.sharedPrefs});
+  const MyApp({super.key, required this.sharedPrefs});
 
   // This widget is the root of your application.
   @override

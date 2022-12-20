@@ -1,4 +1,4 @@
-package com.example.xpense
+package walletview.example.xpense
 
 import io.flutter.embedding.android.FlutterActivity
 

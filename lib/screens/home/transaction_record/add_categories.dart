@@ -220,11 +220,11 @@ class _AddCategoryState extends State<AddCategory> {
                         if (_formKey.currentState!.validate()) {
                           //Update DB record
                           if (_type == 'expense') {
-                            await DatabaseService(uid: globals.userData.uid!)
+                            DatabaseService(uid: globals.userData.uid!)
                                 .updatexpCat(new Category(name: _name));
                             print("DB INSERTION SUCCESSFUL");
                           } else {
-                            await DatabaseService(uid: globals.userData.uid!)
+                            DatabaseService(uid: globals.userData.uid!)
                                 .updatecategoryList(new Category(name: _name));
                             print("DB INSERTION SUCCESSFUL");
                           }
@@ -232,11 +232,9 @@ class _AddCategoryState extends State<AddCategory> {
                           //Clear Navigation stack and return to Home
                           // Navigator.of(context).pushNamedAndRemoveUntil(
                           //     "/", (Route<dynamic> route) => false);
-                          
+
                           Navigator.of(globals.scaffoldKey.currentContext!)
                               .pop();
-
-                              
 
                           entry = alertOverlay(
                               AlertNotification(

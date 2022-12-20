@@ -202,6 +202,12 @@ class AuthService {
     }
   }
 
+
+  // signin with phone number
+
+
+  
+
   ///delete <ASYNC>
   Future deleteUser(String email, String password) async {
     try {

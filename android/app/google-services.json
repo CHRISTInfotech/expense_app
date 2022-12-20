@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:869698743095:android:e5508da0f5a319be6148b2",
         "android_client_info": {
-          "package_name": "com.example.xpense"
+          "package_name": "walletview.example.walletview"
         }
       },
       "oauth_client": [

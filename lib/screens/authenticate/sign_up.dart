@@ -8,7 +8,7 @@ import '../../shared/loading.dart';
 
 class SignUp extends StatefulWidget {
   final Function? toggleView;
-  SignUp({this.toggleView});
+  const SignUp({super.key, this.toggleView});
 
   @override
   _SignUpState createState() => _SignUpState();
@@ -59,19 +59,19 @@ class _SignUpState extends State<SignUp> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
-          alignment: Alignment.bottomLeft,
-          height: 200.0,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              alignment: Alignment.bottomLeft,
-              image: AssetImage(kWalletLogo),
-              fit: BoxFit.fitHeight,
-            ),
-            shape: BoxShape.rectangle,
-          ),
-        ),
+                            alignment: Alignment.bottomLeft,
+                            height: 200.0,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                alignment: Alignment.bottomLeft,
+                                image: AssetImage(kWalletLogo),
+                                fit: BoxFit.fitHeight,
+                              ),
+                              shape: BoxShape.rectangle,
+                            ),
+                          ),
                           //REGISTRATION HEADER
-                          Text(
+                          const Text(
                             'Create Account',
                             style: TextStyle(
                                 fontSize: 32,
@@ -79,7 +79,7 @@ class _SignUpState extends State<SignUp> {
                                 fontWeight: FontWeight.bold),
                           ),
 
-                          SizedBox(height: 30),
+                          const SizedBox(height: 30),
 
                           //FULL NAME TEXTFORMFIELD
                           Container(
@@ -93,19 +93,19 @@ class _SignUpState extends State<SignUp> {
                                 },
                                 decoration: kFieldDecoration.copyWith(
                                   suffixIcon: (email.isEmpty)
-                                      ? Icon(null)
-                                      : Icon(
+                                      ? const Icon(null)
+                                      : const Icon(
                                           Icons.check,
                                           color: Color(0xff084ca8),
                                           size: 24,
                                         ),
                                   hintText: 'Full Name',
                                   hintStyle:
-                                      TextStyle(color: Color(0xffbec2c3)),
+                                      const TextStyle(color: Color(0xffbec2c3)),
                                 )),
                           ),
 
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
 
@@ -121,19 +121,19 @@ class _SignUpState extends State<SignUp> {
                                 },
                                 decoration: kFieldDecoration.copyWith(
                                   suffixIcon: (email.isEmpty)
-                                      ? Icon(null)
-                                      : Icon(
+                                      ? const Icon(null)
+                                      : const Icon(
                                           Icons.check,
                                           color: Color(0xff084ca8),
                                           size: 24,
                                         ),
                                   hintText: 'Email',
                                   hintStyle:
-                                      TextStyle(color: Color(0xffbec2c3)),
+                                      const TextStyle(color: Color(0xffbec2c3)),
                                 )),
                           ),
 
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
 
@@ -142,60 +142,60 @@ class _SignUpState extends State<SignUp> {
                             height: 60,
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: TextFormField(
-                                validator: (val) => val!.length < 6
-                                    ? 'Enter a password 6+ chars long'
+                                validator: (val) => val!.length < 13
+                                    ? 'Enter a Valid Phone number '
                                     : null,
                                 onChanged: (val) {
                                   setState(() => password = val);
                                 },
                                 obscureText: true,
                                 decoration: kFieldDecoration.copyWith(
-                                  suffixIcon: (password.length < 6)
-                                      ? Icon(null)
-                                      : Icon(
+                                  suffixIcon: (password.length < 13)
+                                      ? const Icon(null)
+                                      : const Icon(
                                           Icons.check,
                                           color: Color(0xff084ca8),
                                           size: 24,
                                         ),
-                                  hintText: 'Password',
+                                  hintText: 'Phone Number',
                                   hintStyle:
-                                      TextStyle(color: Color(0xffbec2c3)),
+                                      const TextStyle(color: Color(0xffbec2c3)),
                                 )),
                           ),
 
-                          SizedBox(
-                            height: 10,
-                          ),
+                          // const SizedBox(
+                          //   height: 10,
+                          // ),
 
-                          //CONFIRM PASSWORD TEXTFORMFIELD
-                          Container(
-                            height: 60,
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: TextFormField(
-                                validator: (val) => val!.isEmpty
-                                    ? 'Reenter your password'
-                                    : ((val != password)
-                                        ? 'Passwords do not match!'
-                                        : null),
-                                onChanged: (val) {
-                                  setState(() => cfmPassword = val);
-                                },
-                                obscureText: true,
-                                decoration: kFieldDecoration.copyWith(
-                                  suffixIcon: (cfmPassword.length < 6)
-                                      ? Icon(null)
-                                      : Icon(
-                                          Icons.check,
-                                          color: Color(0xff084ca8),
-                                          size: 24,
-                                        ),
-                                  hintText: 'Confirm Password',
-                                  hintStyle:
-                                      TextStyle(color: Color(0xffbec2c3)),
-                                )),
-                          ),
+                          // //CONFIRM PASSWORD TEXTFORMFIELD
+                          // Container(
+                          //   height: 60,
+                          //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                          //   child: TextFormField(
+                          //       validator: (val) => val!.isEmpty
+                          //           ? 'Reenter your password'
+                          //           : ((val != password)
+                          //               ? 'Passwords do not match!'
+                          //               : null),
+                          //       onChanged: (val) {
+                          //         setState(() => cfmPassword = val);
+                          //       },
+                          //       obscureText: true,
+                          //       decoration: kFieldDecoration.copyWith(
+                          //         suffixIcon: (cfmPassword.length < 6)
+                          //             ? const Icon(null)
+                          //             : const Icon(
+                          //                 Icons.check,
+                          //                 color: Color(0xff084ca8),
+                          //                 size: 24,
+                          //               ),
+                          //         hintText: 'Confirm Password',
+                          //         hintStyle:
+                          //             const TextStyle(color: Color(0xffbec2c3)),
+                          //       )),
+                          // ),
 
-                          SizedBox(
+                          const SizedBox(
                             height: 30,
                           ),
 
@@ -204,13 +204,12 @@ class _SignUpState extends State<SignUp> {
                             onTap: () async {
                               if (_formKey.currentState!.validate()) {
                                 print(
-                                    'Email entered : ${email}\nPassword entered: ${password}'); //DEBUGGING
+                                    'Email entered : ${email}\nPhone Number entered: ${password}'); //DEBUGGING
                                 //Display loading spinner
                                 setState(() => loading = true);
                                 //Retrieve User object once it has been registered on Firebase
                                 dynamic result =
-                                    await _auth.registerWithEmailAndPassword(
-                                        name, email.trim(), password);
+                                    await _auth.phoneSignIn(context, password);
                                 //Firebase registration failed
                                 if (result == null) {
                                   setState(() {
@@ -228,7 +227,7 @@ class _SignUpState extends State<SignUp> {
                                   height: 60,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(35),
-                                    gradient: LinearGradient(
+                                    gradient: const LinearGradient(
                                         begin: Alignment.centerLeft,
                                         end: Alignment.centerRight,
                                         colors: [
@@ -239,7 +238,7 @@ class _SignUpState extends State<SignUp> {
                                       BoxShadow(
                                           color: Colors.grey.shade500,
                                           blurRadius: 5,
-                                          offset: Offset(2, 2))
+                                          offset: const Offset(2, 2))
                                     ],
                                   ),
                                   child: Center(
@@ -247,25 +246,25 @@ class _SignUpState extends State<SignUp> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: <Widget>[
-                                        Text('Sign up',
+                                        const Text('Sign up',
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white)),
-                                        SizedBox(width: 15),
-                                        Icon(Icons.arrow_forward,
+                                        const SizedBox(width: 15),
+                                        const Icon(Icons.arrow_forward,
                                             color: Colors.white, size: 24),
                                       ],
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 30,
                                 ),
                               ],
                             ),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           InkWell(
                             onTap: () async {
                               print(
@@ -290,7 +289,7 @@ class _SignUpState extends State<SignUp> {
                               height: 60,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(35),
-                                gradient: LinearGradient(
+                                gradient: const LinearGradient(
                                     begin: Alignment.centerLeft,
                                     end: Alignment.centerRight,
                                     colors: [kLightPrimary, kDarkPrimary]),
@@ -298,7 +297,7 @@ class _SignUpState extends State<SignUp> {
                                   BoxShadow(
                                       color: Colors.grey.shade500,
                                       blurRadius: 5,
-                                      offset: Offset(2, 2))
+                                      offset: const Offset(2, 2))
                                 ],
                               ),
                               child: Padding(
@@ -313,7 +312,7 @@ class _SignUpState extends State<SignUp> {
                                         "assets/images/google.svg",
                                       ),
                                     ),
-                                    Center(
+                                    const Center(
                                       child: Text(
                                         "Sign in with Google",
                                         style: TextStyle(
@@ -328,7 +327,7 @@ class _SignUpState extends State<SignUp> {
                             ),
                           ),
 
-                          SizedBox(
+                          const SizedBox(
                             height: 30,
                           ),
                         ],
@@ -345,7 +344,7 @@ class _SignUpState extends State<SignUp> {
                       //ERROR MESSAGE
                       Text(
                         error,
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.red,
                             fontSize: 14.0,
                             fontWeight: FontWeight.bold),
@@ -361,7 +360,7 @@ class _SignUpState extends State<SignUp> {
                                   color: Colors.grey[700])),
                           InkWell(
                               onTap: () => widget.toggleView!(),
-                              child: Text('Login here',
+                              child: const Text('Login here',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Color(0xFF768cfc)))),

@@ -77,6 +77,8 @@ dependencies:
   flutter_svg: ^1.1.6
   flutter_otp_text_field: ^1.1.1
   google_fonts: ^3.0.1
+  country_picker: ^2.0.19
+  pinput: ^2.2.21
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,3 @@
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +9,8 @@ import 'package:wallet_view/shared/controller/theme_cubit.dart';
 
 import './screens/wrapper.dart';
 import './services/auth.dart';
+import 'screens/authenticate/showotp.dart';
+import 'screens/authenticate/sign_up.dart';
 
 Future<void> main() async {
   // Ensure all plugins are initialized
@@ -49,9 +50,16 @@ Future<void> main() async {
       if (initialLoad) {
         prefs.setBool('initialLoad', initialLoad);
       }
-      runApp(MultiBlocProvider(
-          providers: [BlocProvider(create: ((context) => ThemeCubit()))],
-          child: MyApp(sharedPrefs: prefs)));
+      runApp(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: ((context) => ThemeCubit()),
+            ),
+          ],
+          child: MyApp(sharedPrefs: prefs),
+        ),
+      );
     });
   });
 }
@@ -81,6 +89,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: Wrapper(sharedPrefs),
         theme: theme.isDark ? ThemeData.dark() : ThemeData.light(),
+        routes: {
+          'phone': (context) => SignUp(),
+          'verify': (context) => MyVerify()
+        },
       ),
     );
   }

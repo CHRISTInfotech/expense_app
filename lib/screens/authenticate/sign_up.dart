@@ -1,5 +1,7 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:wallet_view/screens/authenticate/showotp.dart';
 import 'package:wallet_view/shared/constants.dart';
 
 import '../../services/auth.dart';
@@ -26,6 +28,19 @@ class _SignUpState extends State<SignUp> {
   String password = '';
   String cfmPassword = '';
   String error = '';
+
+  Country selectedCountry = Country(
+    phoneCode: "91",
+    countryCode: "IN",
+    e164Sc: 0,
+    geographic: true,
+    level: 1,
+    name: "India",
+    example: "India",
+    displayName: "India",
+    displayNameNoCountryCode: "IN",
+    e164Key: "",
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -142,25 +157,57 @@ class _SignUpState extends State<SignUp> {
                             height: 60,
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: TextFormField(
-                                validator: (val) => val!.length < 13
-                                    ? 'Enter a Valid Phone number '
-                                    : null,
-                                onChanged: (val) {
-                                  setState(() => password = val);
-                                },
-                                obscureText: true,
-                                decoration: kFieldDecoration.copyWith(
-                                  suffixIcon: (password.length < 13)
-                                      ? const Icon(null)
-                                      : const Icon(
-                                          Icons.check,
-                                          color: Color(0xff084ca8),
-                                          size: 24,
+                              validator: (val) => val!.length < 10
+                                  ? 'Enter a Valid Phone number '
+                                  : null,
+                              onChanged: (val) {
+                                setState(() => password = val);
+                              },
+                              // obscureText: true,
+                              decoration: kFieldDecoration.copyWith(
+                                suffixIcon: (password.length < 10)
+                                    ? const Icon(null)
+                                    : const Icon(
+                                        Icons.check,
+                                        color: Color(0xff084ca8),
+                                        size: 24,
+                                      ),
+                                hintText: 'Phone Number',
+                                prefixIcon: Container(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: InkWell(
+                                    onTap: () {
+                                      showCountryPicker(
+                                        countryListTheme:
+                                            const CountryListThemeData(
+                                          bottomSheetHeight: 600,
                                         ),
-                                  hintText: 'Phone Number',
-                                  hintStyle:
-                                      const TextStyle(color: Color(0xffbec2c3)),
-                                )),
+                                        context: context,
+                                        onSelect: (value) {
+                                          setState(() {
+                                            selectedCountry = value;
+                                            cfmPassword =
+                                                "+${selectedCountry.phoneCode}$password";
+                                            print(cfmPassword);
+                                          });
+                                        },
+                                      );
+                                    },
+                                    child: Text(
+                                      "${selectedCountry.flagEmoji} +${selectedCountry.phoneCode}",
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                hintStyle: const TextStyle(
+                                  color: Color(0xffbec2c3),
+                                ),
+                              ),
+                            ),
                           ),
 
                           // const SizedBox(
@@ -208,12 +255,14 @@ class _SignUpState extends State<SignUp> {
                                 //Display loading spinner
                                 setState(() => loading = true);
                                 //Retrieve User object once it has been registered on Firebase
-                                dynamic result =
-                                    await _auth.phoneSignIn(context, password);
+                                dynamic result = await _auth.phoneSignIn(
+                                    cfmPassword, context);
+                                // Navigator.pushNamed(context,)
+
                                 //Firebase registration failed
                                 if (result == null) {
                                   setState(() {
-                                    error = 'Please supply a valid email';
+                                    error = cfmPassword;
                                     loading = false;
                                   });
                                 }
@@ -245,14 +294,14 @@ class _SignUpState extends State<SignUp> {
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        const Text('Sign up',
+                                      children: const <Widget>[
+                                        Text('Sign up',
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white)),
-                                        const SizedBox(width: 15),
-                                        const Icon(Icons.arrow_forward,
+                                        SizedBox(width: 15),
+                                        Icon(Icons.arrow_forward,
                                             color: Colors.white, size: 24),
                                       ],
                                     ),

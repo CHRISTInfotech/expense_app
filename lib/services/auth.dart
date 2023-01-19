@@ -11,6 +11,8 @@ import 'database.dart';
 import '../models/budget.dart';
 
 class AuthService {
+  static String verify = '';
+
   //   User? userfb = FirebaseAuth.instance.currentUser;
   // ///Create user object based on FirebaseUser
   // UserModel.CurrentUser? _userFromFirebaseUser(User? user) {
@@ -110,67 +112,144 @@ class AuthService {
 
   // sign in with phone number
 
-  Future phoneSignIn(
-    BuildContext context,
-    String phoneNumber,
-  ) async {
-    TextEditingController codeController = TextEditingController();
-    if (kIsWeb) {
-      // !!! Works only on web !!!
-      ConfirmationResult result =
-          await _auth.signInWithPhoneNumber(phoneNumber);
+  Future phoneSignIn(String phoneNumber, BuildContext context) async {
+    User? user;
+    await _auth.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        final UserCredential userCredential =
+            await _auth.signInWithCredential(credential);
+        user = userCredential.user;
+        // await DatabaseService(uid: user!.uid)
+        //     .updateUserData(user.displayName!, user.email!);
+        // await DatabaseService(uid: user.uid).createTransactionList();
+        // await DatabaseService(uid: user.uid)
+        //     .updateBudget(new Budget(month: 0, limit: 0.0));
+        // await DatabaseService(uid: user.uid).createCategoryList();
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        if (e.code == 'invalid-phone-number') {
+          print('The provided phone number is not valid.');
+        }
+      },
+      codeSent: (String verificationId, int? resendToken) async {
+        AuthService.verify = verificationId;
 
-      // Diplay Dialog Box To accept OTP
-      showOTPDialog(
-        codeController: codeController,
-        context: context,
-        onPressed: () async {
-          PhoneAuthCredential credential = PhoneAuthProvider.credential(
-            verificationId: result.verificationId,
-            smsCode: codeController.text.trim(),
-          );
-
-          await _auth.signInWithCredential(credential);
-          Navigator.of(context).pop(); // Remove the dialog box
-        },
-      );
-    } else {
-      // FOR ANDROID, IOS
-      await _auth.verifyPhoneNumber(
-        phoneNumber: phoneNumber,
-        //  Automatic handling of the SMS code
-        verificationCompleted: (PhoneAuthCredential credential) async {
-          // !!! works only on android !!!
-          UserCredential result = await _auth.signInWithCredential(credential);
-          User? user = result.user;
-        },
-        // Displays a message when verification fails
-        verificationFailed: (e) {
-          showSnackBar(context, e.message!);
-        },
-        // Displays a dialog box when OTP is sent
-        codeSent: ((String verificationId, int? resendToken) async {
-          showOTPDialog(
-            codeController: codeController,
-            context: context,
-            onPressed: () async {
-              PhoneAuthCredential credential = PhoneAuthProvider.credential(
-                verificationId: verificationId,
-                smsCode: codeController.text.trim(),
-              );
-
-              // !!! Works only on Android, iOS !!!
-              await _auth.signInWithCredential(credential);
-              Navigator.of(context).pop(); // Remove the dialog box
-            },
-          );
-        }),
-        codeAutoRetrievalTimeout: (String verificationId) {
-          // Auto-resolution timed out...
-        },
-      );
-    }
+        // Create a PhoneAuthCredential with the code
+        // PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        //     verificationId: verificationId, smsCode: smsCode);
+        Navigator.pushNamed(context, "verify");
+        // // Sign the user in (or link) with the credential
+        // final UserCredential userCredential =
+        //     await _auth.signInWithCredential(credential);
+        // user = userCredential.user;
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+    return _userFromFirebaseUser(user);
   }
+
+  // Future  phoneSignIn(
+  //   BuildContext context,
+  //   String phoneNumber,
+  // ) async {
+  //   FirebaseAuth auth = FirebaseAuth.instance;
+  //   User? user;
+  //   TextEditingController codeController = TextEditingController();
+  //   if (kIsWeb) {
+  //     // !!! Works only on web !!!
+  //     ConfirmationResult result =
+  //         await _auth.signInWithPhoneNumber(phoneNumber);
+
+  //     // Diplay Dialog Box To accept OTP
+  //     showOTPDialog(
+  //       codeController: codeController,
+  //       context: context,
+  //       onPressed: () async {
+  //         PhoneAuthCredential credential = PhoneAuthProvider.credential(
+  //           verificationId: result.verificationId,
+  //           smsCode: codeController.text.trim(),
+  //         );
+
+  //         UserCredential resul = await _auth.signInWithCredential(credential);
+  //         User? user = resul.user;
+  //         // Remove the dialog box
+  //         //   await DatabaseService(uid: user!.uid)
+  //         // .updateUserData(fullName, email.trim());
+  //         // await DatabaseService(uid: user!.uid).createTransactionList();
+  //         // await DatabaseService(uid: user.uid)
+  //         //     .updateBudget(new Budget(month: 0, limit: 0.0));
+  //         // await DatabaseService(uid: user.uid).createCategoryList();
+
+  //         return _userFromFirebaseUser(user);
+  //       },
+  //     );
+  //   } else {
+  //     // FOR ANDROID, IOS
+  //     await _auth.verifyPhoneNumber(
+  //       phoneNumber: phoneNumber,
+  //       //  Automatic handling of the SMS code
+  //       verificationCompleted: (PhoneAuthCredential credential) async {
+  //         // !!! works only on android !!!
+  //         UserCredential resul = await _auth.signInWithCredential(credential);
+  //         User? user = resul.user;
+  //         // Remove the dialog box
+  //         //   await DatabaseService(uid: user!.uid)
+  //         // .updateUserData(fullName, email.trim());
+  //         // await DatabaseService(uid: user!.uid).createTransactionList();
+  //         // await DatabaseService(uid: user.uid)
+  //         //     .updateBudget(new Budget(month: 0, limit: 0.0));
+  //         // await DatabaseService(uid: user.uid).createCategoryList();
+
+  //         return _userFromFirebaseUser(user);
+  //       },
+  //       // Displays a message when verification fails
+  //       verificationFailed: (e) {
+  //         showSnackBar(context, e.message!);
+  //       },
+  //       // Displays a dialog box when OTP is sent
+  //       codeSent: ((String verificationId, int? resendToken) async {
+  //         showOTPDialog(
+  //           codeController: codeController,
+  //           context: context,
+  //           onPressed: () async {
+  //             PhoneAuthCredential credential = PhoneAuthProvider.credential(
+  //               verificationId: verificationId,
+  //               smsCode: codeController.text.trim(),
+  //             );
+
+  //             // !!! Works only on Android, iOS !!!
+  //             try {
+  //               final UserCredential userCredential =
+  //                   await auth.signInWithCredential(credential);
+
+  //               user = userCredential.user;
+  //               // await DatabaseService(uid: user!.uid)
+  //               //     .updateUserData(user.displayName!, user.email!);
+  //               // await DatabaseService(uid: user.uid).createTransactionList();
+  //               // await DatabaseService(uid: user.uid)
+  //               //     .updateBudget(new Budget(month: 0, limit: 0.0));
+  //               // await DatabaseService(uid: user.uid).createCategoryList();
+
+  //               return _userFromFirebaseUser(user);
+  //             } on FirebaseAuthException catch (e) {
+  //               if (e.code == 'account-exists-with-different-credential') {
+  //                 // handle the error here
+  //               } else if (e.code == 'invalid-credential') {
+  //                 // handle the error here
+  //               }
+  //             } catch (e) {
+  //               // handle the error here
+  //             }
+  //           },
+  //         );
+  //       }),
+  //       codeAutoRetrievalTimeout: (String verificationId) {
+  //         // Auto-resolution timed out...
+  //       },
+  //     );
+  //   }
+  // }
 
   // sign in with google
 

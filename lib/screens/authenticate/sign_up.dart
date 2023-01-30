@@ -256,7 +256,7 @@ class _SignUpState extends State<SignUp> {
                                 setState(() => loading = true);
                                 //Retrieve User object once it has been registered on Firebase
                                 dynamic result = await _auth.phoneSignIn(
-                                    cfmPassword, context);
+                                    context, cfmPassword, name,email);
                                 // Navigator.pushNamed(context,)
 
                                 //Firebase registration failed
@@ -314,67 +314,67 @@ class _SignUpState extends State<SignUp> {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          InkWell(
-                            onTap: () async {
-                              print(
-                                  'Email entered : ${email}\nPassword entered: ${password}');
+                          // InkWell(
+                          //   onTap: () async {
+                          //     print(
+                          //         'Email entered : ${email}\nPassword entered: ${password}');
 
-                              setState(() => loading = true);
+                          //     setState(() => loading = true);
 
-                              dynamic result = await _auth.signUpWithGoogle();
+                          //     dynamic result = await _auth.signUpWithGoogle();
 
-                              if (result == null) {
-                                setState(() {
-                                  error = 'Failed to sign in';
-                                  loading = false;
-                                });
-                                // } else {
-                                //   Navigator.of(context)
-                                //       .pop(); // here the change.
-                                //   loading = false; //here the change.
-                              }
-                            },
-                            child: Container(
-                              height: 60,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(35),
-                                gradient: const LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [kLightPrimary, kDarkPrimary]),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.grey.shade500,
-                                      blurRadius: 5,
-                                      offset: const Offset(2, 2))
-                                ],
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: Stack(
-                                  children: <Widget>[
-                                    Positioned(
-                                      top: 0,
-                                      bottom: 0,
-                                      left: 0,
-                                      child: SvgPicture.asset(
-                                        "assets/images/google.svg",
-                                      ),
-                                    ),
-                                    const Center(
-                                      child: Text(
-                                        "Sign in with Google",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+                          //     if (result == null) {
+                          //       setState(() {
+                          //         error = 'Failed to sign in';
+                          //         loading = false;
+                          //       });
+                          //       // } else {
+                          //       //   Navigator.of(context)
+                          //       //       .pop(); // here the change.
+                          //       //   loading = false; //here the change.
+                          //     }
+                          //   },
+                          //   child: Container(
+                          //     height: 60,
+                          //     decoration: BoxDecoration(
+                          //       borderRadius: BorderRadius.circular(35),
+                          //       gradient: const LinearGradient(
+                          //           begin: Alignment.centerLeft,
+                          //           end: Alignment.centerRight,
+                          //           colors: [kLightPrimary, kDarkPrimary]),
+                          //       boxShadow: [
+                          //         BoxShadow(
+                          //             color: Colors.grey.shade500,
+                          //             blurRadius: 5,
+                          //             offset: const Offset(2, 2))
+                          //       ],
+                          //     ),
+                          //     child: Padding(
+                          //       padding: const EdgeInsets.all(15),
+                          //       child: Stack(
+                          //         children: <Widget>[
+                          //           Positioned(
+                          //             top: 0,
+                          //             bottom: 0,
+                          //             left: 0,
+                          //             child: SvgPicture.asset(
+                          //               "assets/images/google.svg",
+                          //             ),
+                          //           ),
+                          //           const Center(
+                          //             child: Text(
+                          //               "Sign in with Google",
+                          //               style: TextStyle(
+                          //                 color: Colors.white,
+                          //                 fontWeight: FontWeight.bold,
+                          //               ),
+                          //             ),
+                          //           )
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
 
                           const SizedBox(
                             height: 30,

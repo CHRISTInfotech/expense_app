@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:wallet_view/data/categories.dart';
+import 'package:wallet_view/screens/spilt/main_screen/main_screen.dart';
 
 import '../loading.dart';
 import '../theme.dart';
@@ -53,6 +54,11 @@ class NavigationBloc extends Bloc<NavigationEvents, NavigationStates> {
       case NavigationEvents.ProfilePageClickedEvent:
         // print("Hello profile");
         emit(Profile());
+        break;
+
+        case NavigationEvents.ProfilePageClickedEvent:
+        // print("Hello profile");
+        emit(MainScreen());
         break;
     }
   }
@@ -152,6 +158,13 @@ class _NavBarState extends State<NavBar>
                 .add(NavigationEvents.ProfilePageClickedEvent);
           }
           break;
+          case 4:
+          {
+            // print(selected);
+            BlocProvider.of<NavigationBloc>(context)
+                .add(NavigationEvents.ProfilePageClickedEvent);
+          }
+          break;
       }
     }
 
@@ -186,6 +199,13 @@ class _NavBarState extends State<NavBar>
             ),
             activeColor: kLightSecondary),
         BottomNavyBarItem(
+            icon: Icon(Icons.person),
+            title: Text(
+              'Profile',
+              textAlign: TextAlign.center,
+            ),
+            activeColor: kDarkSecondary),
+            BottomNavyBarItem(
             icon: Icon(Icons.person),
             title: Text(
               'Profile',

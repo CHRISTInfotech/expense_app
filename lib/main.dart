@@ -89,10 +89,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: Wrapper(sharedPrefs),
         theme: theme.isDark ? ThemeData.dark() : ThemeData.light(),
-        routes: {
-          'phone': (context) => SignUp(),
-          'verify': (context) => MyVerify()
-        },
+        
       ),
     );
   }

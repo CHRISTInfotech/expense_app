@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:wallet_view/data/categories.dart';
-import 'package:wallet_view/screens/spilt/main_screen/main_screen.dart';
+import 'package:wallet_view/screens/spilt/spilt_main.dart';
 
 import '../loading.dart';
 import '../theme.dart';
@@ -25,6 +25,7 @@ enum NavigationEvents {
   WalletPageClickedEvent,
   StatisticsPageClickedEvent,
   ProfilePageClickedEvent,
+  SpiltPageClickedEvent,
 }
 
 abstract class NavigationStates {}
@@ -56,9 +57,9 @@ class NavigationBloc extends Bloc<NavigationEvents, NavigationStates> {
         emit(Profile());
         break;
 
-        case NavigationEvents.ProfilePageClickedEvent:
+      case NavigationEvents.SpiltPageClickedEvent:
         // print("Hello profile");
-        emit(MainScreen());
+        emit(SpiltHome());
         break;
     }
   }
@@ -101,7 +102,6 @@ class NavigationBloc extends Bloc<NavigationEvents, NavigationStates> {
   //       break;
   //   }
   // }
-
 }
 
 class NavBar extends StatefulWidget {
@@ -155,16 +155,24 @@ class _NavBarState extends State<NavBar>
           {
             // print(selected);
             BlocProvider.of<NavigationBloc>(context)
-                .add(NavigationEvents.ProfilePageClickedEvent);
+                .add(NavigationEvents.SpiltPageClickedEvent);
           }
           break;
-          case 4:
+        case 4:
           {
             // print(selected);
             BlocProvider.of<NavigationBloc>(context)
                 .add(NavigationEvents.ProfilePageClickedEvent);
           }
           break;
+
+        // case 4:
+        // {
+        //   // print(selected);
+        //   BlocProvider.of<NavigationBloc>(context)
+        //       .add(NavigationEvents.ProfilePageClickedEvent);
+        // }
+        // break;
       }
     }
 
@@ -199,19 +207,27 @@ class _NavBarState extends State<NavBar>
             ),
             activeColor: kLightSecondary),
         BottomNavyBarItem(
+            icon: Icon(Icons.group_add_sharp),
+            title: Text(
+              'Groups',
+              textAlign: TextAlign.center,
+            ),
+            activeColor: kDarkSecondary),
+        BottomNavyBarItem(
             icon: Icon(Icons.person),
             title: Text(
               'Profile',
               textAlign: TextAlign.center,
             ),
             activeColor: kDarkSecondary),
-            BottomNavyBarItem(
-            icon: Icon(Icons.person),
-            title: Text(
-              'Profile',
-              textAlign: TextAlign.center,
-            ),
-            activeColor: kDarkSecondary),
+
+        // BottomNavyBarItem(
+        // icon: Icon(Icons.person),
+        // title: Text(
+        //   'Profile',
+        //   textAlign: TextAlign.center,
+        // ),
+        // activeColor: kDarkSecondary),
         // BottomNavyBarItem(
         //     icon: Icon(Icons.category),
         //     title: Text(
@@ -252,41 +268,33 @@ class _NavBarLayoutState extends State<NavBarLayout> {
     getCate();
 
     final userStream = DatabaseService(uid: widget.user.uid).userData;
-    print("Created the <USERDATA> stream");
 
     userSubscription = userStream.listen((userData) async {
       setState(() {
         userData = userData;
         // loading = false;
       });
-      print('UserData: $userData');
       globals.userData = userData;
-      print("-globally- : ${globals.userData.fullName}");
     });
 
     final budgetStream = DatabaseService(uid: widget.user.uid).budget;
-    print("Created the <BUDGET> stream");
 
     budgetSubscription = budgetStream.listen((budget) async {
       setState(() {
         budget = budget;
         // loading = false;
       });
-      print('Budget: $budget');
       globals.budget = budget;
-      print("-globally- : ${globals.budget.month}");
     });
 
     final transactionListStream =
         DatabaseService(uid: widget.user.uid).transactionRecord;
-    print("Created the <LIST<TRANSACTION>> stream");
 
     transactionSubscription = transactionListStream.listen((tList) async {
       setState(() {
         transactionList = tList;
         // loading = false;
       });
-      print('TList: $transactionList');
 
       List<TransactionRecord> transactions = <TransactionRecord>[];
       var income = 0.0;
@@ -301,7 +309,6 @@ class _NavBarLayoutState extends State<NavBarLayout> {
             cardNumber: transaction['cardNumber']);
 
         // print("TRANSACTION RECORD DETECTED: $tr");
-        print("each amount:${tr.amount}");
 
         if (tr.type == "income") {
           var amt = tr.amount;
@@ -312,7 +319,6 @@ class _NavBarLayoutState extends State<NavBarLayout> {
         }
         balance = income + expense;
         globals.balance = balance;
-        print(balance);
         transactions.add(tr);
       }
 
@@ -340,14 +346,12 @@ class _NavBarLayoutState extends State<NavBarLayout> {
     });
 
     final walletStream = DatabaseService(uid: widget.user.uid).wallet;
-    print("Created the <LIST<BANKCARD>> stream");
 
     walletSubscription = walletStream.listen((wallet) async {
       setState(() {
         wallet = wallet;
         loading = false;
       });
-      print('Wallet: $wallet');
 
       List<BankCard> cards = <BankCard>[];
 
@@ -358,10 +362,9 @@ class _NavBarLayoutState extends State<NavBarLayout> {
           cardNumber: card['cardNumber'],
           holderName: card['holderName'],
           expiry: DateTime.parse(card['expiry'].toDate().toString()),
-          // balance: double.parse(card['balance'].toString()),
+          balance: card['balance'].toString(),
         );
 
-        print("BANK CARD DETECTED: $bc");
         cards.add(bc);
       }
 
@@ -369,8 +372,6 @@ class _NavBarLayoutState extends State<NavBarLayout> {
       globals.wallet =
           cards.toSet().difference(globals.wallet.toSet()).toList();
     });
-
-    print("-end of init-");
   }
 
   @override

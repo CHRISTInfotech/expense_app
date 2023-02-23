@@ -9,8 +9,7 @@ import 'package:wallet_view/shared/controller/theme_cubit.dart';
 
 import './screens/wrapper.dart';
 import './services/auth.dart';
-import 'screens/authenticate/showotp.dart';
-import 'screens/authenticate/sign_up.dart';
+
 
 Future<void> main() async {
   // Ensure all plugins are initialized

@@ -5,7 +5,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 Future<bool> launchUPIApp({
   required String upiAddress,
   required String name,
-  required num amount,
+  required String amount,
   required String message,
 }) async {
   try {

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -9,6 +10,9 @@ import '../data/showSnackbar.dart';
 import '../screens/authenticate/showotp.dart';
 import 'database.dart';
 import '../models/budget.dart';
+
+FirebaseAuth auth = FirebaseAuth.instance;
+FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class AuthService {
   static String verify = '';
@@ -54,7 +58,7 @@ class AuthService {
     // // .map((FirebaseUser user) => _userFromFirebaseUser(user));
   }
 
-  Future<UserModel.CurrentUser?> currentUser() async {
+  Future<UserModel.CurrentUser?> currentUser(User? currentUser) async {
     final user = _auth.currentUser;
 
     return _userFromFirebaseUser(user);
@@ -70,7 +74,6 @@ class AuthService {
       // print(_userFromFirebaseUser(user));
       return _userFromFirebaseUser(user);
     } catch (e) {
-      print(e.toString());
       return null;
     }
   }
@@ -88,8 +91,8 @@ class AuthService {
 // }
 
   ///register with email and password
-  Future registerWithEmailAndPassword(
-      String fullName, String email, String password) async {
+  Future registerWithEmailAndPassword(String fullName, String email,
+      String password, String phoneNumber, String upiId) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email.trim(), password: password);
@@ -97,7 +100,7 @@ class AuthService {
 
       //Create user document in Firestore
       await DatabaseService(uid: user!.uid)
-          .updateUserData(fullName, email.trim());
+          .updateUserData(fullName, email.trim(), phoneNumber, upiId);
       await DatabaseService(uid: user.uid).createTransactionList();
       await DatabaseService(uid: user.uid)
           .updateBudget(new Budget(month: 0, limit: 0.0));
@@ -105,7 +108,6 @@ class AuthService {
 
       return _userFromFirebaseUser(user);
     } catch (e) {
-      print(e.toString());
       return null;
     }
   }
@@ -115,8 +117,6 @@ class AuthService {
   Future phoneSignIn(
     BuildContext context,
     String phoneNumber,
-    String fullname,
-    String email,
   ) async {
     TextEditingController codeController = TextEditingController();
     User? user;
@@ -134,7 +134,6 @@ class AuthService {
             verificationId: result.verificationId,
             smsCode: codeController.text.trim(),
           );
-          print(codeController.text.trim());
           final UserCredential userCredential =
               await _auth.signInWithCredential(credential);
           user = userCredential.user;
@@ -152,12 +151,12 @@ class AuthService {
           final UserCredential userCredential =
               await _auth.signInWithCredential(credential);
           user = userCredential.user;
-    //        await DatabaseService(uid: user!.uid)
-    //     .updateUserData(fullname, email.trim());
-    // await DatabaseService(uid: user!.uid).createTransactionList();
-    // await DatabaseService(uid: user!.uid)
-    //     .updateBudget(new Budget(month: 0, limit: 0.0)); 
-    // await DatabaseService(uid: user!.uid).createCategoryList();
+          //        await DatabaseService(uid: user!.uid)
+          //     .updateUserData(fullname, email.trim());
+          // await DatabaseService(uid: user!.uid).createTransactionList();
+          // await DatabaseService(uid: user!.uid)
+          //     .updateBudget(new Budget(month: 0, limit: 0.0));
+          // await DatabaseService(uid: user!.uid).createCategoryList();
         },
         // Displays a message when verification fails
         verificationFailed: (e) {
@@ -178,13 +177,13 @@ class AuthService {
               final UserCredential userCredential =
                   await _auth.signInWithCredential(credential);
               user = userCredential.user;
-               Navigator.of(context).pop();
-               await DatabaseService(uid: user!.uid)
-        .updateUserData(fullname, email.trim());
-    await DatabaseService(uid: user!.uid).createTransactionList();
-    await DatabaseService(uid: user!.uid)
-        .updateBudget(new Budget(month: 0, limit: 0.0));
-    await DatabaseService(uid: user!.uid).createCategoryList();
+              //        Navigator.of(context).pop();
+              //        await DatabaseService(uid: user!.uid)
+              // .updateUserData(fullname!, email!.trim());
+              await DatabaseService(uid: user!.uid).createTransactionList();
+              await DatabaseService(uid: user!.uid)
+                  .updateBudget(Budget(month: 0, limit: 0.0));
+              await DatabaseService(uid: user!.uid).createCategoryList();
               // Remove the dialog box
             },
           );
@@ -205,90 +204,90 @@ class AuthService {
 
   // sign in with google
 
-  Future signInWithGoogle() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? user;
+  // Future signInWithGoogle() async {
+  //   FirebaseAuth auth = FirebaseAuth.instance;
+  //   User? user;
 
-    final GoogleSignIn googleSignIn = GoogleSignIn();
+  //   final GoogleSignIn googleSignIn = GoogleSignIn();
 
-    final GoogleSignInAccount? googleSignInAccount =
-        await googleSignIn.signIn();
+  //   final GoogleSignInAccount? googleSignInAccount =
+  //       await googleSignIn.signIn();
 
-    if (googleSignInAccount != null) {
-      final GoogleSignInAuthentication googleSignInAuthentication =
-          await googleSignInAccount.authentication;
+  //   if (googleSignInAccount != null) {
+  //     final GoogleSignInAuthentication googleSignInAuthentication =
+  //         await googleSignInAccount.authentication;
 
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleSignInAuthentication.accessToken,
-        idToken: googleSignInAuthentication.idToken,
-      );
+  //     final AuthCredential credential = GoogleAuthProvider.credential(
+  //       accessToken: googleSignInAuthentication.accessToken,
+  //       idToken: googleSignInAuthentication.idToken,
+  //     );
 
-      try {
-        final UserCredential userCredential =
-            await auth.signInWithCredential(credential);
+  //     try {
+  //       final UserCredential userCredential =
+  //           await auth.signInWithCredential(credential);
 
-        user = userCredential.user;
-        await DatabaseService(uid: user!.uid)
-            .updateUserData(user.displayName!, user.email!);
-        await DatabaseService(uid: user.uid).createTransactionList();
-        await DatabaseService(uid: user.uid)
-            .updateBudget(new Budget(month: 0, limit: 0.0));
-        await DatabaseService(uid: user.uid).createCategoryList();
+  //       user = userCredential.user;
+  //       await DatabaseService(uid: user!.uid)
+  //           .updateUserData(user.displayName!, user.email!);
+  //       await DatabaseService(uid: user.uid).createTransactionList();
+  //       await DatabaseService(uid: user.uid)
+  //           .updateBudget(new Budget(month: 0, limit: 0.0));
+  //       await DatabaseService(uid: user.uid).createCategoryList();
 
-        return _userFromFirebaseUser(user);
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'account-exists-with-different-credential') {
-          // handle the error here
-        } else if (e.code == 'invalid-credential') {
-          // handle the error here
-        }
-      } catch (e) {
-        // handle the error here
-      }
-    }
-  }
+  //       return _userFromFirebaseUser(user);
+  //     } on FirebaseAuthException catch (e) {
+  //       if (e.code == 'account-exists-with-different-credential') {
+  //         // handle the error here
+  //       } else if (e.code == 'invalid-credential') {
+  //         // handle the error here
+  //       }
+  //     } catch (e) {
+  //       // handle the error here
+  //     }
+  //   }
+  // }
 
-  Future signUpWithGoogle() async {
-    // FirebaseAuth auth = FirebaseAuth.instance;
-    User? user;
-    try {
-      final GoogleSignIn googleSignIn = GoogleSignIn();
+  // Future signUpWithGoogle() async {
+  //   // FirebaseAuth auth = FirebaseAuth.instance;
+  //   User? user;
+  //   try {
+  //     final GoogleSignIn googleSignIn = GoogleSignIn();
 
-      final GoogleSignInAccount? googleSignInAccount =
-          await googleSignIn.signIn();
+  //     final GoogleSignInAccount? googleSignInAccount =
+  //         await googleSignIn.signIn();
 
-      final GoogleSignInAuthentication googleSignInAuthentication =
-          await googleSignInAccount!.authentication;
+  //     final GoogleSignInAuthentication googleSignInAuthentication =
+  //         await googleSignInAccount!.authentication;
 
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleSignInAuthentication.accessToken,
-        idToken: googleSignInAuthentication.idToken,
-      );
+  //     final AuthCredential credential = GoogleAuthProvider.credential(
+  //       accessToken: googleSignInAuthentication.accessToken,
+  //       idToken: googleSignInAuthentication.idToken,
+  //     );
 
-      final UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
+  //     final UserCredential userCredential =
+  //         await _auth.signInWithCredential(credential);
 
-      user = userCredential.user;
+  //     user = userCredential.user;
 
-      await DatabaseService(uid: user!.uid)
-          .updateUserData(user.displayName!, user.email!);
-      await DatabaseService(uid: user.uid).createTransactionList();
-      await DatabaseService(uid: user.uid)
-          .updateBudget(new Budget(month: 0, limit: 0.0));
-      await DatabaseService(uid: user.uid).createCategoryList();
+  //     await DatabaseService(uid: user!.uid)
+  //         .updateUserData(user.displayName!, user.email!);
+  //     await DatabaseService(uid: user.uid).createTransactionList();
+  //     await DatabaseService(uid: user.uid)
+  //         .updateBudget(new Budget(month: 0, limit: 0.0));
+  //     await DatabaseService(uid: user.uid).createCategoryList();
 
-      return _userFromFirebaseUser(user);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'account-exists-with-different-credential') {
-        // handle the error here
-      } else if (e.code == 'invalid-credential') {
-        // handle the error here
-      }
-    } catch (e) {
-      // handle the error here
-    }
-    return _userFromFirebaseUser(user);
-  }
+  //     return _userFromFirebaseUser(user);
+  //   } on FirebaseAuthException catch (e) {
+  //     if (e.code == 'account-exists-with-different-credential') {
+  //       // handle the error here
+  //     } else if (e.code == 'invalid-credential') {
+  //       // handle the error here
+  //     }
+  //   } catch (e) {
+  //     // handle the error here
+  //   }
+  //   return _userFromFirebaseUser(user);
+  // }
 
   ///sign out <ASYNC>
   Future signOut() async {
@@ -296,7 +295,6 @@ class AuthService {
       //Use signOut() from Firebase
       return await _auth.signOut();
     } catch (e) {
-      print(e.toString());
       return null;
     }
   }
@@ -309,10 +307,8 @@ class AuthService {
       User? user = _auth.currentUser;
       AuthCredential credentials =
           EmailAuthProvider.credential(email: email.trim(), password: password);
-      print("FIREBASEUSER : $user");
       UserCredential? result =
           await user?.reauthenticateWithCredential(credentials);
-      print("CREDENTIALS : $credentials");
       await DatabaseService(uid: result!.user!.uid)
           .deleteUserData(); // called from database class
       await DatabaseService(uid: result.user!.uid)
@@ -322,29 +318,70 @@ class AuthService {
       await result.user!.delete();
       return true;
     } catch (e) {
-      print(e.toString());
       return null;
     }
   }
 
   Future updateUser(UserModel.UserData userData, String password,
-      String newFullName, String newEmail) async {
+      String newFullName, String newEmail,String phoneNumber,String upiId) async {
     try {
       User? user = _auth.currentUser;
+      
+     
       AuthCredential credentials = EmailAuthProvider.credential(
           email: userData.email!, password: password);
-      print("FIREBASEUSER : $user");
       UserCredential? result =
-          await user?.reauthenticateWithCredential(credentials);
-      print("CREDENTIALS : $credentials");
-      await DatabaseService(uid: result!.user!.uid).updateUserData(
-          newFullName, newEmail,
+          await user!.reauthenticateWithCredential(credentials);
+      await DatabaseService(uid: result.user!.uid).updateUserData(
+          newFullName, newEmail,phoneNumber,upiId,
           avatar: userData.avatar); // called from database class
       await result.user!.updateEmail(newEmail);
       return true;
     } catch (e) {
-      print(e.toString());
       return null;
     }
+  }
+
+  Future<void> addUserInfo({
+    required String name,
+    required String upiId,
+    required String profileImage,
+  }) async {
+    try {
+      User? user = auth.currentUser;
+
+      if (user != null) {
+        String uid = user.uid;
+        String phoneNumber = user.phoneNumber ?? "";
+
+        await firestore.collection("users").doc(uid).set({
+          "createdAt": FieldValue.serverTimestamp(),
+          "name": name,
+          "profileImage": profileImage,
+          "phoneNumber": phoneNumber,
+          "upiId": upiId,
+        }, SetOptions(merge: true));
+      } else {
+        throw Exception("unauthorized call to save user info.");
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception("Error adding User information to DB.");
+    }
+  }
+
+  Future<Map<String, dynamic>?> getUserInfo() async {
+    User? user = auth.currentUser;
+
+    if (user != null) {
+      String userId = user.uid;
+      DocumentSnapshot docSnap =
+          await firestore.collection("users").doc(userId).get();
+      if (docSnap.exists) {
+        Map<String, dynamic>? data = docSnap.data() as Map<String, dynamic>?;
+        return data;
+      }
+    }
+    return null;
   }
 }

@@ -13,12 +13,12 @@ showAddBankCard(BuildContext context) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    shape: RoundedRectangleBorder(
+    shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(25.0))),
     backgroundColor: Colors.white,
     builder: (context) => Container(
         height: MediaQuery.of(context).size.height * 0.80,
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 60),
         child: AddBankCard()),
   );
 }
@@ -47,7 +47,7 @@ class _AddBankCardState extends State<AddBankCard> {
       initialDatePickerMode: DatePickerMode.year,
       initialDate: DateTime.now(),
       firstDate: DateTime(2019),
-      lastDate: DateTime.now().add(Duration(days: 1825)), //Add 5 years
+      lastDate: DateTime.now().add(const Duration(days: 1825)), //Add 5 years
     ).then((pickedDate) {
       if (pickedDate == null) {
         return;
@@ -65,16 +65,16 @@ class _AddBankCardState extends State<AddBankCard> {
     OverlayEntry? entry;
 
     return loading
-        ? Loading()
+        ? const Loading()
         : Column(
             children: <Widget>[
               //Header title
-              Text(
+              const Text(
                 'Add Account',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
 
@@ -115,24 +115,24 @@ class _AddBankCardState extends State<AddBankCard> {
                             ),
                           ],
                         ),
-                        // FormInput(
-                        //   hintText: 'Balance amount',
-                        //   color: kDarkPrimary,
-                        //   initialVal: _balance,
-                        //   valHandler: (val) =>
-                        //       val!.isEmpty ? 'Enter a balance amount' : null,
-                        //   changeHandler: (val) =>
-                        //       setState(() => _balance = val!),
-                        //   inputType: TextInputType.number,
-                        //   inputFormatter: [
-                        //     FilteringTextInputFormatter(RegExp(r'\s*\d*'),
-                        //         allow: true),
-                        //     // MaskedTextInputFormatter(
-                        //     //   mask: 'xxxx xxxx xxxx xxxx',
-                        //     //   separator: ' ',
-                        //     // ),
-                        //   ],
-                        // ),
+                        FormInput(
+                          hintText: 'Balance amount',
+                          color: kDarkPrimary,
+                          initialVal: _balance,
+                          valHandler: (val) =>
+                              val!.isEmpty ? 'Enter a balance amount' : null,
+                          changeHandler: (val) =>
+                              setState(() => _balance = val!),
+                          inputType: TextInputType.number,
+                          inputFormatter: [
+                            FilteringTextInputFormatter(RegExp(r'\s*\d*'),
+                                allow: true),
+                            // MaskedTextInputFormatter(
+                            //   mask: 'xxxx xxxx xxxx xxxx',
+                            //   separator: ' ',
+                            // ),
+                          ],
+                        ),
 
                         ///HOLDER NAME INPUT
                         FormInput(
@@ -154,21 +154,21 @@ class _AddBankCardState extends State<AddBankCard> {
 
                         ///DATE SELECTION
                         Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
+                          margin: const EdgeInsets.symmetric(vertical: 10),
                           padding:
-                              EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+                              const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
                           child: Row(
                             children: <Widget>[
                               Expanded(
                                 child: Text(
                                   '${(DateFormat.M().format(_expiry)).padLeft(2, '0')} / ${(DateFormat.y().format(_expiry)).replaceAll(yearExpr, "")}',
-                                  style: TextStyle(fontSize: 16),
+                                  style: const TextStyle(fontSize: 16),
                                 ),
                               ),
                               AdaptiveFlatButton(
                                 'Choose Date',
                                 _presentDatePicker,
-                                Color(0xFF768cfc),
+                                const Color(0xFF768cfc),
                               )
                             ],
                           ),
@@ -176,7 +176,7 @@ class _AddBankCardState extends State<AddBankCard> {
 
                         ///SUBMIT BUTTON
                         Container(
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                                 vertical: 20, horizontal: 10),
                             child: FullButton(
                               icon: Icons.credit_card,
@@ -216,7 +216,7 @@ class _AddBankCardState extends State<AddBankCard> {
                                           "There is already a card with that number",
                                           [
                                             TextButton(
-                                                child: Text("OK"),
+                                                child: const Text("OK"),
                                                 onPressed: () => Navigator.of(
                                                         globals.scaffoldKey
                                                             .currentContext!)
@@ -235,7 +235,7 @@ class _AddBankCardState extends State<AddBankCard> {
                                       cardNumber: _cardNumber,
                                       holderName: _holderName,
                                       expiry: _expiry,
-                                      // balance:double.parse(_balance),
+                                      balance:_balance,
                                     ));
                                     print("DB INSERTION SUCCESSFUL");
 

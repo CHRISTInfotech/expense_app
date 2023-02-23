@@ -15,11 +15,11 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var initialLoad = sharedPrefs.getBool('initialLoad');
-    print("PREFS RECEIVED FOR STATUS -> ${sharedPrefs.getBool('initialLoad')}");
+    // print("PREFS RECEIVED FOR STATUS -> ${sharedPrefs.getBool('initialLoad')}");
 
     //Retrieve USER object from StreamProvider in main.dart
     final user = Provider.of<CurrentUser?>(context);
-    print("user$user");
+    // print("user$user");
 
     // if (initialLoad!) {
     //   return Onboard(sharedPrefs);
@@ -27,10 +27,10 @@ class Wrapper extends StatelessWidget {
     //Not logged inR
 
     if (user == null) {
-      print(Authenticate());
-      return Authenticate();
+      // print(Authenticate());
+      return const Authenticate();
     } else {
-      print("R");
+      // print("R");
       return NavBarLayout(user: user);
     }
   }

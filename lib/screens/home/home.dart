@@ -1,14 +1,17 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:wallet_view/shared/theme.dart';
 
 import '../../shared/navigation/nav_bar.dart';
-import '../../shared/theme.dart';
+
 import 'budget/budget_tracker.dart';
 import 'transaction_record/transaction_history.dart';
 import '../../data/globals.dart' as globals;
 
 class Home extends StatelessWidget with NavigationStates {
+  const Home({super.key});
+
   @override
   Widget build(BuildContext context) {
     ///BODY CONTENT
@@ -23,7 +26,7 @@ class Home extends StatelessWidget with NavigationStates {
           sectionTitle("Overview"),
           overviewSection(),
 
-          SizedBox(
+          const SizedBox(
             height: 40,
           ),
 
@@ -45,7 +48,7 @@ Widget header() {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
+        const Text(
           "Hi,",
           style: TextStyle(fontSize: 28),
           textAlign: TextAlign.left,
@@ -54,7 +57,7 @@ Widget header() {
           globals.userData.fullName!,
           style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 28),
         ),
-        SizedBox(
+        const SizedBox(
           height: 40,
         ),
       ],
@@ -67,7 +70,7 @@ Widget sectionTitle(title) {
     padding: const EdgeInsets.symmetric(horizontal: 16.0),
     child: Text(
       title,
-      style: TextStyle(
+      style: const TextStyle(
           color: Colors.black45, fontWeight: FontWeight.w900, fontSize: 20),
     ),
   );
@@ -75,7 +78,7 @@ Widget sectionTitle(title) {
 
 Widget overviewSection() {
   return Container(
-    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
     child: Row(
       children: <Widget>[
         ///LINEAR INDICATOR
@@ -87,7 +90,7 @@ Widget overviewSection() {
           child: Row(
             children: <Widget>[
               ///INCOME
-              Icon(Icons.arrow_drop_up, color: Colors.green),
+              const Icon(Icons.arrow_drop_up, color: Colors.green),
               Text(
                 '\u{20B9}${globals.monthIncome.toStringAsFixed(1)}',
                 style: TextStyle(
@@ -96,7 +99,7 @@ Widget overviewSection() {
               ),
 
               ///EXPENSE
-              Icon(Icons.arrow_drop_down, color: Colors.red),
+              const Icon(Icons.arrow_drop_down, color: Colors.red),
               Text(
                 '\u{20B9}${globals.monthExpense.toStringAsFixed(1)}',
                 style: TextStyle(

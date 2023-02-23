@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_new
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -51,14 +53,25 @@ class _AddTransactionState extends State<AddTransaction> {
 
   //Track form value
   String _type = 'expense';
-  String _amount = '0.00';
+  String _amount = '0';
+  int _balance = 0;
+  int _totalamount = 0;
   String _title = '';
   DateTime _date = DateTime.now();
   String _selectedCard = '';
+  String _cardNumber = '';
+  int oldbalance = 0;
+
+  String _bankName = '';
+  // String _cardNumber = '';
+  String _holderName = '';
+  DateTime _expiry = DateTime.now();
+
   // String _category = '';
   // ignore: avoid_init_to_null
   IconData? _selectedCategory = null;
   bool loading = false;
+  var bankCard = [];
 
   //Custom DatePicker
   void _presentDatePicker() {
@@ -84,11 +97,85 @@ class _AddTransactionState extends State<AddTransaction> {
 
     //Extract all card numbers for dropdown
     wallet.forEach((card) {
-      cards.add(card.bankName);
+      cards.add(card.cardNumber);
     });
+
+    // _cardnumber = wallet.first;
 
     //Set default card number choice for dropdown
     _selectedCard = cards[0];
+    getBalance();
+  }
+
+  getBalance() async {
+    await FirebaseFirestore.instance
+        .collection("transactions")
+        .doc(uid)
+        .get()
+        .then((value) {
+      final doc = value.data();
+      // should print Gethsemane
+      // should print notes array
+      // List<dynamic> incomecat = value.data()!["history"];
+      List<dynamic> expensecat = value.data()!["wallet"];
+      // for (final note in incomecat) {
+      //   // incomecat.add(note['name']);
+      //   incomeCategories[note['balnce']] = inicon;
+      // }
+
+      for (final expene in expensecat) {
+        // expensecat.add(expene['name']);
+        if (expene['cardNumber'].toString() == _selectedCard) {
+          int balance = int.parse(expene['balance'].toString());
+          String holderName = expene['holderName'];
+          DateTime dateTime = expene['expiry'].toDate();
+          String bankName = expene['bankName'];
+          String cardnumber = expene['cardNumber'];
+
+          print(bankName);
+          print('alanso');
+          print(holderName);
+          setState(() {
+            _cardNumber = cardnumber;
+            _balance = balance;
+            _bankName = bankName;
+            _expiry = dateTime;
+            _holderName = holderName;
+          });
+        }
+      }
+      oldbalance = _balance;
+      var bankobj = {
+        'balance': _balance.toString(),
+        'bankName': _bankName,
+        'cardNumber': _cardNumber,
+        'expiry': _expiry,
+        'holderName': _holderName,
+      };
+      BankCard bankobj1 = BankCard(
+        balance: _balance.toString(),
+        bankName: _bankName,
+        cardNumber: _cardNumber,
+        expiry: _expiry,
+        holderName: _holderName,
+      );
+
+      if (expensecat.contains(bankobj)) {
+        print(expensecat.contains(bankobj).toString());
+        DatabaseService(uid: globals.userData.uid!).deleteBankCard(bankobj1);
+        print('deleted');
+      }
+
+      print(oldbalance);
+
+      print(_bankName);
+      print('hello');
+      print(_holderName);
+      return {_balance, _bankName, _date, _holderName};
+    });
+    print(_balance);
+
+    return _balance;
   }
 
   @override
@@ -256,6 +343,55 @@ class _AddTransactionState extends State<AddTransaction> {
                                 ],
                               ),
 
+                              ///CARD DROPDOWN SELECTION
+                              Container(
+                                  margin: EdgeInsets.symmetric(vertical: 10),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 7),
+                                  child: new DropdownButton<String>(
+                                    underline: Container(
+                                        color: (_type == 'expense')
+                                            ? kDarkPrimary
+                                            : kLightPrimary,
+                                        height: 2.0),
+                                    value: _selectedCard,
+                                    isExpanded: true,
+                                    items: cards.map((String value) {
+                                      // print(value);
+                                      return new DropdownMenuItem<String>(
+                                        value: value,
+                                        child: new Text(value),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? val) {
+                                      // print("Current card: $val");
+                                      getBalance();
+                                      // print(_cardnumber);
+                                      setState(() {
+                                        _selectedCard = val!;
+                                      });
+                                      // print(_selectedCard);
+
+                                      // if (_type == 'expense') {
+                                      //   print(_balance);
+                                      //   _totalamount = ((_balance) -
+                                      //       double.parse(_amount));
+                                      //   print(_totalamount);
+                                      //   print(_selectedCard);
+                                      //   print(_bankName);
+                                      //   print(_expiry);
+                                      //   print(_holderName);
+                                      //   // print(_totalamount);
+                                      // } else {
+                                      //   print(_balance);
+                                      //   _totalamount = ((_balance) +
+                                      //       double.parse(_amount));
+                                      //   print(_totalamount);
+                                      // }
+                                    },
+                                    hint: Text("Select an account"),
+                                  )),
+
                               ///DATE SELECTION
                               Container(
                                 margin: EdgeInsets.symmetric(vertical: 10),
@@ -284,34 +420,6 @@ class _AddTransactionState extends State<AddTransaction> {
                                 ),
                               ),
 
-                              ///CARD DROPDOWN SELECTION
-                              Container(
-                                  margin: EdgeInsets.symmetric(vertical: 10),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 7),
-                                  child: new DropdownButton<String>(
-                                    underline: Container(
-                                        color: (_type == 'expense')
-                                            ? kDarkPrimary
-                                            : kLightPrimary,
-                                        height: 2.0),
-                                    value: _selectedCard,
-                                    isExpanded: true,
-                                    items: cards.map((String value) {
-                                      return new DropdownMenuItem<String>(
-                                        value: value,
-                                        child: new Text(value),
-                                      );
-                                    }).toList(),
-                                    onChanged: (String? val) {
-                                      print("Current value: $val");
-                                      setState(() {
-                                        _selectedCard = val!;
-                                      });
-                                    },
-                                    hint: Text("Select an account"),
-                                  )),
-
                               ///SUBMIT BUTTON
                               Container(
                                   margin: EdgeInsets.symmetric(
@@ -323,27 +431,151 @@ class _AddTransactionState extends State<AddTransaction> {
                                         ? kDarkPrimary
                                         : kLightPrimary,
                                     handler: () async {
-                                      setState(() => loading = true);
+                                      setState(
+                                        () => loading = true,
+                                      );
 
-                                      print("User ID: ${globals.userData.uid}");
-                                      print("Type entered: ${_type}");
-                                      print("Title entered: ${_title}");
-                                      print("Amount entered: \$${_amount}");
-                                      print(
-                                          "Date selected: ${DateFormat.MMMEd().format(_date)}");
+                                      // print("User ID: ${globals.userData.uid}");
+                                      // print("Type entered: ${_type}");
+                                      // print("Title entered: ${_title}");
+                                      // print("Amount entered: \$${_amount}");
+                                      // print(
+                                      //     "Date selected: ${DateFormat.MMMEd().format(_date)}");
+                                      // print(_selectedCard);
 
                                       if (_formKey.currentState!.validate()) {
+                                        BankCard bankobj = BankCard(
+                                          balance: oldbalance.toString(),
+                                          bankName: _bankName,
+                                          cardNumber: _selectedCard,
+                                          expiry: _date,
+                                          holderName: _holderName,
+                                        );
+                                        var bankobj1 = {
+                                          'balance': _balance.toString(),
+                                          'bankName': _bankName,
+                                          'cardNumber': _cardNumber,
+                                          'expiry': _expiry,
+                                          'holderName': _holderName,
+                                        };
+                                        final FirebaseFirestore _db =
+                                            FirebaseFirestore.instance;
+                                        final DocumentReference docRef = _db
+                                            .collection('transactions')
+                                            .doc(uid);
+                                        docRef.update({
+                                          'wallet': FieldValue.arrayRemove(
+                                              [bankobj1]),
+                                          // 'my-array': FieldValue.arrayUnion(),
+                                        });
+
+                                        DatabaseService(
+                                                uid: globals.userData.uid!)
+                                            .deleteBankCard(bankobj);
+                                        print('2');
+                                        globals.wallet.removeWhere(
+                                            (t) => identical(t, bankobj));
+                                        if (_type == 'expense') {
+                                          BankCard bankobj = BankCard(
+                                            balance: oldbalance.toString(),
+                                            bankName: _bankName,
+                                            cardNumber: _selectedCard,
+                                            expiry: _date,
+                                            holderName: _holderName,
+                                          );
+
+                                          DatabaseService(
+                                                  uid: globals.userData.uid!)
+                                              .deleteBankCard(bankobj);
+                                          // print('2');
+                                          globals.wallet.removeWhere(
+                                              (t) => identical(t, bankobj));
+
+                                          DatabaseService(
+                                                  uid: globals.userData.uid!)
+                                              .deleteBankCard(bankobj);
+                                          // FirebaseFirestore.instance
+                                          //     .collection("transactions")
+                                          //     .where("wallet",
+                                          //
+                                          //
+                                          //   arrayContains: bankobj).get().then((value) => );
+                                          // print('bankobj');
+                                          // print(bankobj.bankName);
+
+                                          // print(bankobj.holderName);
+                                          // print(bankobj.cardNumber);
+                                          // print(bankobj.balance);
+                                          _totalamount =
+                                              ((_balance) - int.parse(_amount));
+
+                                          // print(_totalamount);
+
+                                          // print('delete');
+
+                                          //INSERTION
+                                          DatabaseService(
+                                                  uid: globals.userData.uid!)
+                                              .updateWallet(new BankCard(
+                                            balance: _totalamount.toString(),
+                                            bankName: _bankName,
+                                            cardNumber: _selectedCard,
+                                            expiry: _date,
+                                            holderName: _holderName,
+                                          ));
+                                        } else {
+                                          BankCard bankobj = BankCard(
+                                            balance: oldbalance.toString(),
+                                            bankName: _bankName,
+                                            cardNumber: _selectedCard,
+                                            expiry: _date,
+                                            holderName: _holderName,
+                                          );
+
+                                          _totalamount =
+                                              ((_balance) + int.parse(_amount));
+
+                                          DatabaseService(
+                                                  uid: globals.userData.uid!)
+                                              .deleteBankCard(bankobj);
+                                          // print('object');
+                                          globals.wallet.removeWhere(
+                                              (t) => identical(t, bankobj));
+
+                                          DatabaseService(
+                                                  uid: globals.userData.uid!)
+                                              .deleteBankCard(bankobj);
+
+                                          DatabaseService(
+                                                  uid: globals.userData.uid!)
+                                              .updateWallet(new BankCard(
+                                            balance: _totalamount.toString(),
+                                            bankName: _bankName,
+                                            cardNumber: _selectedCard,
+                                            expiry: _date,
+                                            holderName: _holderName,
+                                          ));
+                                        }
+
                                         //Update DB record
                                         await DatabaseService(
                                                 uid: globals.userData.uid!)
                                             .updateTransactionList(
-                                                new TransactionRecord(
-                                                    type: _type,
-                                                    title: _title,
-                                                    amount:
-                                                        double.parse(_amount),
-                                                    date: _date,
-                                                    cardNumber: _selectedCard));
+                                          new TransactionRecord(
+                                              type: _type,
+                                              title: _title,
+                                              amount: double.parse(_amount),
+                                              date: _date,
+                                              cardNumber: _selectedCard),
+                                        );
+
+                                        // await DatabaseService(
+                                        //         uid: globals.userData.uid!)
+                                        //     .updateBalance(
+                                        //   card: _selectedCard,
+                                        //   type: _type,
+                                        //   amount: _amount,
+                                        // );
 
                                         //Clear Navigation stack and return to Home
                                         // Navigator.of(context).pushNamedAndRemoveUntil(

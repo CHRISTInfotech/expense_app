@@ -23,18 +23,18 @@ class TransactionList extends StatelessWidget {
     }
 
     return (transactions == null || transactions.length <= 0) 
-    ? Center( child: Text('There are no transactions.') )
+    ? const Center( child: Text('There are no transactions.') )
     : ListView.builder(
       itemCount: transactions.length,
       itemBuilder: (BuildContext ctxt, int index){
         return GestureDetector(
           onTap: () async {
 
-            print("INDEX [$index] of the SORTED list => ${transactions[index].title}");
+            // print("INDEX [$index] of the SORTED list => ${transactions[index].title}");
 
             var transactionID = rawTransactions!.indexWhere((t) => identical(transactions[index], t));
 
-            print("Actual position is INDEX [$transactionID] of the Firestore DB => ${rawTransactions[transactionID].title}");
+            // print("Actual position is INDEX [$transactionID] of the Firestore DB => ${rawTransactions[transactionID].title}");
 
             showEditTransaction(context, rawTransactions[transactionID]);
           },

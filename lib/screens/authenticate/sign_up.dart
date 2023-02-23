@@ -26,19 +26,22 @@ class _SignUpState extends State<SignUp> {
   String name = '';
   String email = '';
   String password = '';
+  String phone = '';
+  String upi = '';
+  String prephone = '';
   String cfmPassword = '';
   String error = '';
 
   Country selectedCountry = Country(
-    phoneCode: "91",
-    countryCode: "IN",
+    phoneCode: "1",
+    countryCode: "US",
     e164Sc: 0,
     geographic: true,
     level: 1,
-    name: "India",
-    example: "India",
-    displayName: "India",
-    displayNameNoCountryCode: "IN",
+    name: "USA",
+    example: "USA",
+    displayName: "USA",
+    displayNameNoCountryCode: "US",
     e164Key: "",
   );
 
@@ -152,7 +155,7 @@ class _SignUpState extends State<SignUp> {
                             height: 10,
                           ),
 
-                          //PASSWORD TEXTFORMFIELD
+                          //PhoneNumber TEXTFORMFIELD
                           Container(
                             height: 60,
                             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -161,11 +164,11 @@ class _SignUpState extends State<SignUp> {
                                   ? 'Enter a Valid Phone number '
                                   : null,
                               onChanged: (val) {
-                                setState(() => password = val);
+                                setState(() => phone = val);
                               },
                               // obscureText: true,
                               decoration: kFieldDecoration.copyWith(
-                                suffixIcon: (password.length < 10)
+                                suffixIcon: (phone.length < 10)
                                     ? const Icon(null)
                                     : const Icon(
                                         Icons.check,
@@ -174,7 +177,7 @@ class _SignUpState extends State<SignUp> {
                                       ),
                                 hintText: 'Phone Number',
                                 prefixIcon: Container(
-                                  padding: EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(8.0),
                                   child: InkWell(
                                     onTap: () {
                                       showCountryPicker(
@@ -186,9 +189,9 @@ class _SignUpState extends State<SignUp> {
                                         onSelect: (value) {
                                           setState(() {
                                             selectedCountry = value;
-                                            cfmPassword =
-                                                "+${selectedCountry.phoneCode}$password";
-                                            print(cfmPassword);
+                                            prephone =
+                                                "+${selectedCountry.phoneCode}$phone";
+                                            print(prephone);
                                           });
                                         },
                                       );
@@ -210,38 +213,92 @@ class _SignUpState extends State<SignUp> {
                             ),
                           ),
 
-                          // const SizedBox(
-                          //   height: 10,
-                          // ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            height: 60,
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: TextFormField(
+                                validator: (val) =>
+                                    val!.isEmpty ? 'Enter an Upi id' : null,
+                                onChanged: (val) {
+                                  setState(() => upi = val);
+                                },
+                                decoration: kFieldDecoration.copyWith(
+                                  suffixIcon: (upi.isEmpty)
+                                      ? const Icon(null)
+                                      : const Icon(
+                                          Icons.check,
+                                          color: Color(0xff084ca8),
+                                          size: 24,
+                                        ),
+                                  hintText: 'UPI ID',
+                                  hintStyle:
+                                      const TextStyle(color: Color(0xffbec2c3)),
+                                )),
+                          ),
 
-                          // //CONFIRM PASSWORD TEXTFORMFIELD
-                          // Container(
-                          //   height: 60,
-                          //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                          //   child: TextFormField(
-                          //       validator: (val) => val!.isEmpty
-                          //           ? 'Reenter your password'
-                          //           : ((val != password)
-                          //               ? 'Passwords do not match!'
-                          //               : null),
-                          //       onChanged: (val) {
-                          //         setState(() => cfmPassword = val);
-                          //       },
-                          //       obscureText: true,
-                          //       decoration: kFieldDecoration.copyWith(
-                          //         suffixIcon: (cfmPassword.length < 6)
-                          //             ? const Icon(null)
-                          //             : const Icon(
-                          //                 Icons.check,
-                          //                 color: Color(0xff084ca8),
-                          //                 size: 24,
-                          //               ),
-                          //         hintText: 'Confirm Password',
-                          //         hintStyle:
-                          //             const TextStyle(color: Color(0xffbec2c3)),
-                          //       )),
-                          // ),
+                          const SizedBox(
+                            height: 10,
+                          ),
 
+                          //CONFIRM PASSWORD TEXTFORMFIELD
+                          Container(
+                            height: 60,
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: TextFormField(
+                                validator: (val) => val!.length < 6
+                                    ? 'Enter a password 6+ chars long'
+                                    : null,
+                                onChanged: (val) {
+                                  setState(() => password = val);
+                                },
+                                obscureText: true,
+                                decoration: kFieldDecoration.copyWith(
+                                  suffixIcon: (password.length < 6)
+                                      ? const Icon(null)
+                                      : const Icon(
+                                          Icons.check,
+                                          color: Color(0xff084ca8),
+                                          size: 24,
+                                        ),
+                                  hintText: 'Password',
+                                  hintStyle:
+                                      const TextStyle(color: Color(0xffbec2c3)),
+                                )),
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+
+                          //CONFIRM PASSWORD TEXTFORMFIELD
+                          Container(
+                            height: 60,
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: TextFormField(
+                                validator: (val) => val!.isEmpty
+                                    ? 'Reenter your password'
+                                    : ((val != password)
+                                        ? 'Passwords do not match!'
+                                        : null),
+                                onChanged: (val) {
+                                  setState(() => cfmPassword = val);
+                                },
+                                obscureText: true,
+                                decoration: kFieldDecoration.copyWith(
+                                  suffixIcon: (cfmPassword.length < 6)
+                                      ? const Icon(null)
+                                      : const Icon(
+                                          Icons.check,
+                                          color: Color(0xff084ca8),
+                                          size: 24,
+                                        ),
+                                  hintText: 'Confirm Password',
+                                  hintStyle:
+                                      const TextStyle(color: Color(0xffbec2c3)),
+                                )),
+                          ),
                           const SizedBox(
                             height: 30,
                           ),
@@ -255,14 +312,15 @@ class _SignUpState extends State<SignUp> {
                                 //Display loading spinner
                                 setState(() => loading = true);
                                 //Retrieve User object once it has been registered on Firebase
-                                dynamic result = await _auth.phoneSignIn(
-                                    context, cfmPassword, name,email);
+                                dynamic result =
+                                    await _auth.registerWithEmailAndPassword(
+                                        name, email, password, prephone, upi);
                                 // Navigator.pushNamed(context,)
 
                                 //Firebase registration failed
                                 if (result == null) {
                                   setState(() {
-                                    error = cfmPassword;
+                                    error = 'Please supply a valid details';
                                     loading = false;
                                   });
                                 }

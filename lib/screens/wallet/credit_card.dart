@@ -97,21 +97,21 @@ class CreditCard extends StatelessWidget {
                             fontWeight: FontWeight.w700)),
                   ],
                 ),
-                // Column(
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: <Widget>[
-                //     Text('Balance',
-                //         style: TextStyle(
-                //             color: Colors.grey.shade700,
-                //             fontSize: 12,
-                //             fontWeight: FontWeight.w300)),
-                //     Text('hello',
-                //         style: TextStyle(
-                //             color: Colors.grey.shade700,
-                //             fontSize: 18,
-                //             fontWeight: FontWeight.w700)),
-                //   ],
-                // ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text('Balance',
+                        style: TextStyle(
+                            color: Colors.grey.shade700,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w300)),
+                    Text(bankCard.balance,
+                        style: TextStyle(
+                            color: Colors.grey.shade700,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700)),
+                  ],
+                ),
               ],
             )
           ],

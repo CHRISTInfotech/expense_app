@@ -189,9 +189,6 @@ class _SignUpState extends State<SignUp> {
                                         onSelect: (value) {
                                           setState(() {
                                             selectedCountry = value;
-                                            prephone =
-                                                "+${selectedCountry.phoneCode}$phone";
-                                            print(prephone);
                                           });
                                         },
                                       );
@@ -307,6 +304,11 @@ class _SignUpState extends State<SignUp> {
                           InkWell(
                             onTap: () async {
                               if (_formKey.currentState!.validate()) {
+                                // prephone = "+91$phone";
+
+                                prephone =
+                                    "+${selectedCountry.phoneCode}$phone";
+                                print(prephone);
                                 print(
                                     'Email entered : ${email}\nPhone Number entered: ${password}'); //DEBUGGING
                                 //Display loading spinner

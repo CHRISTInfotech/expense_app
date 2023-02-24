@@ -107,7 +107,7 @@ class _SignUpState extends State<SignUp> {
                                 validator: (val) =>
                                     val!.isEmpty ? 'Enter your name' : null,
                                 onChanged: (val) {
-                                  setState(() => name = val);
+                                  setState(() => name = val.trim());
                                 },
                                 decoration: kFieldDecoration.copyWith(
                                   suffixIcon: (email.isEmpty)

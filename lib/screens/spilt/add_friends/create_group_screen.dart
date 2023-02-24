@@ -3,14 +3,12 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:wallet_view/common/alert_dialog.dart';
 import 'package:wallet_view/data/globals.dart';
 import 'package:wallet_view/models/group_model.dart';
 import 'package:wallet_view/models/user.dart';
 import 'package:wallet_view/screens/spilt/add_friends/components/group_member_list_item.dart';
-import 'package:wallet_view/services/auth.dart';
 import 'package:wallet_view/services/database.dart';
 
 FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -131,7 +129,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
 
     if (searchValue.isNotEmpty) {
       UserData? user =
-          await searchUserByPhone(phone: "$countryCode$searchValue");
+          await searchUserByPhone(phone: "$searchValue");
       if (user != null) {
         // user found
         searchMemberTextController.clear();
@@ -317,13 +315,13 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
               onSubmitted: (searchValue) {
                 _searchAndAddMember(searchValue);
               },
-              keyboardType: TextInputType.phone,
+              keyboardType: TextInputType.name,
               textInputAction: TextInputAction.search,
               enableSuggestions: true,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.search_outlined),
                 border: InputBorder.none,
-                hintText: "Write mobile to search...",
+                hintText: "Write Name to search...",
               ),
             ),
           ),

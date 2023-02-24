@@ -460,8 +460,8 @@ class _GroupToPayDetailScreenState extends State<GroupToPayDetailScreen> {
                         eachAmount: _eachAmount,
                         showPaymentBtn: true,
                         onPayTap: () {
-                          _showPaymentOption(
-                              uid: uid, billId: id, splitAmount: _eachAmount);
+                          // _showPaymentOption(
+                          //     uid: uid, billId: id, splitAmount: _eachAmount);
                         },
                       ),
                     );

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -30,6 +31,13 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('users');
   final CollectionReference categeryCollection =
       FirebaseFirestore.instance.collection('categery');
+
+  void callApiPeriodically() {
+    Timer(Duration(seconds: 5), () {
+      createStreams();
+      callApiPeriodically();
+    });
+  }
 
 // add category to database
   Future createCategoryList() async {
@@ -458,7 +466,7 @@ Future<UserData?> searchUserByPhone({required String phone}) async {
   try {
     final querySnap = await _firestore
         .collection("users")
-        .where("phoneNumber", isEqualTo: phone)
+        .where("fullName", isEqualTo: phone)
         .limit(1)
         .get();
 
@@ -691,6 +699,7 @@ Future<DocumentSnapshot?> createBill({
   required String billTypeImage,
   required List<String> billMembers,
   required Map<dynamic, dynamic> billeachAmount,
+  required List<String> billPaidByMembers,
 }) async {
   try {
     DocumentReference ref = await _firestore
@@ -711,7 +720,7 @@ Future<DocumentSnapshot?> createBill({
       //     'amount':billMembers.amount
       //   }
       // ]),
-      "billPaidByMembers": [],
+      "billPaidByMembers": billPaidByMembers,
     });
 
     return await ref.get();

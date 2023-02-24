@@ -129,7 +129,8 @@ class _EditBankCardState extends State<EditBankCard> {
                               setState(() => _balance = val!),
                           inputType: TextInputType.number,
                           inputFormatter: [
-                            FilteringTextInputFormatter(RegExp(r'\s*\d*'),
+                            FilteringTextInputFormatter(
+                                RegExp(r'(^[1-9]\d*\.?\d{0,2})$'),
                                 allow: true),
                             // MaskedTextInputFormatter(
                             //   mask: 'xxxx xxxx xxxx xxxx',

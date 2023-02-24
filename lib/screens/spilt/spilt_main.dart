@@ -82,25 +82,4 @@ Widget overviewSection() {
   return const MyGroupsComponent();
 }
 
-// Widget overviewProgress() {
-//   var percent = ((globals.monthExpense / globals.monthTotal).isNaN)
-//       ? 0.0
-//       : (globals.monthExpense / globals.monthTotal);
 
-//   return LinearPercentIndicator(
-//     // width: MediaQuery.of(context).size.width - 50,
-//     animation: true,
-//     lineHeight: 25.0,
-//     animationDuration: 2500,
-//     // percent: 0.8,
-//     percent: (percent > 1) ? 1 : percent,
-//     // center: Text("80.0%"),
-//     barRadius: const Radius.circular(16),
-//     // progressColor: Colors.green,
-//     linearGradient: const LinearGradient(
-//         begin: Alignment.topLeft,
-//         end: Alignment.bottomRight,
-//         colors: [kLightPrimary, kLightSecondary]),
-//     backgroundColor: kNeutral,
-//   );
-// }

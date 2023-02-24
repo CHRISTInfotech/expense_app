@@ -14,6 +14,8 @@ class Home extends StatelessWidget with NavigationStates {
 
   @override
   Widget build(BuildContext context) {
+
+    
     ///BODY CONTENT
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,

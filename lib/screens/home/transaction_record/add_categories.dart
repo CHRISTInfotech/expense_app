@@ -47,7 +47,7 @@ class _AddCategoryState extends State<AddCategory> {
     Icons.money_outlined,
     Icons.monetization_on,
   ];
-  var _listGenderText = ["Income", "Expense"];
+  var _listGenderText = ["Income", "Expense","Transfer"];
   bool loading = false;
 
   @override
@@ -75,7 +75,7 @@ class _AddCategoryState extends State<AddCategory> {
                 // ),
                 TabBar(
                     labelStyle:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     labelColor:
                         (_type == 'expense') ? kDarkPrimary : kLightPrimary,
                     indicatorColor:
@@ -88,6 +88,10 @@ class _AddCategoryState extends State<AddCategory> {
                           } else if (index == 1) {
                             _type = "income";
                             _tabTextIconIndexSelected = 0;
+                          }
+                          else if(index==2){
+                             _type = "transfer";
+                            _tabTextIconIndexSelected = 2;
                           }
                         }),
                     tabs: [

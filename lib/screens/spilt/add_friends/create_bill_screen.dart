@@ -2,13 +2,18 @@ import 'dart:developer';
 import 'package:collection/collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wallet_view/common/alert_dialog.dart';
 import 'package:wallet_view/config/images.dart';
 import 'package:wallet_view/models/Group_bill.dart';
+import 'package:wallet_view/models/user.dart';
 import 'package:wallet_view/screens/spilt/add_friends/components/bill_split_amount_member_item.dart';
 import 'package:wallet_view/screens/spilt/add_friends/components/bill_split_select_member_item.dart';
 import 'package:wallet_view/services/database.dart';
+
+FirebaseFirestore _firestore = FirebaseFirestore.instance;
+FirebaseAuth _auth = FirebaseAuth.instance;
 
 class CreateBillScreen extends StatefulWidget {
   final String docid;
@@ -36,9 +41,22 @@ class _CreateBillScreenState extends State<CreateBillScreen> {
 
   List<String> billSplitMembers = [];
   List<String> billeachAmount = [];
+  List<String> billPaidByMembers = [];
   int _sum = 0;
 
   bool _isBtnSaveTapped = false;
+
+  @override
+  void initState() {
+    // addMyProfileTopaidMembers();
+    super.initState();
+  }
+
+  addMyProfileTopaidMembers() async {
+    // String countryCode = "+91";
+
+    // print()
+  }
 
   _showBillTypeBottomSheet() {
     showModalBottomSheet(
@@ -133,6 +151,18 @@ class _CreateBillScreenState extends State<CreateBillScreen> {
         amoutbyMember[members] = eachAmount.toString();
       }
     }
+
+    String? ph = _auth.currentUser!.uid;
+    // print(ph);
+    // UserData? me = await searchUserByUid(uid: ph);
+    // print(me);
+    if (billSplitMembers.contains(ph)) {
+      billPaidByMembers.add(ph);
+      print(billPaidByMembers);
+    } else {
+      print('user is null');
+    }
+
     // fetch details
     String billName = billNameController.text;
     num? billAmount = num.tryParse(billAmountController.text);
@@ -185,14 +215,14 @@ class _CreateBillScreenState extends State<CreateBillScreen> {
       });
 
       DocumentSnapshot? createdBill = await createBill(
-        groupId: widget.docid,
-        billName: billName,
-        billAmount: billAmount,
-        billType: billType,
-        billTypeImage: billTypeImage,
-        billMembers: billSplitMembers,
-        billeachAmount: amoutbyMember,
-      );
+          groupId: widget.docid,
+          billName: billName,
+          billAmount: billAmount,
+          billType: billType,
+          billTypeImage: billTypeImage,
+          billMembers: billSplitMembers,
+          billeachAmount: amoutbyMember,
+          billPaidByMembers: billPaidByMembers);
 
       if (createdBill != null) {
         Map<String, dynamic>? createdBillData =

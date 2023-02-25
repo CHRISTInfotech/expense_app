@@ -21,7 +21,7 @@ class BudgetProgress extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text('There is no budget set for this month'),
+          const Text('There is no budget set for this month'),
           
           
           GestureDetector(
@@ -31,12 +31,12 @@ class BudgetProgress extends StatelessWidget {
             child: Container(
               height: 10.0 * 5.5,
               width: MediaQuery.of(context).size.width * 0.6,
-              margin: EdgeInsets.symmetric(vertical: 15),
+              margin: const EdgeInsets.symmetric(vertical: 15),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0 * 3),
                 color: kLightPrimary,
               ),
-              child: Center(
+              child: const Center(
                 child: Text(
                   "Set Budget",
                   style: TextStyle(
@@ -58,7 +58,7 @@ class BudgetProgress extends StatelessWidget {
       onTap: () => showBudget(context),
       child: Container(
         // height: 10.0 * 5.5,
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0 * 1.5),
           color: kLightPrimary,
@@ -72,7 +72,7 @@ class BudgetProgress extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text("$monthAbbr $yearABBR",
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold
                   ),
@@ -81,13 +81,13 @@ class BudgetProgress extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Text("\u{20B9}${globals.monthExpense.toStringAsFixed(2)}",
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         
                       ),
                     ),
                     Text(" / \u{20B9}${globals.budget.limit.toStringAsFixed(2)}",
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold
                       ),

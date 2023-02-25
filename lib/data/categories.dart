@@ -47,7 +47,7 @@ Map<String, Map<String, IconData>> getCate() {
     // should print notes array
     List<dynamic> incomecat = value.data()!["income"];
     List<dynamic> expensecat = value.data()!["expense"];
-    List<dynamic> transferecat = value.data()!["transfer"];
+    List<dynamic> transferecat = value.data()!["transfer"]??[];
     for (final note in incomecat) {
       // incomecat.add(note['name']);
       incomeCategories[note['name']] = inicon;

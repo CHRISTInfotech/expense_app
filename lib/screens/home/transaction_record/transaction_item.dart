@@ -31,7 +31,7 @@ class TransactionItem extends StatelessWidget {
         borderRadius: 8,
         child: ShaderMask(
           shaderCallback: (Rect bounds) {
-            return LinearGradient(
+            return const LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
@@ -53,13 +53,13 @@ class TransactionItem extends StatelessWidget {
       ),
       title: Text(
         transaction.title,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.w900,
         ),
       ),
       subtitle: Text(
         DateFormat.MMMEd().format(transaction.date),
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.w300,
         ),
       ),

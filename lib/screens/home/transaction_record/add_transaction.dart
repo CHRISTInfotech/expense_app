@@ -57,6 +57,7 @@ class _AddTransactionState extends State<AddTransaction> {
   int _balance = 0;
   int _balance1 = 0;
   int _totalamount = 0;
+  int _totalamount1 = 0;
   String _title = '';
   DateTime _date = DateTime.now();
   String _selectedCard = '';
@@ -538,6 +539,13 @@ class _AddTransactionState extends State<AddTransaction> {
                                                 'expiry': _expiry,
                                                 'holderName': _holderName,
                                               };
+                                              var bankobj2 = {
+                                                'balance': _balance1.toString(),
+                                                'bankName': _bankName1,
+                                                'cardNumber': _cardNumber1,
+                                                'expiry': _expiry1,
+                                                'holderName': _holderName1,
+                                              };
                                               final FirebaseFirestore _db =
                                                   FirebaseFirestore.instance;
                                               final DocumentReference docRef =
@@ -560,7 +568,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                               docRef1.update({
                                                 'wallet':
                                                     FieldValue.arrayRemove(
-                                                        [bankobj1]),
+                                                        [bankobj2]),
                                                 // 'my-array': FieldValue.arrayUnion(),
                                               });
 
@@ -573,9 +581,9 @@ class _AddTransactionState extends State<AddTransaction> {
                                               //     (t) => identical(t, bankobj));
 
                                               BankCard bankobj4 = BankCard(
-                                                balance: oldbalance.toString(),
+                                                balance: _balance.toString(),
                                                 bankName: _bankName,
-                                                cardNumber: _selectedCard,
+                                                cardNumber: _cardNumber,
                                                 expiry: _date,
                                                 holderName: _holderName,
                                               );
@@ -595,61 +603,63 @@ class _AddTransactionState extends State<AddTransaction> {
                                                 balance:
                                                     _totalamount.toString(),
                                                 bankName: _bankName,
-                                                cardNumber: _selectedCard1,
+                                                cardNumber: _selectedCard,
                                                 expiry: _date,
                                                 holderName: _holderName,
                                               ));
 
-                                              BankCard bankobj3 = BankCard(
-                                                balance: oldbalance.toString(),
-                                                bankName: _bankName,
-                                                cardNumber: _selectedCard,
-                                                expiry: _date,
-                                                holderName: _holderName,
+                                              var bankobj3 = BankCard(
+                                                balance: _balance1.toString(),
+                                                bankName: _bankName1,
+                                                cardNumber: _cardNumber1,
+                                                expiry: _expiry1,
+                                                holderName: _holderName1,
                                               );
 
-                                              _totalamount = ((_balance) +
+                                              _totalamount1 = ((_balance1) +
                                                   int.parse(_amount));
 
-                                              DatabaseService(
-                                                      uid:
-                                                          globals.userData.uid!)
-                                                  .deleteBankCard(bankobj);
-                                              // print('object');
-                                              globals.wallet.removeWhere(
-                                                  (t) => identical(t, bankobj));
+                                              // DatabaseService(
+                                              //         uid:
+                                              //             globals.userData.uid!)
+                                              //     .deleteBankCard(bankobj);
+                                              // // print('object');
+                                              // globals.wallet.removeWhere(
+                                              //     (t) => identical(t, bankobj));
 
                                               DatabaseService(
                                                       uid:
                                                           globals.userData.uid!)
-                                                  .deleteBankCard(bankobj);
+                                                  .deleteBankCard(bankobj3);
 
                                               DatabaseService(
                                                       uid:
                                                           globals.userData.uid!)
                                                   .updateWallet(new BankCard(
                                                 balance:
-                                                    _totalamount.toString(),
-                                                bankName: _bankName,
-                                                cardNumber: _selectedCard,
-                                                expiry: _date,
-                                                holderName: _holderName,
+                                                    _totalamount1.toString(),
+                                                bankName: _bankName1,
+                                                cardNumber: _cardNumber1,
+                                                expiry: _expiry1,
+                                                holderName: _holderName1,
                                               ));
 
-                                              //Update DB record
-                                              await DatabaseService(
-                                                      uid:
-                                                          globals.userData.uid!)
-                                                  .updateTransactionList(
-                                                new TransactionRecord(
-                                                    type: _type,
-                                                    title: _title,
-                                                    amount:
-                                                        double.parse(_amount),
-                                                    date: _date,
-                                                    cardNumber: _selectedCard),
-                                              );
+                                              // //Update DB record
+                                              // await DatabaseService(
+                                              //         uid:
+                                              //             globals.userData.uid!)
+                                              //     .updateTransactionList(
+                                              //   new TransactionRecord(
+                                              //       type: _type,
+                                              //       title: _title,
+                                              //       amount:
+                                              //           double.parse(_amount),
+                                              //       date: _date,
+                                              //       cardNumber: _selectedCard),
+                                              // );
 
+                                              DatabaseService(uid: uid)
+                                                  .callApiPeriodically();
                                               // await DatabaseService(
                                               //         uid: globals.userData.uid!)
                                               //     .updateBalance(
@@ -665,6 +675,9 @@ class _AddTransactionState extends State<AddTransaction> {
                                               Navigator.of(globals.scaffoldKey
                                                       .currentContext!)
                                                   .pop();
+                                              // Navigator.of(globals.scaffoldKey
+                                              //         .currentContext!)
+                                              //     .pop();
 
                                               entry = alertOverlay(
                                                   AlertNotification(

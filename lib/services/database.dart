@@ -8,8 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:wallet_view/common/alert_dialog.dart';
 import 'package:wallet_view/data/categories.dart';
 import 'package:wallet_view/data/globals.dart';
-import 'package:wallet_view/models/Group_bill.dart';
+// import 'package:wallet_view/models/Group_bill.dart';
 import 'package:wallet_view/models/category.dart';
+import 'package:wallet_view/models/group_bill.dart';
 import 'package:wallet_view/models/group_model.dart';
 
 import '../models/bank_card.dart';

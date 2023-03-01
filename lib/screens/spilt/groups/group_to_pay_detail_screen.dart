@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wallet_view/common/alert_dialog.dart';
 import 'package:wallet_view/config/images.dart';
-import 'package:wallet_view/models/Group_bill.dart';
+import 'package:wallet_view/models/group_bill.dart';
 import 'package:wallet_view/models/user.dart';
 import 'package:wallet_view/screens/spilt/add_friends/components/bill_item_skeleton.dart';
 import 'package:wallet_view/screens/spilt/groups/bill_detail_screen.dart';

@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:wallet_view/config/images.dart';
-import 'package:wallet_view/models/Group_bill.dart';
+import 'package:wallet_view/models/group_bill.dart';
 import 'package:wallet_view/screens/spilt/groups/components/group_to_pay_bill_list_item.dart';
 import 'package:wallet_view/screens/spilt/groups/handlers/get_my_uid.dart';
 import 'package:wallet_view/services/database.dart';

@@ -1,41 +1,40 @@
 {
   "project_info": {
-    "project_number": "995398933121",
-    "firebase_url": "https://expense-app-c4499-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "expense-app-c4499",
-    "storage_bucket": "expense-app-c4499.appspot.com"
+    "project_number": "869698743095",
+    "project_id": "wallet-view",
+    "storage_bucket": "wallet-view.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:995398933121:android:07d92aaef838bcdcd50b80",
+        "mobilesdk_app_id": "1:869698743095:android:d060144cd031aa376148b2",
         "android_client_info": {
           "package_name": "walletview.example.walletview"
         }
       },
       "oauth_client": [
         {
-          "client_id": "995398933121-u4oquk8be5k0baalgub201c8rqrph5n2.apps.googleusercontent.com",
+          "client_id": "869698743095-f9m5bggnidtf4oj90hp1dqm7ugi0kaho.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDMkl06vNbTF1oKLTxT4jTTaSzoHIkJpvQ"
+          "current_key": "AIzaSyD723lkty80E_pH7XIrYSZx6Lv_9TzgcQw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "995398933121-u4oquk8be5k0baalgub201c8rqrph5n2.apps.googleusercontent.com",
+              "client_id": "869698743095-f9m5bggnidtf4oj90hp1dqm7ugi0kaho.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "995398933121-8ab4okh31283r1i4scfrvse5vn0rrd7t.apps.googleusercontent.com",
+              "client_id": "869698743095-r1dp0tue91oo2hoqh6nnvck48u2ton98.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.app"
+                "bundle_id": "com.example.xpense"
               }
             }
           ]

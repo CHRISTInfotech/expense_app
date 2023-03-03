@@ -33,12 +33,12 @@ class DatabaseService {
   final CollectionReference categeryCollection =
       FirebaseFirestore.instance.collection('categery');
 
-  void callApiPeriodically() {
-    Timer(Duration(seconds: 5), () {
-      createStreams();
-      callApiPeriodically();
-    });
-  }
+  // void callApiPeriodically() {
+  //   Timer(Duration(seconds: 5), () {
+  //     createStreams();
+  //     callApiPeriodically();
+  //   });
+  // }
 
 // add category to database
   Future createCategoryList() async {

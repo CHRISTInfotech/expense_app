@@ -109,8 +109,8 @@ class _EditBudgetState extends State<EditBudget> {
                                         .updateBudget(new Budget(
                                             limit: double.parse(_limit),
                                             month: _month));
-                                    DatabaseService(uid: globals.userData.uid!)
-                                        .callApiPeriodically();
+                                    // DatabaseService(uid: globals.userData.uid!)
+                                    //     .callApiPeriodically();
 
                                     setState(() => loading = true);
 

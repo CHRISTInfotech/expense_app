@@ -86,14 +86,14 @@ class _AddBudgetState extends State<AddBudget> {
                                         .updateBudget(new Budget(
                                             limit: double.parse(_limit),
                                             month: _month));
-                                    DatabaseService(uid: globals.userData.uid!)
-                                        .callApiPeriodically();
+                                    // DatabaseService(uid: globals.userData.uid!)
+                                    //     .callApiPeriodically();
 
                                     Navigator.of(
                                             globals.scaffoldKey.currentContext!)
                                         .pop();
-                                    DatabaseService(uid: globals.userData.uid!)
-                                        .callApiPeriodically();
+                                    // DatabaseService(uid: globals.userData.uid!)
+                                    //     .callApiPeriodically();
 
                                     entry = alertOverlay(
                                         AlertNotification(

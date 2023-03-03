@@ -114,7 +114,7 @@ class _AddTransactionState extends State<AddTransaction> {
 
     //Set default card number choice for dropdown
     _selectedCard = cards[0];
-    _selectedCard1 = cards[1];
+    _selectedCard1 = cards[0];
     getBalance();
   }
 
@@ -658,8 +658,6 @@ class _AddTransactionState extends State<AddTransaction> {
                                               //       cardNumber: _selectedCard),
                                               // );
 
-                                              DatabaseService(uid: uid)
-                                                  .callApiPeriodically();
                                               // await DatabaseService(
                                               //         uid: globals.userData.uid!)
                                               //     .updateBalance(

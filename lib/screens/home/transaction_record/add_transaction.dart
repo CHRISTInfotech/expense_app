@@ -54,6 +54,7 @@ class _AddTransactionState extends State<AddTransaction> {
   //Track form value
   String _type = 'expense';
   String _amount = '0';
+  String _desc = '';
   int _balance = 0;
   int _balance1 = 0;
   int _totalamount = 0;
@@ -114,7 +115,11 @@ class _AddTransactionState extends State<AddTransaction> {
 
     //Set default card number choice for dropdown
     _selectedCard = cards[0];
-    _selectedCard1 = cards[1];
+
+  
+      
+    
+    _selectedCard1 = cards[0];
     getBalance();
   }
 
@@ -748,7 +753,26 @@ class _AddTransactionState extends State<AddTransaction> {
                                             allow: true)
                                       ],
                                     ),
-
+///Description INPUT
+                                    FormInput(
+                                      hintText: 'Description',
+                                      color: (_type == 'expense')
+                                          ? kDarkPrimary
+                                          : kLightPrimary,
+                                      // initialVal: _title,
+                                      valHandler: (val) => val!.isEmpty
+                                          ? 'Enter an Description'
+                                          : null,
+                                      changeHandler: (val) =>
+                                          setState(() => _desc = val!),
+                                      inputType: TextInputType.text,
+                                      inputFormatter: [
+                                        // WhitelistingTextInputFormatter(RegExp(r'^(\d+)?\.?\d{0,2}')),
+                                        // FilteringTextInputFormatter(
+                                        //     RegExp(r'(^[1-9]\d*\.?\d{0,2})$'),
+                                        //     allow: true)
+                                      ],
+                                    ),
                                     ///CARD DROPDOWN SELECTION
                                     Container(
                                         margin:
@@ -990,6 +1014,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                                 new TransactionRecord(
                                                     type: _type,
                                                     title: _title,
+                                                    description: _desc,
                                                     amount:
                                                         double.parse(_amount),
                                                     date: _date,

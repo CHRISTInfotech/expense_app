@@ -72,23 +72,23 @@ class _SignInState extends State<SignIn> {
                             height: 60,
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: TextFormField(
-                                validator: (val) =>
-                                    val!.isEmpty ? 'Enter an email' : null,
-                                onChanged: (val) {
-                                  setState(() => email = val);
-                                },
-                                decoration: kFieldDecoration.copyWith(
-                                  suffixIcon: (email.isEmpty)
-                                      ? Icon(null)
-                                      : Icon(
-                                          Icons.check,
-                                          color: Color(0xff084ca8),
-                                          size: 24,
-                                        ),
-                                  hintText: 'Email',
-                                  hintStyle:
-                                      TextStyle(color: Color(0xffbec2c3)),
-                                )),
+                              validator: (val) =>
+                                  val!.isEmpty ? 'Enter an email' : null,
+                              onChanged: (val) {
+                                setState(() => email = val);
+                              },
+                              decoration: kFieldDecoration.copyWith(
+                                suffixIcon: (email.isEmpty)
+                                    ? Icon(null)
+                                    : Icon(
+                                        Icons.check,
+                                        color: Color(0xff084ca8),
+                                        size: 24,
+                                      ),
+                                hintText: 'Email',
+                                hintStyle: TextStyle(color: Color(0xffbec2c3)),
+                              ),
+                            ),
                           ),
 
                           SizedBox(height: 20),
@@ -169,7 +169,6 @@ class _SignInState extends State<SignIn> {
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                   
                                       children: <Widget>[
                                         Text('Get Started',
                                             style: TextStyle(

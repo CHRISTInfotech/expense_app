@@ -288,7 +288,8 @@ class DatabaseService {
           'title': transactionRecord.title,
           'amount': transactionRecord.amount,
           'date': transactionRecord.date,
-          'cardNumber': transactionRecord.cardNumber
+          'cardNumber': transactionRecord.cardNumber,
+          'description':transactionRecord.description,
         }
       ])
     });
@@ -303,7 +304,9 @@ class DatabaseService {
           'title': transactionRecord.title,
           'amount': transactionRecord.amount,
           'date': transactionRecord.date,
-          'cardNumber': transactionRecord.cardNumber
+          'cardNumber': transactionRecord.cardNumber,
+          'description':transactionRecord.description,
+
         }
       ])
     });
@@ -466,7 +469,7 @@ Future<UserData?> searchUserByPhone({required String phone}) async {
   try {
     final querySnap = await _firestore
         .collection("users")
-        .where("fullName", isEqualTo: phone)
+        .where("phoneNumber", isEqualTo: phone)
         .limit(1)
         .get();
 

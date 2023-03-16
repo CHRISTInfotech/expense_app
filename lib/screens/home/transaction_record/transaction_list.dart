@@ -25,6 +25,8 @@ class TransactionList extends StatelessWidget {
     return (transactions == null || transactions.length <= 0) 
     ? const Center( child: Text('There are no transactions.') )
     : ListView.builder(
+      padding: EdgeInsets.only(bottom: 9),
+      
       itemCount: transactions.length,
       itemBuilder: (BuildContext ctxt, int index){
         return GestureDetector(

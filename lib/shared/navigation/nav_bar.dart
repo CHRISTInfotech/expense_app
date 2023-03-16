@@ -311,6 +311,7 @@ class _NavBarLayoutState extends State<NavBarLayout> {
             title: transaction['title'],
             amount: double.parse(transaction['amount'].toString()),
             date: DateTime.parse(transaction['date'].toDate().toString()),
+            description: transaction['description'],
             cardNumber: transaction['cardNumber']);
 
         // print("TRANSACTION RECORD DETECTED: $tr");
@@ -419,6 +420,7 @@ class _NavBarLayoutState extends State<NavBarLayout> {
             title: transaction['title'],
             amount: double.parse(transaction['amount'].toString()),
             date: DateTime.parse(transaction['date'].toDate().toString()),
+            description: transaction['description'],
             cardNumber: transaction['cardNumber']);
 
         // print("TRANSACTION RECORD DETECTED: $tr");

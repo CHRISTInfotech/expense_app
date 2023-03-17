@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+
 
 class TransactionRecord{
 
@@ -7,13 +7,15 @@ class TransactionRecord{
   final DateTime date;
   final double amount;
   final String cardNumber;
+  final String? description;
 
-  TransactionRecord({
+  TransactionRecord( {
     required this.type,
     required this.title,
     required this.amount,
     required this.date,
-    required this.cardNumber
+    required this.cardNumber,
+     this.description,
   });
 
 }

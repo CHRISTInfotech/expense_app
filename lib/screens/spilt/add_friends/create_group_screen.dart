@@ -1,8 +1,10 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:wallet_view/common/alert_dialog.dart';
 import 'package:wallet_view/data/globals.dart';
@@ -122,14 +124,28 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
     // print()
   }
 
+void openSMSApp(String phone) async {
+          // String phoneNumber=phone;
+          String message="Hi,\n Your friend is inviting you to join Wallet View; please join Wallet View to track your expenses easily. You can download Wallet View from https://qr.page/g/2WKg37uBmW ";
+           final String encodedMessage = Uri.encodeComponent(message);
+          final uri = 'sms:$phone?body=$encodedMessage';
+
+          if (await canLaunchUrl(Uri.parse(uri))) {
+            // final uri = 'sms:$phone?body=hello%20there';
+            await launchUrl(Uri.parse(uri));
+          } else {
+            throw 'Could not launch $uri';
+          }
+        }
+
   _searchAndAddMember(String searchValue) async {
     // search user and add
 
     String countryCode = "+91";
+    String phone = "$countryCode$searchValue";
 
     if (searchValue.isNotEmpty) {
-      UserData? user =
-          await searchUserByPhone(phone: "$searchValue");
+      UserData? user = await searchUserByPhone(phone: "$phone");
       if (user != null) {
         // user found
         searchMemberTextController.clear();
@@ -144,11 +160,14 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         }
       } else {
         // user not found
-        showAlertDialog(
-          context: context,
-          title: "oops!",
-          description: "No user found with this Phone Number.",
-        );
+        print(phone);
+        openSMSApp(phone);
+      
+        // showAlertDialog(
+        //   context: context,
+        //   title: "oops!",
+        //   description: "No user found with this Phone Number.",
+        // );
       }
     } else {
       showAlertDialog(
@@ -315,13 +334,13 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
               onSubmitted: (searchValue) {
                 _searchAndAddMember(searchValue);
               },
-              keyboardType: TextInputType.name,
+              keyboardType: TextInputType.phone,
               textInputAction: TextInputAction.search,
               enableSuggestions: true,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.search_outlined),
                 border: InputBorder.none,
-                hintText: "Write Name to search...",
+                hintText: "Write Phone Number to search...",
               ),
             ),
           ),

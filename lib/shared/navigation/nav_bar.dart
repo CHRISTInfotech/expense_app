@@ -310,6 +310,7 @@ class _NavBarLayoutState extends State<NavBarLayout> {
             title: transaction['title'],
             amount: double.parse(transaction['amount'].toString()),
             date: DateTime.parse(transaction['date'].toDate().toString()),
+            description: transaction['description'],
             cardNumber: transaction['cardNumber']);
 
         // print("TRANSACTION RECORD DETECTED: $tr");
@@ -378,120 +379,132 @@ class _NavBarLayoutState extends State<NavBarLayout> {
     });
   }
 
-  // getData() {
-  //   final userStream = DatabaseService(uid: widget.user.uid).userData;
+  getData() {
+    final userStream = DatabaseService(uid: widget.user.uid).userData;
 
-  //   userSubscription = userStream.listen((userData) async {
-  //     setState(() {
-  //       userData = userData;
-  //       // loading = false;
-  //     });
-  //     globals.userData = userData;
-  //   });
+    userSubscription = userStream.listen((userData) async {
+      setState(() {
+        userData = userData;
+        // loading = false;
+      });
+      globals.userData = userData;
+    });
 
-  //   final budgetStream = DatabaseService(uid: widget.user.uid).budget;
+    final budgetStream = DatabaseService(uid: widget.user.uid).budget;
 
-  //   budgetSubscription = budgetStream.listen((budget) async {
-  //     setState(() {
-  //       budget = budget;
-  //       // loading = false;
-  //     });
-  //     globals.budget = budget;
-  //   });
+    budgetSubscription = budgetStream.listen((budget) async {
+      setState(() {
+        budget = budget;
+        // loading = false;
+      });
+      globals.budget = budget;
+    });
 
-  //   final transactionListStream =
-  //       DatabaseService(uid: widget.user.uid).transactionRecord;
+    final transactionListStream =
+        DatabaseService(uid: widget.user.uid).transactionRecord;
 
-  //   transactionSubscription = transactionListStream.listen((tList) async {
-  //     setState(() {
-  //       transactionList = tList;
-  //       // loading = false;
-  //     });
+    transactionSubscription = transactionListStream.listen((tList) async {
+      setState(() {
+        transactionList = tList;
+        // loading = false;
+      });
 
-  //     List<TransactionRecord> transactions = <TransactionRecord>[];
-  //     var income = 0.0;
-  //     var expense = 0.0;
-  //     var balance = 0.0;
-  //     for (var transaction in transactionList!) {
-  //       TransactionRecord tr = new TransactionRecord(
-  //           type: transaction['type'],
-  //           title: transaction['title'],
-  //           amount: double.parse(transaction['amount'].toString()),
-  //           date: DateTime.parse(transaction['date'].toDate().toString()),
-  //           cardNumber: transaction['cardNumber']);
+      List<TransactionRecord> transactions = <TransactionRecord>[];
+      var income = 0.0;
+      var expense = 0.0;
+      var balance = 0.0;
+      for (var transaction in transactionList!) {
+        TransactionRecord tr = new TransactionRecord(
+            type: transaction['type'],
+            title: transaction['title'],
+            amount: double.parse(transaction['amount'].toString()),
+            date: DateTime.parse(transaction['date'].toDate().toString()),
+            description: transaction['description'],
+            cardNumber: transaction['cardNumber']);
+      // List<TransactionRecord> transactions = <TransactionRecord>[];
+      // var income = 0.0;
+      // var expense = 0.0;
+      // var balance = 0.0;
+      // for (var transaction in transactionList!) {
+      //   TransactionRecord tr = new TransactionRecord(
+      //       type: transaction['type'],
+      //       title: transaction['title'],
+      //       amount: double.parse(transaction['amount'].toString()),
+      //       date: DateTime.parse(transaction['date'].toDate().toString()),
+      //       cardNumber: transaction['cardNumber']);
 
-  //       // print("TRANSACTION RECORD DETECTED: $tr");
+        // print("TRANSACTION RECORD DETECTED: $tr");
 
-  //       if (tr.type == "income") {
-  //         var amt = tr.amount;
-  //         income += amt;
-  //       } else {
-  //         var amt = tr.amount;
-  //         expense += amt;
-  //       }
-  //       balance = income + expense;
-  //       globals.balance = balance;
-  //       transactions.add(tr);
-  //     }
+        if (tr.type == "income") {
+          var amt = tr.amount;
+          income += amt;
+        } else {
+          var amt = tr.amount;
+          expense += amt;
+        }
+        balance = income + expense;
+        globals.balance = balance;
+        transactions.add(tr);
+      }
 
-  //     //Only append the values not found in the existing global variable
-  //     globals.transactions = transactions
-  //         .toSet()
-  //         .difference(globals.transactions.toSet())
-  //         .toList();
-  //     globals.income = (transactions.where((t) => t.type == "income").toList())
-  //         .fold(0, (i, j) => i + j.amount);
-  //     globals.expense =
-  //         (transactions.where((t) => t.type == "expense").toList())
-  //             .fold(0, (i, j) => i + j.amount);
-  //     globals.monthIncome = (transactions
-  //             .where((t) =>
-  //                 t.type == "income" && t.date.month == DateTime.now().month)
-  //             .toList())
-  //         .fold(0, (i, j) => i + j.amount);
-  //     globals.monthExpense = (transactions
-  //             .where((t) =>
-  //                 t.type == "expense" && t.date.month == DateTime.now().month)
-  //             .toList())
-  //         .fold(0, (i, j) => i + j.amount);
-  //     globals.monthTotal = globals.monthIncome + globals.monthExpense;
-  //   });
+      //Only append the values not found in the existing global variable
+      globals.transactions = transactions
+          .toSet()
+          .difference(globals.transactions.toSet())
+          .toList();
+      globals.income = (transactions.where((t) => t.type == "income").toList())
+          .fold(0, (i, j) => i + j.amount);
+      globals.expense =
+          (transactions.where((t) => t.type == "expense").toList())
+              .fold(0, (i, j) => i + j.amount);
+      globals.monthIncome = (transactions
+              .where((t) =>
+                  t.type == "income" && t.date.month == DateTime.now().month)
+              .toList())
+          .fold(0, (i, j) => i + j.amount);
+      globals.monthExpense = (transactions
+              .where((t) =>
+                  t.type == "expense" && t.date.month == DateTime.now().month)
+              .toList())
+          .fold(0, (i, j) => i + j.amount);
+      globals.monthTotal = globals.monthIncome + globals.monthExpense;
+    });
 
-  //   final walletStream = DatabaseService(uid: widget.user.uid).wallet;
+    final walletStream = DatabaseService(uid: widget.user.uid).wallet;
 
-  //   walletSubscription = walletStream.listen((wallet) async {
-  //     setState(() {
-  //       wallet = wallet;
-  //       loading = false;
-  //     });
+    walletSubscription = walletStream.listen((wallet) async {
+      setState(() {
+        wallet = wallet;
+        loading = false;
+      });
 
-  //     List<BankCard> cards = <BankCard>[];
+      List<BankCard> cards = <BankCard>[];
 
-  //     for (var card in wallet) {
-  //       // ignore: unnecessary_new
-  //       BankCard bc = new BankCard(
-  //         bankName: card['bankName'],
-  //         cardNumber: card['cardNumber'],
-  //         holderName: card['holderName'],
-  //         expiry: DateTime.parse(card['expiry'].toDate().toString()),
-  //         balance: card['balance'].toString(),
-  //       );
+      for (var card in wallet) {
+        // ignore: unnecessary_new
+        BankCard bc = new BankCard(
+          bankName: card['bankName'],
+          cardNumber: card['cardNumber'],
+          holderName: card['holderName'],
+          expiry: DateTime.parse(card['expiry'].toDate().toString()),
+          balance: card['balance'].toString(),
+        );
 
-  //       cards.add(bc);
-  //     }
+        cards.add(bc);
+      }
 
-  //     //Only append the values not found in the existing global variable
-  //     globals.wallet =
-  //         cards.toSet().difference(globals.wallet.toSet()).toList();
-  //   });
-  // }
+      //Only append the values not found in the existing global variable
+      globals.wallet =
+          cards.toSet().difference(globals.wallet.toSet()).toList();
+    });
+  }
 
-  // void callApiPeriodically() {
-  //   Timer(Duration(seconds: 5), () {
-  //     getData();
-  //     callApiPeriodically();
-  //   });
-  // }
+  void callApiPeriodically() {
+    Timer(Duration(seconds: 5), () {
+      getData();
+      callApiPeriodically();
+    });
+  }
 
   @override
   void dispose() {

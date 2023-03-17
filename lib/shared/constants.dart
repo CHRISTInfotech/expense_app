@@ -21,6 +21,8 @@ void launchMailClient() async {
   }
 }
 
+
+
 void copyMailClient(GlobalKey<ScaffoldMessengerState> key) async {
   await Clipboard.setData(const ClipboardData(text: kDevEmail));
   key.currentState!.showSnackBar(const SnackBar(

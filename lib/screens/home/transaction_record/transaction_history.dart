@@ -14,7 +14,10 @@ class TransactionHistory extends StatelessWidget {
       children: <Widget>[
         ///HISTORY
         sectionTitle("Transactions History"),
-        Expanded( child: TransactionList(transactions: globals.transactions) ),
+        Padding(
+          padding: EdgeInsets.only(bottom: 10),
+        ),
+        Expanded(child: TransactionList(transactions: globals.transactions)),
 
         ///ADD TRANSACTION BUTTON
         Container(

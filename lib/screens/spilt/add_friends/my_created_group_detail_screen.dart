@@ -95,6 +95,7 @@ class _MyCreatedGroupDetailScreenState
                 context,
                 MaterialPageRoute(
                   builder: (context) => GroupInformationScreen(
+                    docid: widget.docid,
                       groupData: widget.groupData,
                       groupName: widget.screenTitle),
                 ),

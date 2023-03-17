@@ -463,6 +463,36 @@ Future<DocumentSnapshot?> createGroup({
     throw Exception("Error while creating group.\n$e");
   }
 }
+// update group
+
+Future<DocumentSnapshot?> updateGroup({
+  required String docId,
+  required List<String?> members,
+  required List<Map<String, dynamic>> membersMeta,
+}) async {
+  try {
+    User? user = _auth.currentUser;
+
+    if (user != null) {
+     
+      
+          await _firestore.collection("groups").doc(docId).update({
+        'members': members,
+        'membersMeta': membersMeta,
+        // 'date': FieldValue.serverTimestamp(),
+        
+       
+      }).then((value) => print('sussess')).catchError((error) => print('Failed: $error'));
+
+      // return await documentReference.get();
+    } else {
+      throw Exception("Unauthorized access!");
+    }
+  } catch (e) {
+    log("$e");
+    throw Exception("Error while creating group.\n$e");
+  }
+}
 
 // search User
 
@@ -552,7 +582,6 @@ Future<List<MyGroupModel>> getMyGroups() async {
         List<MyGroupModel> docs = [];
         for (var doc in querySnapshot.docs) {
           Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
-          print(data);
           if (data != null) {
             docs.add(MyGroupModel(id: doc.id, data: data));
           }
@@ -567,7 +596,6 @@ Future<List<MyGroupModel>> getMyGroups() async {
   } catch (e) {
     log(e.toString());
 
-    print(e.toString());
     throw Exception("error while getting my groups!hai\n$e");
   }
 }
@@ -595,7 +623,6 @@ Future<List<MyGroupModel>?> getGroupsToPay({int limit = 10}) async {
           Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
           if (data != null) {
             docs.add(MyGroupModel(id: doc.id, data: data));
-            print("if working");
           }
         }
         // print(docs);

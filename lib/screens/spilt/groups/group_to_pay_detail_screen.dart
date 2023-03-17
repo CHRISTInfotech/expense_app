@@ -364,8 +364,10 @@ class _GroupToPayDetailScreenState extends State<GroupToPayDetailScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => GroupInformationScreen(
-                      groupData: widget.groupData,
-                      groupName: widget.screenTitle),
+                    groupData: widget.groupData,
+                    groupName: widget.screenTitle,
+                    docid: widget.docid,
+                  ),
                 ),
               );
             },

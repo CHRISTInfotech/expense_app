@@ -27,14 +27,15 @@ class TransactionItem extends StatelessWidget {
 // }
     return Container(
       padding: EdgeInsets.all(10),
-      decoration: const BoxDecoration(
-        boxShadow: <BoxShadow>[
-            BoxShadow(
-                color: Colors.black54,
-                blurRadius: 7.0,
-                offset: Offset(0.0, 0.05)
-            )
-          ],
+      decoration:  BoxDecoration(
+    //     boxShadow:  <BoxShadow> [
+    //   BoxShadow(
+    //     color: Colors.black.withOpacity(0.2),
+    //     blurRadius: 5.0,
+    //     spreadRadius: 2.0,
+    //     offset: Offset(5.0, 0),
+    //   ),
+    // ],
           color: Colors.white,
         // border: Border(
         //   bottom: BorderSide(),

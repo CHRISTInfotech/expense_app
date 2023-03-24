@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:wallet_view/screens/spilt/groups/add_new_members.dart';
+import 'package:wallet_view/shared/theme.dart';
 
 class GroupInformationScreen extends StatelessWidget {
   final String groupName;
@@ -28,8 +29,7 @@ class GroupInformationScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
           children: [
-            Expanded
-            (
+            Expanded(
               child: SizedBox(
                 child: ListView(
                   children: [
@@ -50,13 +50,13 @@ class GroupInformationScreen extends StatelessWidget {
               ),
             ),
             MaterialButton(
-              height: 50,
-              color: Color.fromARGB(255, 216, 210, 210),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-                  12,
-                ),
-              ),
+              // height: 50,
+              // color: Color.fromARGB(255, 216, 210, 210),
+              // shape: RoundedRectangleBorder(
+              //   borderRadius: BorderRadius.circular(
+              //     12,
+              //   ),
+              // ),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -68,14 +68,41 @@ class GroupInformationScreen extends StatelessWidget {
                   ),
                 );
               },
-              child: Text(
-                'Add Members',
-                style: TextStyle(
-                  color: Color.fromARGB(255, 209, 200, 118),
+              child: Container(
+                width: 200,
+                height: 60,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(35),
+                  gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [kLightPrimary, kDarkPrimary]),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey.shade500,
+                        blurRadius: 5,
+                        offset: Offset(2, 2))
+                  ],
+                ),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('Add Members',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white)),
+                      SizedBox(width: 15),
+                      Icon(Icons.arrow_forward, color: Colors.white, size: 24),
+                    ],
+                  ),
                 ),
               ),
             ),
-            SizedBox(height: 100,)
+            SizedBox(
+              height: 100,
+            )
           ],
         ),
       ),

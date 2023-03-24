@@ -53,7 +53,7 @@ class _EditTransactionState extends State<EditTransaction> {
   //Track form value
   String _type = 'expense';
   String _amount = '0.00';
-  String _desc = '';
+  String ?_desc = '';
   String _title = '';
   DateTime _date = DateTime.now();
   String _selectedCard = '';
@@ -79,14 +79,14 @@ class _EditTransactionState extends State<EditTransaction> {
   }
 
   @override
-  void initState() {
+  void initState() { 
     super.initState();
 
     // _type = widget.transactionRecord.type;
     _amount = widget.transactionRecord.amount.toStringAsFixed(2);
     _title = widget.transactionRecord.title;
     _date = widget.transactionRecord.date;
-    _desc = widget.transactionRecord.description!;
+    _desc = widget.transactionRecord.description;
 
     //Retrieve category icon from defined map
     categories.categories[widget.transactionRecord.type]!.forEach((key, value) {
@@ -262,7 +262,7 @@ class _EditTransactionState extends State<EditTransaction> {
                                     ? 'Enter an Description'
                                     : null,
                                 changeHandler: (val) =>
-                                    setState(() => _desc = val!),
+                                    setState(() => _desc = val),
                                 inputType: TextInputType.text,
                                 // inputFormatter: [
                                 //     // WhitelistingTextInputFormatter(RegExp(r'^(\d+)?\.?\d{0,2}')),

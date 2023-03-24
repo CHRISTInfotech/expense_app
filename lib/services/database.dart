@@ -467,8 +467,8 @@ Future<DocumentSnapshot?> createGroup({
 
 Future<DocumentSnapshot?> updateGroup({
   required String docId,
-  required List<String?> members,
-  required List<Map<String, dynamic>> membersMeta,
+  required List<dynamic> members,
+  required List< dynamic> membersMeta,
 }) async {
   try {
     User? user = _auth.currentUser;
@@ -476,13 +476,15 @@ Future<DocumentSnapshot?> updateGroup({
     if (user != null) {
      
       
-          await _firestore.collection("groups").doc(docId).update({
+        return  await _firestore.collection("groups").doc(docId).update({
         'members': members,
         'membersMeta': membersMeta,
         // 'date': FieldValue.serverTimestamp(),
         
        
-      }).then((value) => print('sussess')).catchError((error) => print('Failed: $error'));
+      }).then((value) {
+        print('sucess');
+      }).catchError((error) => print('Failed: $error'));
 
       // return await documentReference.get();
     } else {

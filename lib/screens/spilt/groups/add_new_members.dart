@@ -26,23 +26,23 @@ class _AddNewMembersState extends State<AddNewMembers> {
   String groupID = '';
   final List<UserData> groupMembers = [];
   List<dynamic> members = [];
-  List<Map<String, dynamic>> membersMeta = [];
+  var membersMeta = [];
 
+String number='';
   bool _isBtnSaveTapped = false;
 
   @override
   void initState() {
     setState(() {
       members = widget.groupData["members"];
-    membersMeta = widget.groupData["membersMeta"];
-    groupID = widget.docid;
+      membersMeta = widget.groupData["membersMeta"];
+      groupID = widget.docid;
     });
-    
-    print(members);
-    print(membersMeta);
-    print(groupID);
-    super.initState();
 
+    print(members);
+    // print(membersMeta);
+    // print(groupID);
+    super.initState();
   }
 
   void openSMSApp(String phone) async {
@@ -82,7 +82,7 @@ class _AddNewMembersState extends State<AddNewMembers> {
         }
       } else {
         // user not found
-        print(phone);
+        // print(phone);
         openSMSApp(phone);
 
         // showAlertDialog(
@@ -117,51 +117,87 @@ class _AddNewMembersState extends State<AddNewMembers> {
       // }
 
       // check if there is at least 2 group members
-      if (groupMembers.length < 2) {
+      // if (membersMeta.length < 2) {
+      //   showAlertDialog(
+      //     context: context,
+      //     title: "oops",
+      //     description: "Please add atleast 1 more Member to create Group.",
+      //   );
+      //   return;
+      // }
+//  String countryCode = "+91";
+//     String phone = "$countryCode$number";
+//     print(phone);
+//  UserData? user = await searchUserByPhone(phone: "$phone");
+//     var userid=user!.uid;
+for (var userid in groupMembers) {
+  
+
+       if (members.contains(userid) ) {
         showAlertDialog(
           context: context,
           title: "oops",
-          description: "Please add atleast 1 more Member to create Group.",
+          description: "This user is Already a Member to this Group.",
         );
         return;
       }
+}
 
       // prepare array only of UID of Members
-      List<String?> membersUID = [];
+      List<String> membersUID = [];
       List<Map<String, dynamic>> memberss = [];
 
       for (var member in groupMembers) {
-        membersUID.add(member.uid);
-        // members.add(member.uid!);
+        print(member.uid);
+          if (members.contains(member.uid) ) {
+            setState(() {
+            groupMembers.remove(member);
+              
+            });
+        showAlertDialog(
+          context: context,
+          title: "oops",
+          description: "This user is Already a Member to this Group.",
+        );
+        return;
+      }
+      else{
+        membersUID.add(member.uid!);
+        members.add(member.uid!);
         memberss.add({
           'name': member.fullName,
           'uid': member.uid,
           'phoneNumber': member.phoneNumber,
           'profileImage': member.avatar,
         });
-        // membersMeta.add({
-        //   'name': member.fullName,
-        //   'uid': member.uid,
-        //   'phoneNumber': member.phoneNumber,
-        //   'profileImage': member.avatar,
-        // });
+        membersMeta.add({
+          'name': member.fullName,
+          'uid': member.uid,
+          'phoneNumber': member.phoneNumber,
+          'profileImage': member.avatar,
+        });
+      }
       }
 
       setState(() {
         _isBtnSaveTapped = true;
       });
 
+      // final res='';
+
       ScaffoldMessengerState scaffoldMessengerState =
           ScaffoldMessenger.of(context);
       NavigatorState navigatorState = Navigator.of(context);
 
-      final res = await updateGroup(
+     await updateGroup(
         docId: groupID,
-        membersMeta: memberss,
-        members: membersUID,
+        membersMeta: membersMeta,
+        members: members,
       );
+// if (res!=null) {
+  
 
-      if (res != null) {
+     
         // List<MyGroupModel> myGroups;
         // var a= res.data()!;
         // Map<String, dynamic>? newlyCreatedGroupData =;
@@ -192,7 +228,7 @@ class _AddNewMembersState extends State<AddNewMembers> {
           ),
         );
         navigatorState.pop();
-      }
+    // }
 
       setState(() {
         _isBtnSaveTapped = false;
@@ -215,73 +251,78 @@ class _AddNewMembersState extends State<AddNewMembers> {
 
   @override
   Widget build(BuildContext context) {
-    List<dynamic> members = widget.groupData["members"] ?? [];
-    List<Map<String, dynamic>> membersMeta =
-        widget.groupData["membersMeta"] ?? [];
+    // List<dynamic> members = widget.groupData["members"] ?? [];
+    // List<Map<String, dynamic>> membersMeta =
+    //     widget.groupData["membersMeta"] ?? [];
     return Scaffold(
         appBar: AppBar(
           title: const Text("Add Group Members"),
         ),
-        body: ListView(
-          children: [
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 30),
-              child: const Text("Group Members"),
-            ),
-            const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              margin: const EdgeInsets.symmetric(horizontal: 30),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF2F2F2),
-                borderRadius: BorderRadius.circular(12),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView(
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 30),
+                child: const Text("Group Members"),
               ),
-              child: TextField(
-                controller: searchMemberTextController,
-                onSubmitted: (searchValue) {
-                  _searchAndAddMember(searchValue);
-                },
-                keyboardType: TextInputType.phone,
-                textInputAction: TextInputAction.search,
-                enableSuggestions: true,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.search_outlined),
-                  border: InputBorder.none,
-                  hintText: "Write Phone Number to search...",
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 30),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF2F2F2),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: TextField(
+                  controller: searchMemberTextController,
+                  onSubmitted: (searchValue) {
+                    _searchAndAddMember(searchValue);
+                    number=searchValue;
+                  },
+
+                  keyboardType: TextInputType.phone,
+                  textInputAction: TextInputAction.search,
+                  enableSuggestions: true,
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.search_outlined),
+                    border: InputBorder.none,
+                    hintText: "Write Phone Number to search...",
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 26),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-              margin: const EdgeInsets.symmetric(horizontal: 30),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF2F2F2),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: ListView.separated(
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                itemBuilder: (context, index) => GroupMemberListItem(
-                  key: Key(groupMembers[index].uid!),
-                  name: groupMembers[index].fullName!,
-                  profileImage: groupMembers[index].avatar!,
-                  phoneNumber: groupMembers[index].phoneNumber!,
+              const SizedBox(height: 26),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                margin: const EdgeInsets.symmetric(horizontal: 30),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF2F2F2),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                separatorBuilder: (context, index) => const Divider(),
-                itemCount: groupMembers.length,
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
+                  itemBuilder: (context, index) => GroupMemberListItem(
+                    key: Key(groupMembers[index].uid!),
+                    name: groupMembers[index].fullName!,
+                    profileImage: groupMembers[index].avatar!,
+                    phoneNumber: groupMembers[index].phoneNumber!,
+                  ),
+                  separatorBuilder: (context, index) => const Divider(),
+                  itemCount: groupMembers.length,
+                ),
               ),
-            ),
-            const SizedBox(height: 32),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.symmetric(horizontal: 30),
-              child: ElevatedButton(
-                onPressed: _isBtnSaveTapped ? null : _btnSaveTap,
-                child: Text(_isBtnSaveTapped ? "Please wait..." : "save"),
+              const SizedBox(height: 32),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.symmetric(horizontal: 30),
+                child: ElevatedButton(
+                  onPressed: _isBtnSaveTapped ? null : _btnSaveTap,
+                  child: Text(_isBtnSaveTapped ? "Please wait..." : "save"),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 }

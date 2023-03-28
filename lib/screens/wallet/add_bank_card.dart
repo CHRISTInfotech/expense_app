@@ -149,11 +149,11 @@ class _AddBankCardState extends State<AddBankCard> {
                           //         : null,
                           changeHandler: (val) =>
                               setState(() => _holderName = val!),
-                          inputFormatter: [
-                            FilteringTextInputFormatter(
-                                RegExp(r'^([a-zA-Z][a-zA-Z]*) ?[a-zA-Z]*$'),
-                                allow: true),
-                          ],
+                          // inputFormatter: [
+                          //   FilteringTextInputFormatter(
+                          //       RegExp(r'^([a-zA-Z][a-zA-Z]*) ?[a-zA-Z]*$'),
+                          //       allow: true),
+                          // ],
                         ),
 
                         ///DATE SELECTION

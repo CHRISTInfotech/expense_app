@@ -149,8 +149,8 @@ class _AddCategoryState extends State<AddCategory> {
                   inputType: TextInputType.text,
                   inputFormatter: [
                     // WhitelistingTextInputFormatter(RegExp(r'^(\d+)?\.?\d{0,2}')),
-                    FilteringTextInputFormatter(RegExp(r'^[A-Za-z0-9_.]+$'),
-                        allow: true)
+                    // FilteringTextInputFormatter(RegExp(r'^[A-Za-z0-9_.]+$'),
+                    //     allow: true)
                   ],
                 ),
 

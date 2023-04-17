@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:wallet_view/data/categories.dart';
 
 import 'package:wallet_view/models/category.dart';
+import 'package:wallet_view/shared/navigation/nav_bar.dart';
 
 import '../../../services/database.dart';
 import '../../../shared/notification/alert_notification.dart';
@@ -234,12 +235,21 @@ class _AddCategoryState extends State<AddCategory> {
                           }
 
                           //Clear Navigation stack and return to Home
-                          // Navigator.of(context).pushNamedAndRemoveUntil(
-                          //     "/", (Route<dynamic> route) => false);
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              "/", (Route<dynamic> route) => false);
 
-                          Navigator.of(globals.scaffoldKey.currentContext!)
-                              .pop();
-
+                          Timer(
+                                                  Duration(seconds: 3), () {
+                                                print(
+                                                    'Delayed process complete.');
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        NavBar(),
+                                                  ),
+                                                );
+                                              });
                           entry = alertOverlay(
                               AlertNotification(
                                   text: 'Category added',

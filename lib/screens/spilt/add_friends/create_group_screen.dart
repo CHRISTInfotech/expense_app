@@ -262,7 +262,8 @@ void openSMSApp(String phone) async {
             ),
           ),
         );
-        navigatorState.pop();
+        Navigator.of(context).pushNamedAndRemoveUntil(
+                              "/", (Route<dynamic> route) => false);
       }
 
       setState(() {

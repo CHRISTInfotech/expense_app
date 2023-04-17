@@ -258,7 +258,8 @@ class _CreateBillScreenState extends State<CreateBillScreen> {
         );
 
         // pop current screen
-        navigatorState.pop();
+         Navigator.of(context).pushNamedAndRemoveUntil(
+                              "/", (Route<dynamic> route) => false);
       }
     } catch (e) {
       showAlertDialog(

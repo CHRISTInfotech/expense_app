@@ -1,13 +1,22 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_new
 
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:clay_containers/clay_containers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet_view/data/categories.dart';
+import 'package:wallet_view/screens/home/home.dart';
 import 'package:wallet_view/screens/home/transaction_record/add_categories.dart';
+import 'package:wallet_view/screens/wallet/wallet.dart';
+import 'package:wallet_view/screens/wrapper.dart';
+import 'package:wallet_view/shared/navigation/nav_bar.dart';
+import 'package:flutter/services.dart';
 
 import '../../../models/bank_card.dart';
 import '../../../models/transaction_record.dart';
@@ -41,6 +50,8 @@ class AddTransaction extends StatefulWidget {
 }
 
 class _AddTransactionState extends State<AddTransaction> {
+  Future<SharedPreferences> sharedPrefs = SharedPreferences.getInstance();
+  // final SharedPreferences sharedPrefs;
   // UserData userData = globals.userData;
   List<TransactionRecord> transactions = globals.transactions;
   List<BankCard> wallet = globals.wallet;
@@ -116,11 +127,13 @@ class _AddTransactionState extends State<AddTransaction> {
     //Set default card number choice for dropdown
     _selectedCard = cards[0];
 
-  
-      
-
     _selectedCard1 = cards[0];
     getBalance();
+  }
+
+  void _reloadApp() {
+    SystemNavigator.pop();
+    // SystemNavigator.push(name: '/'); // replace with your app's home route
   }
 
   getBalance() async {
@@ -672,15 +685,19 @@ class _AddTransactionState extends State<AddTransaction> {
                                               // );
 
                                               //Clear Navigation stack and return to Home
-                                              // Navigator.of(context).pushNamedAndRemoveUntil(
-                                              // "/", (Route<dynamic> route) => false);
 
-                                              Navigator.of(globals.scaffoldKey
-                                                      .currentContext!)
-                                                  .pop();
-                                              // Navigator.of(globals.scaffoldKey
-                                              //         .currentContext!)
-                                              //     .pop();
+                                            Timer(
+                                                  Duration(seconds: 3), () {
+                                                print(
+                                                    'Delayed process complete.');
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        NavBar(),
+                                                  ),
+                                                );
+                                              });
 
                                               entry = alertOverlay(
                                                   AlertNotification(
@@ -751,7 +768,8 @@ class _AddTransactionState extends State<AddTransaction> {
                                             allow: true)
                                       ],
                                     ),
-///Description INPUT
+
+                                    ///Description INPUT
                                     FormInput(
                                       hintText: 'Description',
                                       color: (_type == 'expense')
@@ -771,6 +789,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                         //     allow: true)
                                       ],
                                     ),
+
                                     ///CARD DROPDOWN SELECTION
                                     Container(
                                         margin:

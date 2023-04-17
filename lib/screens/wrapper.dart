@@ -2,11 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wallet_view/models/user.dart';
+import 'package:wallet_view/screens/authenticate/authenticate.dart';
 
 import 'onboard/onboard.dart';
 import '../shared/navigation/nav_bar.dart';
-import '../screens/authenticate/authenticate.dart';
-import '../models/user.dart';
+
 
 class Wrapper extends StatelessWidget {
   final SharedPreferences sharedPrefs;

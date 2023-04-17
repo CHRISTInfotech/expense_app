@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:wallet_view/shared/navigation/nav_bar.dart';
 
 import '../../../models/budget.dart';
 import '../../../services/database.dart';
@@ -89,9 +92,18 @@ class _AddBudgetState extends State<AddBudget> {
                                     // DatabaseService(uid: globals.userData.uid!)
                                     //     .callApiPeriodically();
 
-                                    Navigator.of(
-                                            globals.scaffoldKey.currentContext!)
-                                        .pop();
+                                    Timer(
+                                                  Duration(seconds: 3), () {
+                                                print(
+                                                    'Delayed process complete.');
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        NavBar(),
+                                                  ),
+                                                );
+                                              });
                                     // DatabaseService(uid: globals.userData.uid!)
                                     //     .callApiPeriodically();
 

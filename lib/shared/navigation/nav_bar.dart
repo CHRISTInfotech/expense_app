@@ -3,9 +3,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:wallet_view/data/categories.dart';
 import 'package:wallet_view/screens/spilt/spilt_main.dart';
 
@@ -124,6 +126,23 @@ class _NavBarState extends State<NavBar>
   //   Profile(),
   // ];
   void onTap() {}
+
+  @override
+  void initState() {
+    print('reloaded1');
+    setState(() {
+      
+    });
+    // TODO: implement initState
+    super.initState();
+  }
+  void reloadPage() {
+    setState(() {
+      
+    });
+    // replace this with your data reloading logic
+    
+  }
   @override
   Widget build(BuildContext context) {
     void navRouting(selected) {
@@ -243,7 +262,7 @@ class _NavBarState extends State<NavBar>
 }
 
 class NavBarLayout extends StatefulWidget {
-  final CurrentUser user;
+  final CurrentUser? user;
 
   const NavBarLayout({Key? key, required this.user}) : super(key: key);
 
@@ -266,12 +285,21 @@ class _NavBarLayoutState extends State<NavBarLayout> {
 
   @override
   void initState() {
+    setState(() {
+      
+    });
+    getData();
+    userSubscription;
+    _reloadPage();
+    transactionSubscription;
+    walletSubscription;
+    budgetSubscription;
     super.initState();
     getCate();
     
     
 
-    final userStream = DatabaseService(uid: widget.user.uid).userData;
+    final userStream = DatabaseService(uid: widget.user!.uid).userData;
 
     userSubscription = userStream.listen((userData) async {
       setState(() {
@@ -281,7 +309,7 @@ class _NavBarLayoutState extends State<NavBarLayout> {
       globals.userData = userData;
     });
 
-    final budgetStream = DatabaseService(uid: widget.user.uid).budget;
+    final budgetStream = DatabaseService(uid: widget.user!.uid).budget;
 
     budgetSubscription = budgetStream.listen((budget) async {
       setState(() {
@@ -292,7 +320,7 @@ class _NavBarLayoutState extends State<NavBarLayout> {
     });
 
     final transactionListStream =
-        DatabaseService(uid: widget.user.uid).transactionRecord;
+        DatabaseService(uid: widget.user!.uid).transactionRecord;
 
     transactionSubscription = transactionListStream.listen((tList) async {
       setState(() {
@@ -350,7 +378,7 @@ class _NavBarLayoutState extends State<NavBarLayout> {
       globals.monthTotal = globals.monthIncome + globals.monthExpense;
     });
 
-    final walletStream = DatabaseService(uid: widget.user.uid).wallet;
+    final walletStream = DatabaseService(uid: widget.user!.uid).wallet;
 
     walletSubscription = walletStream.listen((wallet) async {
       setState(() {
@@ -380,7 +408,7 @@ class _NavBarLayoutState extends State<NavBarLayout> {
   }
 
   getData() {
-    final userStream = DatabaseService(uid: widget.user.uid).userData;
+    final userStream = DatabaseService(uid: widget.user!.uid).userData;
 
     userSubscription = userStream.listen((userData) async {
       setState(() {
@@ -390,7 +418,7 @@ class _NavBarLayoutState extends State<NavBarLayout> {
       globals.userData = userData;
     });
 
-    final budgetStream = DatabaseService(uid: widget.user.uid).budget;
+    final budgetStream = DatabaseService(uid: widget.user!.uid).budget;
 
     budgetSubscription = budgetStream.listen((budget) async {
       setState(() {
@@ -401,7 +429,7 @@ class _NavBarLayoutState extends State<NavBarLayout> {
     });
 
     final transactionListStream =
-        DatabaseService(uid: widget.user.uid).transactionRecord;
+        DatabaseService(uid: widget.user!.uid).transactionRecord;
 
     transactionSubscription = transactionListStream.listen((tList) async {
       setState(() {
@@ -470,7 +498,7 @@ class _NavBarLayoutState extends State<NavBarLayout> {
       globals.monthTotal = globals.monthIncome + globals.monthExpense;
     });
 
-    final walletStream = DatabaseService(uid: widget.user.uid).wallet;
+    final walletStream = DatabaseService(uid: widget.user!.uid).wallet;
 
     walletSubscription = walletStream.listen((wallet) async {
       setState(() {
@@ -498,6 +526,11 @@ class _NavBarLayoutState extends State<NavBarLayout> {
           cards.toSet().difference(globals.wallet.toSet()).toList();
     });
   }
+  void _reloadPage() {
+    print('reloaded');
+    
+    setState(() {});
+  }
 
   void callApiPeriodically() {
     Timer(Duration(seconds: 5), () {
@@ -519,6 +552,7 @@ class _NavBarLayoutState extends State<NavBarLayout> {
 
   @override
   Widget build(BuildContext context) {
+        final user = Provider.of<CurrentUser?>(context);
     return BlocProvider<NavigationBloc>(
       create: (context) => NavigationBloc(),
       child: loading

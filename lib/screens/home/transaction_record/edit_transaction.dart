@@ -260,7 +260,7 @@ class _EditTransactionState extends State<EditTransaction> {
                                 initialVal: _desc,
                                 valHandler: (val) => val!.isEmpty
                                     ? 'Enter an Description'
-                                    : null,
+                                    : '',
                                 changeHandler: (val) =>
                                     setState(() => _desc = val),
                                 inputType: TextInputType.text,

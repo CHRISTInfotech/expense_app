@@ -11,7 +11,7 @@ final incomecat = [];
 final expensecat = [];
 final CollectionReference categeryCollection =
     FirebaseFirestore.instance.collection('categery');
-
+// var user=FirebaseAuth.instance.currentUser;
 var uid = FirebaseAuth.instance.currentUser!.uid;
 var expenseCategories = {
   "Food": Icons.fastfood,

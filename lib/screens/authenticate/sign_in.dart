@@ -98,6 +98,7 @@ class _SignInState extends State<SignIn> {
                             height: 60,
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: TextFormField(
+                              
                                 validator: (val) => val!.length < 6
                                     ? 'Enter a password 6+ chars long'
                                     : null,

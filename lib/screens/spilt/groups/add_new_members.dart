@@ -275,6 +275,7 @@ for (var userid in groupMembers) {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: TextField(
+                  
                   controller: searchMemberTextController,
                   onSubmitted: (searchValue) {
                     _searchAndAddMember(searchValue);

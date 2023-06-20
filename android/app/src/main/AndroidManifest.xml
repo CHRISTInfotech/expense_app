@@ -2,7 +2,7 @@
     package="com.example.xpense">
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.SEND_SMS"/>
+  
 
     <!-- Provide required visibility configuration for API level 30 and above -->
 <queries>

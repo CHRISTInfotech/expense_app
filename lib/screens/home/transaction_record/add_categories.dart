@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:wallet_view/data/categories.dart';
 
 import 'package:wallet_view/models/category.dart';
+import 'package:wallet_view/shared/navigation/nav_bar.dart';
 
 import '../../../services/database.dart';
 import '../../../shared/notification/alert_notification.dart';
@@ -47,7 +48,7 @@ class _AddCategoryState extends State<AddCategory> {
     Icons.money_outlined,
     Icons.monetization_on,
   ];
-  var _listGenderText = ["Income", "Expense"];
+  var _listGenderText = ["Income", "Expense","Transfer"];
   bool loading = false;
 
   @override
@@ -75,7 +76,7 @@ class _AddCategoryState extends State<AddCategory> {
                 // ),
                 TabBar(
                     labelStyle:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     labelColor:
                         (_type == 'expense') ? kDarkPrimary : kLightPrimary,
                     indicatorColor:
@@ -88,6 +89,10 @@ class _AddCategoryState extends State<AddCategory> {
                           } else if (index == 1) {
                             _type = "income";
                             _tabTextIconIndexSelected = 0;
+                          }
+                          else if(index==2){
+                             _type = "transfer";
+                            _tabTextIconIndexSelected = 2;
                           }
                         }),
                     tabs: [
@@ -145,8 +150,8 @@ class _AddCategoryState extends State<AddCategory> {
                   inputType: TextInputType.text,
                   inputFormatter: [
                     // WhitelistingTextInputFormatter(RegExp(r'^(\d+)?\.?\d{0,2}')),
-                    FilteringTextInputFormatter(RegExp(r'^[A-Za-z0-9_.]+$'),
-                        allow: true)
+                    // FilteringTextInputFormatter(RegExp(r'^[A-Za-z0-9_.]+$'),
+                    //     allow: true)
                   ],
                 ),
 
@@ -230,12 +235,21 @@ class _AddCategoryState extends State<AddCategory> {
                           }
 
                           //Clear Navigation stack and return to Home
-                          // Navigator.of(context).pushNamedAndRemoveUntil(
-                          //     "/", (Route<dynamic> route) => false);
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              "/", (Route<dynamic> route) => false);
 
-                          Navigator.of(globals.scaffoldKey.currentContext!)
-                              .pop();
-
+                          Timer(
+                                                  Duration(seconds: 3), () {
+                                                print(
+                                                    'Delayed process complete.');
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        NavBar(),
+                                                  ),
+                                                );
+                                              });
                           entry = alertOverlay(
                               AlertNotification(
                                   text: 'Category added',

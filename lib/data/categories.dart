@@ -1,17 +1,17 @@
-
+import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-
 var deficon = Icons.shopping_bag;
 var inicon = Icons.wallet_giftcard;
+var transferIcon = Icons.upload_outlined;
 final incomecat = [];
 final expensecat = [];
 final CollectionReference categeryCollection =
     FirebaseFirestore.instance.collection('categery');
-
+// var user=FirebaseAuth.instance.currentUser;
 var uid = FirebaseAuth.instance.currentUser!.uid;
 var expenseCategories = {
   "Food": Icons.fastfood,
@@ -26,7 +26,15 @@ var incomeCategories = {
   "Vocher": Icons.money,
 };
 
-var cat = {"expense": expenseCategories, "income": incomeCategories};
+var transferCategories = {
+  "transfer": Icons.send_to_mobile,
+};
+
+var cat = {
+  "expense": expenseCategories,
+  "income": incomeCategories,
+  "transfer": transferCategories
+};
 
 Map<String, Map<String, IconData>> getCate() {
   FirebaseFirestore.instance
@@ -39,6 +47,7 @@ Map<String, Map<String, IconData>> getCate() {
     // should print notes array
     List<dynamic> incomecat = value.data()!["income"];
     List<dynamic> expensecat = value.data()!["expense"];
+    List<dynamic> transferecat = value.data()!["transfer"]??[];
     for (final note in incomecat) {
       // incomecat.add(note['name']);
       incomeCategories[note['name']] = inicon;
@@ -47,9 +56,17 @@ Map<String, Map<String, IconData>> getCate() {
       // expensecat.add(expene['name']);
       expenseCategories[expene['name']] = deficon;
     }
+    for (final transfer in transferecat) {
+      // expensecat.add(expene['name']);
+      transferCategories[transfer['name']] = transferIcon;
+    }
   });
 
-  cat = {"expense": expenseCategories, "income": incomeCategories};
+  cat = {
+    "expense": expenseCategories,
+    "income": incomeCategories,
+    "transfer": transferCategories,
+  };
   return cat;
 }
 

@@ -7,7 +7,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:869698743095:android:e5508da0f5a319be6148b2",
+        "mobilesdk_app_id": "1:869698743095:android:d060144cd031aa376148b2",
         "android_client_info": {
           "package_name": "walletview.example.walletview"
         }
@@ -29,6 +29,13 @@
             {
               "client_id": "869698743095-f9m5bggnidtf4oj90hp1dqm7ugi0kaho.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "869698743095-r1dp0tue91oo2hoqh6nnvck48u2ton98.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.xpense"
+              }
             }
           ]
         }

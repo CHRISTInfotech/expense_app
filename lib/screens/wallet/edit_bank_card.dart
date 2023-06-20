@@ -73,7 +73,7 @@ class _EditBankCardState extends State<EditBankCard> {
     _cardNumber = widget.bankCard!.cardNumber;
     _holderName = widget.bankCard!.holderName;
     _expiry = widget.bankCard!.expiry;
-    // _balance = widget.bankCard!.balance as String;
+    _balance = widget.bankCard!.balance as String;
   }
 
   @override
@@ -117,24 +117,27 @@ class _EditBankCardState extends State<EditBankCard> {
                           changeHandler: (val) =>
                               setState(() => _bankName = val!),
                         ),
-                        // FormInput(
-                        //   hintText: 'Balance amount',
-                        //   color: kDarkPrimary,
-                        //   initialVal: _balance,
-                        //   valHandler: (val) =>
-                        //       val!.isEmpty ? 'Enter a balance amount' : null,
-                        //   changeHandler: (val) =>
-                        //       setState(() => _balance = val!),
-                        //   inputType: TextInputType.number,
-                        //   inputFormatter: [
-                        //     FilteringTextInputFormatter(RegExp(r'\s*\d*'),
-                        //         allow: true),
-                        //     // MaskedTextInputFormatter(
-                        //     //   mask: 'xxxx xxxx xxxx xxxx',
-                        //     //   separator: ' ',
-                        //     // ),
-                        //   ],
-                        // ),
+
+                        //balance
+                        FormInput(
+                          hintText: 'Balance amount',
+                          color: kDarkPrimary,
+                          initialVal: _balance,
+                          valHandler: (val) =>
+                              val!.isEmpty ? 'Enter a balance amount' : null,
+                          changeHandler: (val) =>
+                              setState(() => _balance = val!),
+                          inputType: TextInputType.number,
+                          inputFormatter: [
+                            FilteringTextInputFormatter(
+                                RegExp(r'(^[1-9]\d*\.?\d{0,2})$'),
+                                allow: true),
+                            // MaskedTextInputFormatter(
+                            //   mask: 'xxxx xxxx xxxx xxxx',
+                            //   separator: ' ',
+                            // ),
+                          ],
+                        ),
 
                         ///CARD NUMBER INPUT
                         Container(
@@ -242,7 +245,7 @@ class _EditBankCardState extends State<EditBankCard> {
                                   cardNumber: _cardNumber,
                                   holderName: _holderName,
                                   expiry: _expiry,
-                                  // balance: double.parse(_balance),
+                                  balance: _balance,
                                 ));
 
                                 setState(() {

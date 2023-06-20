@@ -46,7 +46,7 @@ class _AvatarImageState extends State<AvatarImage> {
     //Retrieve the image link from FirebaseStorage
     String downloadUrl = await taskSnapshot.ref.getDownloadURL();
     await DatabaseService(uid: globals.userData.uid!).updateUserData(
-        globals.userData.fullName!, globals.userData.email!,
+        globals.userData.fullName!, globals.userData.email!,globals.userData.phoneNumber!,globals.userData.upiId,
         avatar: downloadUrl);
 
     setState(() {
@@ -66,7 +66,7 @@ class _AvatarImageState extends State<AvatarImage> {
     super.initState();
     //Load the exisiting user avatar
     if (globals.userData.avatar != '') {
-      _imgUrl = globals.userData.avatar;
+      _imgUrl = globals.userData.avatar!;
     }
   }
 

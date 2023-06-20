@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -13,12 +15,12 @@ showAddBankCard(BuildContext context) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    shape: RoundedRectangleBorder(
+    shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(25.0))),
     backgroundColor: Colors.white,
     builder: (context) => Container(
         height: MediaQuery.of(context).size.height * 0.80,
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 60),
         child: AddBankCard()),
   );
 }
@@ -47,7 +49,7 @@ class _AddBankCardState extends State<AddBankCard> {
       initialDatePickerMode: DatePickerMode.year,
       initialDate: DateTime.now(),
       firstDate: DateTime(2019),
-      lastDate: DateTime.now().add(Duration(days: 1825)), //Add 5 years
+      lastDate: DateTime.now().add(const Duration(days: 1825)), //Add 5 years
     ).then((pickedDate) {
       if (pickedDate == null) {
         return;
@@ -65,16 +67,16 @@ class _AddBankCardState extends State<AddBankCard> {
     OverlayEntry? entry;
 
     return loading
-        ? Loading()
+        ? const Loading()
         : Column(
             children: <Widget>[
               //Header title
-              Text(
+              const Text(
                 'Add Account',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
 
@@ -89,8 +91,9 @@ class _AddBankCardState extends State<AddBankCard> {
                           hintText: 'Account Name',
                           color: kDarkPrimary,
                           initialVal: _bankName,
-                          valHandler: (val) =>
-                              val!.isEmpty ? 'Enter a Account name' : null,
+                          valHandler: (val) => val!.isEmpty
+                              ? 'Enter a Account name or Cash'
+                              : null,
                           changeHandler: (val) =>
                               setState(() => _bankName = val!),
                         ),
@@ -115,60 +118,61 @@ class _AddBankCardState extends State<AddBankCard> {
                             ),
                           ],
                         ),
-                        // FormInput(
-                        //   hintText: 'Balance amount',
-                        //   color: kDarkPrimary,
-                        //   initialVal: _balance,
-                        //   valHandler: (val) =>
-                        //       val!.isEmpty ? 'Enter a balance amount' : null,
-                        //   changeHandler: (val) =>
-                        //       setState(() => _balance = val!),
-                        //   inputType: TextInputType.number,
-                        //   inputFormatter: [
-                        //     FilteringTextInputFormatter(RegExp(r'\s*\d*'),
-                        //         allow: true),
-                        //     // MaskedTextInputFormatter(
-                        //     //   mask: 'xxxx xxxx xxxx xxxx',
-                        //     //   separator: ' ',
-                        //     // ),
-                        //   ],
-                        // ),
+                        FormInput(
+                          hintText: 'Balance amount',
+                          color: kDarkPrimary,
+                          // initialVal: _balance,
+                          valHandler: (val) =>
+                              val!.isEmpty ? 'Enter a initial amount' : null,
+                          changeHandler: (val) =>
+                              setState(() => _balance = val!),
+                          inputType: TextInputType.number,
+                          inputFormatter: [
+                            FilteringTextInputFormatter(
+                                RegExp(r'(^[1-9]\d*\.?\d{0,2})$'),
+                                allow: true)
+                            // MaskedTextInputFormatter(
+                            //   mask: 'xxxx xxxx xxxx xxxx',
+                            //   separator: ' ',
+                            // ),
+                          ],
+                        ),
 
                         ///HOLDER NAME INPUT
                         FormInput(
                           hintText: 'Holder Name',
                           color: kDarkPrimary,
                           initialVal: _holderName,
-                          valHandler: (val) =>
-                              (val!.length < 2 || val.length > 26)
-                                  ? 'Enter valid holder name'
-                                  : null,
+                          // valHandler: (val) =>
+                          //     (val!.length < 2 || val.length > 26)
+                          //         ? 'Enter valid holder name'
+                          //         : null,
                           changeHandler: (val) =>
                               setState(() => _holderName = val!),
-                          inputFormatter: [
-                            FilteringTextInputFormatter(
-                                RegExp(r'^([a-zA-Z][a-zA-Z]*) ?[a-zA-Z]*$'),
-                                allow: true),
-                          ],
+                          // inputFormatter: [
+                          //   FilteringTextInputFormatter(
+                          //       RegExp(r'^([a-zA-Z][a-zA-Z]*) ?[a-zA-Z]*$'),
+                          //       allow: true),
+                          // ],
                         ),
 
                         ///DATE SELECTION
                         Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 7),
                           child: Row(
                             children: <Widget>[
                               Expanded(
                                 child: Text(
                                   '${(DateFormat.M().format(_expiry)).padLeft(2, '0')} / ${(DateFormat.y().format(_expiry)).replaceAll(yearExpr, "")}',
-                                  style: TextStyle(fontSize: 16),
+                                  style: const TextStyle(fontSize: 16),
                                 ),
                               ),
                               AdaptiveFlatButton(
                                 'Choose Date',
                                 _presentDatePicker,
-                                Color(0xFF768cfc),
+                                const Color(0xFF768cfc),
                               )
                             ],
                           ),
@@ -176,7 +180,7 @@ class _AddBankCardState extends State<AddBankCard> {
 
                         ///SUBMIT BUTTON
                         Container(
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                                 vertical: 20, horizontal: 10),
                             child: FullButton(
                               icon: Icons.credit_card,
@@ -185,25 +189,13 @@ class _AddBankCardState extends State<AddBankCard> {
                               handler: () async {
                                 setState(() => loading = true);
 
-                                print("User ID: ${globals.userData.uid}");
-                                print("Bank name entered: ${_bankName}");
-                                print(
-                                    "Card number entered: ${_cardNumber.length}");
-                                print("Holder name entered: \$${_holderName}");
-                                print(
-                                    "Date selected: ${DateFormat.MMMEd().format(_expiry)}");
-
                                 if (_formKey.currentState!.validate()) {
-                                  print("VALIDATION PASSED");
-
                                   if (globals.wallet
                                           .where((card) =>
                                               card.cardNumber == _cardNumber)
                                           .toList()
                                           .length >
                                       0) {
-                                    print("CARD NUMBER UNAVAILABLE");
-
                                     setState(() {
                                       loading = false;
                                     });
@@ -216,7 +208,7 @@ class _AddBankCardState extends State<AddBankCard> {
                                           "There is already a card with that number",
                                           [
                                             TextButton(
-                                                child: Text("OK"),
+                                                child: const Text("OK"),
                                                 onPressed: () => Navigator.of(
                                                         globals.scaffoldKey
                                                             .currentContext!)
@@ -225,19 +217,16 @@ class _AddBankCardState extends State<AddBankCard> {
                                           titleColor: Colors.red),
                                     );
                                   } else {
-                                    print("CARD NUMBER AVAILABLE");
-
                                     //INSERTION
                                     await DatabaseService(
                                             uid: globals.userData.uid!)
-                                        .updateWallet(new BankCard(
+                                        .updateWallet(BankCard(
                                       bankName: _bankName,
                                       cardNumber: _cardNumber,
                                       holderName: _holderName,
                                       expiry: _expiry,
-                                      // balance:double.parse(_balance),
+                                      balance: _balance,
                                     ));
-                                    print("DB INSERTION SUCCESSFUL");
 
                                     setState(() {
                                       loading = false;
@@ -259,7 +248,6 @@ class _AddBankCardState extends State<AddBankCard> {
                                     overlayDuration(entry!);
                                   }
                                 } else {
-                                  print("VALIDATION FAILED");
                                   setState(() {
                                     loading = false;
                                   });

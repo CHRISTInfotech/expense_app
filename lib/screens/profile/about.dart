@@ -20,7 +20,7 @@ class About extends StatelessWidget {
           centerTitle: true,
           title: new Text(
             "About $kAppName",
-            style: TextStyle(color: kDarkSecondary),
+            style: TextStyle(color: kDarkSecondary, fontSize: 15),
           ),
           backgroundColor: kBackground,
           elevation: 0.0,
@@ -52,11 +52,10 @@ class About extends StatelessWidget {
               Text(
                 kAppName,
                 style: TextStyle(
-                    color: kDarkSecondary,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    
-                    ),
+                  color: kDarkSecondary,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               Column(
                 children: <Widget>[

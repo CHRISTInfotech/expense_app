@@ -1,10 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:wallet_view/data/categories.dart';
+import 'package:wallet_view/screens/spilt/spilt_main.dart';
 
 import '../loading.dart';
 import '../theme.dart';
@@ -24,6 +29,7 @@ enum NavigationEvents {
   WalletPageClickedEvent,
   StatisticsPageClickedEvent,
   ProfilePageClickedEvent,
+  SpiltPageClickedEvent,
 }
 
 abstract class NavigationStates {}
@@ -53,6 +59,11 @@ class NavigationBloc extends Bloc<NavigationEvents, NavigationStates> {
       case NavigationEvents.ProfilePageClickedEvent:
         // print("Hello profile");
         emit(Profile());
+        break;
+
+      case NavigationEvents.SpiltPageClickedEvent:
+        // print("Hello profile");
+        emit(SpiltHome());
         break;
     }
   }
@@ -95,7 +106,6 @@ class NavigationBloc extends Bloc<NavigationEvents, NavigationStates> {
   //       break;
   //   }
   // }
-
 }
 
 class NavBar extends StatefulWidget {
@@ -116,6 +126,23 @@ class _NavBarState extends State<NavBar>
   //   Profile(),
   // ];
   void onTap() {}
+
+  @override
+  void initState() {
+    print('reloaded1');
+    setState(() {
+      
+    });
+    // TODO: implement initState
+    super.initState();
+  }
+  void reloadPage() {
+    setState(() {
+      
+    });
+    // replace this with your data reloading logic
+    
+  }
   @override
   Widget build(BuildContext context) {
     void navRouting(selected) {
@@ -149,9 +176,24 @@ class _NavBarState extends State<NavBar>
           {
             // print(selected);
             BlocProvider.of<NavigationBloc>(context)
+                .add(NavigationEvents.SpiltPageClickedEvent);
+          }
+          break;
+        case 4:
+          {
+            // print(selected);
+            BlocProvider.of<NavigationBloc>(context)
                 .add(NavigationEvents.ProfilePageClickedEvent);
           }
           break;
+
+        // case 4:
+        // {
+        //   // print(selected);
+        //   BlocProvider.of<NavigationBloc>(context)
+        //       .add(NavigationEvents.ProfilePageClickedEvent);
+        // }
+        // break;
       }
     }
 
@@ -186,12 +228,27 @@ class _NavBarState extends State<NavBar>
             ),
             activeColor: kLightSecondary),
         BottomNavyBarItem(
+            icon: Icon(Icons.group_add_sharp),
+            title: Text(
+              'Groups',
+              textAlign: TextAlign.center,
+            ),
+            activeColor: kDarkSecondary),
+        BottomNavyBarItem(
             icon: Icon(Icons.person),
             title: Text(
               'Profile',
               textAlign: TextAlign.center,
             ),
             activeColor: kDarkSecondary),
+
+        // BottomNavyBarItem(
+        // icon: Icon(Icons.person),
+        // title: Text(
+        //   'Profile',
+        //   textAlign: TextAlign.center,
+        // ),
+        // activeColor: kDarkSecondary),
         // BottomNavyBarItem(
         //     icon: Icon(Icons.category),
         //     title: Text(
@@ -205,7 +262,7 @@ class _NavBarState extends State<NavBar>
 }
 
 class NavBarLayout extends StatefulWidget {
-  final CurrentUser user;
+  final CurrentUser? user;
 
   const NavBarLayout({Key? key, required this.user}) : super(key: key);
 
@@ -228,45 +285,48 @@ class _NavBarLayoutState extends State<NavBarLayout> {
 
   @override
   void initState() {
+    setState(() {
+      
+    });
+    getData();
+    userSubscription;
+    _reloadPage();
+    transactionSubscription;
+    walletSubscription;
+    budgetSubscription;
     super.initState();
     getCate();
+    
+    
 
-    final userStream = DatabaseService(uid: widget.user.uid).userData;
-    print("Created the <USERDATA> stream");
+    final userStream = DatabaseService(uid: widget.user!.uid).userData;
 
     userSubscription = userStream.listen((userData) async {
       setState(() {
         userData = userData;
         // loading = false;
       });
-      print('UserData: $userData');
       globals.userData = userData;
-      print("-globally- : ${globals.userData.fullName}");
     });
 
-    final budgetStream = DatabaseService(uid: widget.user.uid).budget;
-    print("Created the <BUDGET> stream");
+    final budgetStream = DatabaseService(uid: widget.user!.uid).budget;
 
     budgetSubscription = budgetStream.listen((budget) async {
       setState(() {
         budget = budget;
         // loading = false;
       });
-      print('Budget: $budget');
       globals.budget = budget;
-      print("-globally- : ${globals.budget.month}");
     });
 
     final transactionListStream =
-        DatabaseService(uid: widget.user.uid).transactionRecord;
-    print("Created the <LIST<TRANSACTION>> stream");
+        DatabaseService(uid: widget.user!.uid).transactionRecord;
 
     transactionSubscription = transactionListStream.listen((tList) async {
       setState(() {
         transactionList = tList;
         // loading = false;
       });
-      print('TList: $transactionList');
 
       List<TransactionRecord> transactions = <TransactionRecord>[];
       var income = 0.0;
@@ -278,10 +338,10 @@ class _NavBarLayoutState extends State<NavBarLayout> {
             title: transaction['title'],
             amount: double.parse(transaction['amount'].toString()),
             date: DateTime.parse(transaction['date'].toDate().toString()),
+            description: transaction['description'],
             cardNumber: transaction['cardNumber']);
 
         // print("TRANSACTION RECORD DETECTED: $tr");
-        print("each amount:${tr.amount}");
 
         if (tr.type == "income") {
           var amt = tr.amount;
@@ -292,7 +352,6 @@ class _NavBarLayoutState extends State<NavBarLayout> {
         }
         balance = income + expense;
         globals.balance = balance;
-        print(balance);
         transactions.add(tr);
       }
 
@@ -319,15 +378,13 @@ class _NavBarLayoutState extends State<NavBarLayout> {
       globals.monthTotal = globals.monthIncome + globals.monthExpense;
     });
 
-    final walletStream = DatabaseService(uid: widget.user.uid).wallet;
-    print("Created the <LIST<BANKCARD>> stream");
+    final walletStream = DatabaseService(uid: widget.user!.uid).wallet;
 
     walletSubscription = walletStream.listen((wallet) async {
       setState(() {
         wallet = wallet;
         loading = false;
       });
-      print('Wallet: $wallet');
 
       List<BankCard> cards = <BankCard>[];
 
@@ -338,10 +395,9 @@ class _NavBarLayoutState extends State<NavBarLayout> {
           cardNumber: card['cardNumber'],
           holderName: card['holderName'],
           expiry: DateTime.parse(card['expiry'].toDate().toString()),
-          // balance: double.parse(card['balance'].toString()),
+          balance: card['balance'].toString(),
         );
 
-        print("BANK CARD DETECTED: $bc");
         cards.add(bc);
       }
 
@@ -349,8 +405,138 @@ class _NavBarLayoutState extends State<NavBarLayout> {
       globals.wallet =
           cards.toSet().difference(globals.wallet.toSet()).toList();
     });
+  }
 
-    print("-end of init-");
+  getData() {
+    final userStream = DatabaseService(uid: widget.user!.uid).userData;
+
+    userSubscription = userStream.listen((userData) async {
+      setState(() {
+        userData = userData;
+        // loading = false;
+      });
+      globals.userData = userData;
+    });
+
+    final budgetStream = DatabaseService(uid: widget.user!.uid).budget;
+
+    budgetSubscription = budgetStream.listen((budget) async {
+      setState(() {
+        budget = budget;
+        // loading = false;
+      });
+      globals.budget = budget;
+    });
+
+    final transactionListStream =
+        DatabaseService(uid: widget.user!.uid).transactionRecord;
+
+    transactionSubscription = transactionListStream.listen((tList) async {
+      setState(() {
+        transactionList = tList;
+        // loading = false;
+      });
+
+      List<TransactionRecord> transactions = <TransactionRecord>[];
+      var income = 0.0;
+      var expense = 0.0;
+      var balance = 0.0;
+      for (var transaction in transactionList!) {
+        TransactionRecord tr = new TransactionRecord(
+            type: transaction['type'],
+            title: transaction['title'],
+            amount: double.parse(transaction['amount'].toString()),
+            date: DateTime.parse(transaction['date'].toDate().toString()),
+            description: transaction['description'],
+            cardNumber: transaction['cardNumber']);
+      // List<TransactionRecord> transactions = <TransactionRecord>[];
+      // var income = 0.0;
+      // var expense = 0.0;
+      // var balance = 0.0;
+      // for (var transaction in transactionList!) {
+      //   TransactionRecord tr = new TransactionRecord(
+      //       type: transaction['type'],
+      //       title: transaction['title'],
+      //       amount: double.parse(transaction['amount'].toString()),
+      //       date: DateTime.parse(transaction['date'].toDate().toString()),
+      //       cardNumber: transaction['cardNumber']);
+
+        // print("TRANSACTION RECORD DETECTED: $tr");
+
+        if (tr.type == "income") {
+          var amt = tr.amount;
+          income += amt;
+        } else {
+          var amt = tr.amount;
+          expense += amt;
+        }
+        balance = income + expense;
+        globals.balance = balance;
+        transactions.add(tr);
+      }
+
+      //Only append the values not found in the existing global variable
+      globals.transactions = transactions
+          .toSet()
+          .difference(globals.transactions.toSet())
+          .toList();
+      globals.income = (transactions.where((t) => t.type == "income").toList())
+          .fold(0, (i, j) => i + j.amount);
+      globals.expense =
+          (transactions.where((t) => t.type == "expense").toList())
+              .fold(0, (i, j) => i + j.amount);
+      globals.monthIncome = (transactions
+              .where((t) =>
+                  t.type == "income" && t.date.month == DateTime.now().month)
+              .toList())
+          .fold(0, (i, j) => i + j.amount);
+      globals.monthExpense = (transactions
+              .where((t) =>
+                  t.type == "expense" && t.date.month == DateTime.now().month)
+              .toList())
+          .fold(0, (i, j) => i + j.amount);
+      globals.monthTotal = globals.monthIncome + globals.monthExpense;
+    });
+
+    final walletStream = DatabaseService(uid: widget.user!.uid).wallet;
+
+    walletSubscription = walletStream.listen((wallet) async {
+      setState(() {
+        wallet = wallet;
+        loading = false;
+      });
+
+      List<BankCard> cards = <BankCard>[];
+
+      for (var card in wallet) {
+        // ignore: unnecessary_new
+        BankCard bc = new BankCard(
+          bankName: card['bankName'],
+          cardNumber: card['cardNumber'],
+          holderName: card['holderName'],
+          expiry: DateTime.parse(card['expiry'].toDate().toString()),
+          balance: card['balance'].toString(),
+        );
+
+        cards.add(bc);
+      }
+
+      //Only append the values not found in the existing global variable
+      globals.wallet =
+          cards.toSet().difference(globals.wallet.toSet()).toList();
+    });
+  }
+  void _reloadPage() {
+    print('reloaded');
+    
+    setState(() {});
+  }
+
+  void callApiPeriodically() {
+    Timer(Duration(seconds: 5), () {
+      getData();
+      callApiPeriodically();
+    });
   }
 
   @override
@@ -359,11 +545,14 @@ class _NavBarLayoutState extends State<NavBarLayout> {
     transactionSubscription.cancel();
     walletSubscription.cancel();
     budgetSubscription.cancel();
+    // getData().dispose();
+    // callApiPeriodically().dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+        final user = Provider.of<CurrentUser?>(context);
     return BlocProvider<NavigationBloc>(
       create: (context) => NavigationBloc(),
       child: loading
